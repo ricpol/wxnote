@@ -13,7 +13,7 @@ Appunti wxPython
    intro
    documentarsi
    wxapp_basi
-   
+   wxapp_avanzata
 
 Indices and tables
 ==================
