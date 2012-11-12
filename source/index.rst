@@ -6,12 +6,11 @@
 Appunti wxPython
 ================
 
-Indice:
-
 .. toctree::
    :numbered:
    :maxdepth: 2
    
+   intro
    documentarsi
    
 
