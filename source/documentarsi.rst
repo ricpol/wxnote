@@ -5,6 +5,7 @@ wxPython è un framework vasto e complesso, e soprattutto all'inizio può disori
 
 Il problema con tutti questi materiali, ovviamente, è che sono in inglese. Non esiste nulla in italiano... il che sarebbe poi la ragione dell'esistenza di questi appunti. Tuttavia non potete prescindere da un po' di fatica linguistica, se volete fare qualche progresso con wxPython (e con Python, e con la programmazione in generale). 
 
+
 La demo.
 --------
 
@@ -13,6 +14,7 @@ La demo è il primo posto dove in genere vi conviene guardare. Se non c'è nella
 La demo è un pacchetto che si scarica e si installa a parte `sul sito di wxPython <http://www.wxpython.org/download.php#stable>`_ (cercate "wxPython Demo" tra i vari pacchetti). Una volta aperta, presenta un elenco di esempi organizzati in un albero che potete sfogliare. Ciascun esempio mostra anche il suo codice sorgente e delle note utili. Una possibilità molto comoda è che potete fare delle modifiche direttamente nel codice, e vedere subito il risultato. 
 
 L'unico problema della demo è che spesso gli esempi sono eccessivamente complessi: nello sforzo di dimostrare tutte le possibilità dei vari widget, il codice si allunga a dismisura, e non è sempre facile orientarsi. 
+
 
 Gli altri esempi.
 -----------------
@@ -27,6 +29,7 @@ Scaricando il pacchetto della demo, installate anche alcune piccole applicazioni
 
 Molto utili sono anche gli snippet raccolti in ``.../wxPython2.8 Docs and Demos/wxPython/samples/wxPIA_book``. Questi sono esempi tratti dal libro `WxPython in Action <http://www.manning.com/rappin/>`_. L'unico problema di questi esempi è che, essendo tratti dal libro, sono organizzati secondo i capitoli, ed è un po' noioso provarli tutti per vedere cosa fanno.
 
+
 La documentazione wxPython.
 ---------------------------
 
@@ -34,6 +37,7 @@ La documentazione delle API di wxPython è solo online. Potete trovare la versio
 
 
 Ovviamente la documentazione delle API è fondamentale, ma solo se sapete già che cosa state cercando...
+
 
 La documentazione wxWidget.
 ---------------------------
@@ -44,6 +48,15 @@ Come ormai dovreste sapere, wxPython è il porting per Python del framework C++ 
 Naturalmente, il problema qui è che tutta la sintassi, gli esempi, le convenzioni tipografiche etc., si riferiscono al mondo C++. Non è troppo difficile, con un po' di allenamento, tradurre al volo nel nostro linguaggio preferito; tuttavia non è neppure proprio facilissimo. 
 
 Tuttavia la documentazione wxWidgets resta in certi casi l'ultima risorsa. Tra l'altro, al suo interno si trovano anche delle note specifiche per wxPython (e wxPerl!), nei punti in cui le API differiscono. 
+
+
+Events in Style!
+----------------
+
+"Events in Style" è un modulo del sempre geniale Andrea Gavana (disponibile `qui <http://xoomer.virgilio.it/infinity77/Zipped/EventsInStyle.py>`_, semplicemente salvate la pagina). E' una piccola gui che punta alla documentazione online (va usato con una connessione internet) e scarica la parte relativa agli eventi e agli stili (da cui il nome!) disponibili per ciascun widget. 
+
+E' uno strumento molto comodo per farsi un'idea veloce di due aspetti (eventi e stili, appunto) che di solito nessuno riesce mai a ricordarsi. 
+
 
 Libri wxPython.
 ---------------
@@ -60,9 +73,12 @@ Siti wxPython.
 
 Ce ne sono troppi. 
 
-Il problema qui è che wxPython è un framework *anziano* e *popolare*, il che significa che negli anni si è accumulata in rete una impressionante quantità di materiale, spesso vecchio (vedi alla voce "anziano") e/o di pessima qualità (vedi alla voce "popolare"). 
+Il problema qui è che wxPython è un framework *anziano* e *popolare*, il che significa che negli anni si è accumulata in rete una impressionante quantità di materiale, spesso vecchio (vedi alla voce "anziano") e/o di scarsa qualità (vedi alla voce "popolare"). 
 
-Francamente non riesco a consigliarvi nessun sito wxPython di cui mi fido ciecamente. E questa è un'altra ragione per l'esistenza di queste note. Per dovere di cronaca, devo citare almeno il `wiki ufficiale <http://wiki.wxpython.org/>`_, che però resta ancora tragicamente disorganizzato, e talvolta presenta ancora degli esempi vecchi e superati. Tuttavia, molte pagine sono invece assolutamente ben scritte e aggiornate. 
+.. todo:: Al momento, non riesco a consigliare nessun sito di cui mi fido ciecamente. In futuro, prometto di fare una nuova indagine.
+
+Per dovere di cronaca, devo citare almeno il `wiki ufficiale <http://wiki.wxpython.org/>`_, che però è poco sistematico, e talvolta presenta ancora degli esempi superati. Tuttavia, molte pagine sono invece assolutamente ben scritte e aggiornate. 
+
 
 Un buon editor.
 ---------------
@@ -76,6 +92,7 @@ Sembra facile, ma se lavorate con un framework complesso come wxPython, scordate
 * calltips: o come volete chiamarli, insomma, la docstring della funzione/metodo che appare automaticamente quando scrivete il nome. Il problema numero tre è ricordarsi l'infinità di named arguments che può avere un metodo (specialmente un costruttore) wxPython. Senza i calltips, siete fritti. 
 
 Ora, tutti gli editor decenti hanno queste feature: scegliete quello che preferite. Tenete solo a mente che non è il caso di ricorrere per forza a elefanti come Eclipse. Non è questa la sede per aprire l'eterna discussione su quale editor utilizzare. Se non avete proprio nessuna idea, potete provare `Editra <http://editra.org/>`_: è un IDE abbastanza completo, scritto da Cody Precord nientemeno che in wxPython. E' diventato un po' l'editor "ufficiale" di wxPython, e quindi è incluso nelle distribuzioni che scaricate, ma vi conviene visitare il sito per avere la versione più aggiornata, scaricare i plugin, etc.
+
 
 La vecchia buona shell. 
 -----------------------
