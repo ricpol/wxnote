@@ -112,6 +112,7 @@ Infine, una piccola eleganza: avete notato che quando chiudiamo ``MyLoginDialog`
 
 .. note:: Potreste chiedervi perché c'è bisogno di un metodo separato ``OnInit`` per queste operazioni di apertura, quando in genere in questi casi si lavora direttamente nell'``__init__`` della classe. Il punto è che l'``__init__`` è riservato al bootstrap della stessa ``wx.App``, e non è il posto giusto per metterci dentro anche il codice di inizializzazione della vostra applicazione. Per esempio l'``__init__`` deve sempre restituire ``None``, e quindi non è agevole gestire un errore di inizializzazione differenziandolo con un diverso codice di uscita. Se ve la sentite, potete pasticciare con l'``__init__`` a vostro rischio e pericolo, naturalmente. Ma ``OnInit`` fornisce già un comodo aggancio per tutte le vostre necessità. 
 
+.. _wxapp_avanzata_onexit:
 
 ``wx.App.OnExit``: gestire le operazioni di chiusura.
 -----------------------------------------------------
