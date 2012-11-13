@@ -88,9 +88,8 @@ Quindi, per "ingranare" la nostra applicazione, bastano di solito le tre righe m
     MainFrame(None).Show() # dove MainFrame e' il frame principale dell'applicazione
     app.MainLoop()
 
-Ci sono però ancora parecchie cose da sapere sulla ``wx.App``: ma sono argomenti più avanzati che per il momento non vi servono. 
-
-.. todo:: una pagina per wx.App avanzata (OnInit, OnExit)
+Ci sono però ancora parecchie cose da sapere sulla ``wx.App``: ma sono :ref:`argomenti più avanzati <wxapp_avanzata>` che per il momento non vi servono. 
 
 Per completare il quadro, abbiamo detto: si esce dal ``MainLoop`` quando l'ultimo elemento della gui viene distrutto. Dovremmo specificare meglio: quando l'ultima finestra "top level" viene chiusa e distrutta. Ma per questo bisogna prima spiegare meglio il concetto di "top level frame", e, più in generale, della catena dei "parent". Dedichiamo a questo argomento :ref:`una pagina separata <wxapp_avanzata>`. 
 
+.. todo:: una pagina per top level frame, catena dei parent
