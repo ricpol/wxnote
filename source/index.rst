@@ -14,6 +14,7 @@ Appunti wxPython
    documentarsi
    wxapp_basi
    wxapp_avanzata
+   chiusura
 
 Indices and tables
 ==================
