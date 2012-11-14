@@ -271,3 +271,6 @@ Ecco un esempio di ``Panel`` "schizzinoso" che potrebbe opporsi alla sua distruz
 
 Come si vede, se il ``Panel`` si chiude davvero, resta un buco. Alla riga 38, bisognerà fare qualcosa: riempire il buco, riaggustare il layout, etc. 
 
+Per finire, una menzione per ``DestroyChildren``: quest'arma di distruzione di massa, usata su un widget qualsiasi, lascia in vita lui ma distrugge automaticamente tutti i suoi "figli". Naturalmente, la distruzione di ciascun figlio comporta a catena la morte anche dei figli del figlio, e così via fino alla totale estinzione dell'albero dei discendenti. Può tornare comodo, per esempio, per svuotare un ``wx.Panel`` senza però distruggerlo, e quindi ripopolarlo daccapo. 
+
+
