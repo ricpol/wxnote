@@ -6,3 +6,4 @@ Appunti wxPython - livello base
    :maxdepth: 2
 
    wxapp_basi
+   catenaparent
