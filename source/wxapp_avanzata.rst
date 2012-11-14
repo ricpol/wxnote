@@ -125,18 +125,20 @@ Proprio come avviene in ``OnInit``, anche in ``OnExit`` potete approfittarne per
 
 Se però cercate di creare e mostrare un nuovo frame "top level" a questo punto, nella speranza di prevenire la chiusura della ``wx.App``, ormai è troppo tardi. Il frame verrà mostrato per un attimo, ma poi si chiuderà subito e tutto terminerà. 
 
-.. note:: Avvertenza per gli spericolati: non vale neppure cercare di prevenire la chiusura dell'applicazione settando ``self.SetExitOnFrameDelete(False)`` *prima* di mostrare il nuovo frame top-level: effettivamente il frame resta visibile, ma l'applicazione si pianta. Questo codice, per esempio, *non funziona*::
+.. note:: Avvertenza per gli spericolati: non vale neppure cercare di prevenire la chiusura dell'applicazione settando ``self.SetExitOnFrameDelete(False)`` *prima* di mostrare il nuovo frame top-level: effettivamente il frame resta visibile, ma l'applicazione si pianta. Questo codice, per esempio, *non funziona*:
 
-    class MyApp(wx.App):
-        def OnInit(self):
-            wx.Frame(None).Show()
-            return True
-            
-        def OnExit(self):
-            self.SetExitOnFrameDelete(False)
-            wx.Frame(None).Show()
-            self.SetExitOnFrameDelete(True)
+    ::
 
-Parlare di ``OnExit`` ci porta naturalmente a parlare più nel dettaglio del processo di chiusura delle applicazioni wxPython... ma a questo argomento dedichiamo :ref:`una pagina separata <chiusura>`. 
+        class MyApp(wx.App):
+            def OnInit(self):
+                wx.Frame(None).Show()
+                return True
+                
+            def OnExit(self):
+                self.SetExitOnFrameDelete(False)
+                wx.Frame(None).Show()
+                self.SetExitOnFrameDelete(True)
+
+Parlare di ``OnExit`` ci porta naturalmente a parlare più nel dettaglio del processo di chiusura delle applicazioni wxPython... ma a questo argomento dedichiamo :ref:`una pagina separata <chiusuraapp>`. 
 
 
