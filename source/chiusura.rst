@@ -3,10 +3,10 @@
 .. highlight:: python
    :linenothreshold: 7
    
-Chiudere frame e applicazioni in wxPython.
-==========================================
+Chiudere i frame e gli altri widget.
+====================================
 
-Il momento della chiusura in wxPython è delicato. In questa pagina esaminiamo il processo di chiusura dei frame e dei dialoghi, e poi il processo di chiusura della ``wx.App``: cerchiamo di capire dove è possibile intervenire, come e quando si verifica una chiusura di emergenza. 
+Il momento della chiusura in wxPython è delicato. In questa pagina esaminiamo il processo di chiusura dei frame e dei dialoghi, e aggiungiamo qualche nota sulla chiusura dei widget in generale. Il discorso prosegue :ref:`in una pagina separata <chiusuraapp>` dove descriviamo il processo di chiusura della ``wx.App``. 
 
 Prima di procedere, un avvertimento. Dopo aver letto questo capitolo, avrete l'impressione che chiudere le cose, in wxPython, sia un procedimento tortuoso. Rispondo subito: è vero. 
 
@@ -20,9 +20,9 @@ La chiusura di una finestra.
 
 La chiusura di una "finestra" (un frame o un dialogo) succede (di solito!) in due modi:
 
-* perché l'utente fa clic sul pulsante di chiusura (quello con la X, per intenderci); 
+* perché l'utente fa clic sul pulsante di chiusura (quello con la X, per intenderci), o usa "Alt+F4" o altri equivalenti; 
 
-* perché voi chiamate ``Close()`` sul frame (di solito in seguito a qualche azione dell'utente che siete in grado di gestire: un menu, un pulsante "chiudi", etc.). 
+* perché voi chiamate ``Close()`` sul frame. 
 
 In entrambi i casi, si innesca un evento particolare, ``wx.EVT_CLOSE``, che segnala al sistema che la finestra sta per chiudersi. 
 
@@ -106,7 +106,6 @@ Ecco un esempio pratico::
                     self.do_child.SetLabel('crea un frame figlio')
                     self.child = None
 
-
     class MyChildFrame(wx.Frame):
         def __init__(self, *a, **k):
             wx.Frame.__init__(self, *a, **k)
@@ -119,176 +118,156 @@ Ecco un esempio pratico::
                 evt.Veto()
             else:
                 self.Destroy()
+            msg.Destroy()
                                     
                                     
     app = wx.App(False)
     MyTopFrame(None).Show()
     app.MainLoop()
 
-In questo esempio, il frame principale crea e poi cerca di chiudere (alla riga 15) un frame figlio. Il frame figlio però può decidere se chiudersi davvero, o rifiutare. Notate che, se decidiamo di non chiuderlo, chiamiamo ``Veto()`` (alla riga 30) in modo che ``Close()`` restituisca ``False``, e quindi il codice chiamante sappia come comportarsi (alle righe 15-18). 
+In questo esempio, il frame principale crea e poi cerca di chiudere (alla riga 15) un frame figlio. Il frame figlio però può decidere se chiudersi davvero, o rifiutare. Notate che, se decidiamo di non chiuderlo, chiamiamo ``Veto()`` (alla riga 29) in modo che ``Close()`` restituisca ``False``, e quindi il codice chiamante sappia come comportarsi (alle righe 15-18). 
 
-Non chiudere un frame e "vietare" l'evento *sono due cose indipendenti*: se vietate ma poi chiudete lo stesso, ``Close()`` restituisce comunque ``False``, anche se la chiusura in effeti c'è stata. E viceversa. Quindi sta a voi non fare pasticci. (Dite la verità, vi sembra un po' cervellotico... ve l'avevo detto). 
+Non chiudere un frame e "vietare" l'evento *sono due cose indipendenti*: se vietate ma poi chiudete lo stesso, ``Close()`` restituisce comunque ``False``, anche se la chiusura in effeti c'è stata. E viceversa. Quindi sta a voi non fare pasticci. 
+
+Dite la verità, vi sembra un po' cervellotico... ve l'avevo detto. E non è ancora finita. 
 
 
-Terminare la ``wx.App``: il modo normale.
------------------------------------------
+Ignorare il ``Veto()`` se si vuole chiudere lo stesso.
+------------------------------------------------------
 
-.. todo:: una pagina per le finestre top level, e le gerarchie parent, e 
-          molti riferimenti in questo capitolo.
-          
-La storia semplice è questa: quando il ``MainLoop`` percepisce che anche l'ultima finestra "top level" è stata chiusa, allora decide che il suo lavoro è terminato. Una volta usciti dal ``MainLoop``, c'è ancora l'opportunità di fare qualche operazione di pulizia nel ``wx.App.OnExit``, :ref:`come abbiamo già visto <wxapp_avanzata_onexit>`. Tuttavia non è più possibile, a questo punto, creare una nuova finestra e tenere in vita la ``wx.App``, il cui destino è ormai segnato. Terminato il ``wx.App.OnExit``, la nostra applicazione defunge definitivamente. Dentro il namespace del modulo Python resta ovviamente ancora un riferimento nel nome ``app`` (o quello che avete usato per istanziare la ``wx.App``), ma ormai non ha più alcuna utilità. 
+E non è ancora finita, dicevamo. Chiamare semplicemente ``Veto()`` su un evento di chiusura potrebbe non essere sicuro. Infatti, talvola l'evento *non ha il potere di "vietare" la chiusura della finestra*. 
 
-Questa è la storia semplice. Ma ovviamente avete ancora molti modi per complicarvi la vita. 
+Attenzione! Se chiamate ``Veto()`` alla cieca, e l'evento in realtà non può "vietare" un bel niente, wxPython solleva un'eccezione e tutto si pianta... 
 
-Per prima cosa, ricordiamo che la ``wx.App`` termina una volta che *tutte* le finestre top-level sono state chiuse, ovvero tutte le finestre che hanno ``parent=None``, come abbiamo già visto. Quindi fate attenzione a non lasciare qualche finestra top-level nascosta ma ancora viva. I casi tipici sono due: avete creato qualche dialogo top-level e non l'avete mai distrutto esplicitamente (ricordiamo che chiamare solo ``Close()`` su un dialogo lo nasconde, ma non lo distrugge). Oppure, avete creato la ``wx.App`` con l'opzione ``redirect=True``, e la finestra dello streaming output è ancora viva ma nascosta per qualche ragione (di solito perché, per tutta la durata della vostra applicazione, non c'è stato niente da scrivere sullo streaming!). In questi casi, l'utente chiude il frame "principale", ma la ``wx.App`` *non termina davvero*. Forse pensate che questo non è un grande problema: l'utente ha comunque finito di interagire con la gui, e prima o poi spegnerà il computer... Ma se invece riavvia e poi "chiude" un po' di volte il programma, ben presto si trova la memoria intasata dalle vostre istanze fantasma. 
-
-E c'è dell'altro: se avete scritto qualcosa nel ``wx.App.OnExit``, *non verrà mai eseguito*, perché non si esce mai dal ``MainLoop``. Inutile dire che, se questo codice comprende operazioni di assestamento dei dati nel database, o delle scritture nel log, queste non verranno eseguite, e la prossima volta che si aprirà il programma ci si troverà con dati inconsistenti. 
-
-Quindi fate sempre molta attenzione a non creare finestre top-level e poi lasciarle in giro senza sapere se ci sono ancora o no. Una strategia di emergenza è catturare il ``wx.EVT_CLOSE`` della finestra "principale" e, prima di distruggerla, verificare che non ci siano altre finestre top level ancora in vita (``wx.GetTopLevelWindows`` torna utile), ed eventualmente chiuderle. Anche in questo caso però fate attenzione perché non è detto che chiamare ``Close()`` basti a garantire la distruzione. La soluzione più brutale è chiamare direttamente ``Destroy()``, più o meno così::
-    
-    # nel callback dell'EVT_CLOSE della "finestra principale"
-    def on_close(self, evt): 
-        for window in wx.GetTopLevelWindows():
-            if window != self:  # lascio me stesso per ultimo...
-                window.Destroy()
-        self.Destroy()
-
-Questo funziona senz'altro, ma non è esente da altri rischi. Chiamare ``Destroy()`` sui dialoghi probabilmente va ancora bene: se sono ancora vivi e nascosti, vuol dire che ve ne siete semplicemente dimenticati, ma ormai non dovrebbero più avere nessuna funzione. Per i frame, d'altra parte, la situazione è più delicata. Forse prevedono del codice da eseguire in risposta a un ``EVT_CLOSE``, ma se chiamate ``Destroy()`` invece di ``Close()`` perderete quel passaggio. Questo potrebbe portare a inconsistenze di vario tipo. 
-
-Nel dubbio, vi tocca controllare se si tratta di frame o di dialoghi, e agire con prudenza. Ma come faccio a sapere se una finestra è un frame o un dialogo? Di colpo, siamo nel campo della magia nera di Python::
+Quindi la cosa giusta è verificare sempre se l'evento può "vietare", prima di chiamare ``Veto()``. La verifica può essere fatta chiamando ``CanVeto()`` sull'evento stesso. Ecco come deve essere modificato il callback dell'esempio precedente::
 
     def on_close(self, evt):
-        ok_to_close = True
-        for window in wx.GetTopLevelWindows():
-            if window != self: 
-                if wx._windows.Frame in window.__class__.__mro__:
-                    # e' un frame, proviamo a chiuderlo gentilmente
-                    ret = window.Close()
-                    if not ret:
-                        # evidentemente non vuole chiudersi!
-                        ok_to_close = False
-                        break
-                else:
-                    # questo e' un dialogo: distruggiamolo senza pieta'
-                    window.Destroy()
-        if ok_to_close:
+        if evt.CanVeto():
+            msg = wx.MessageDialog(self, 'Sei proprio sicuro?', 'Uscita', 
+                                   wx.ICON_QUESTION|wx.YES_NO)
+            if msg.ShowModal() == wx.ID_NO:
+                evt.Veto()
+            else:
+                self.Destroy()
+            msg.Destroy()
+        else: # se non possiamo vietare, dobbiamo distruggere per forza...
             self.Destroy()
-        else:
-            # c'e' in giro almeno una finestra che non vuole chiudersi
-            wx.MessageBox('Non posso chiudermi!')
-            evt.Veto()
-            return
-            
-Come vedete (riga 5), siamo piombati nel difficile, molto difficile. E non è detto che funzioni: per esempio, se una delle finestre rifiuta di chiudersi, ma si "dimentica" di comunicare il suo ``Veto()``, allora ``window.Close()`` (riga 7) restituirà ``True``, e noi crederemo di averla chiusa quando invece è ancora in giro. Ci tocca aggiungere altri test per essere davvero sicuri... 
 
-Ovviamente non sono ipotesi frequenti. Devo dire però di non aver mai usato, in pratica, un metodo come questo per accertarmi che tutte le finestre top-level siano chiuse al momento di uscire dall'applicazione. E francamente vi sconsiglio di provarci. 
+Uhm... in verità l'annotazione della riga 10 non è del tutto corretta. Anche se non possiamo "vietare" l'evento, possiamo sempre scegliere di non distruggere la finestra, e fare qualcos'altro. Ma questa sarebbe proprio una cosa da non fare. Primo perché ovviamente, se non distruggiamo mai in risposta a un ``wx.EVT_CLOSE``, la nostra finestra non si chiuderà mai (a meno di non distruggerla esplicitamente chiamando ``Destroy()`` anziché ``Close()``). Secondo, perché se non chiamiamo ``Veto()`` (perché non possiamo) e non distruggiamo neppure la finestra, la chiamata a ``Close()`` restituirà comunque ``True`` (perché l'evento non è stato "vietato"), *anche se la finestra non è stata davvero chiusa*. Quindi il codice chiamante potrebbe avere problemi a regolarsi. 
 
-**La soluzione corretta** è invece *tenere sempre traccia* di tutte le finestre che aprite, soprattutto quelle top-level, e di accertarvi sempre di chiuderle appena non servono più. In questo modo, quando arriva il momento di chiudere anche l'ultima finestra principale, siete sicuri che anche la ``wx.App`` terminerà la sua vita in modo onesto e dignitoso. 
+Resta solo una domanda: in quali casi un evento potrebbe non avere il potere di ``Veto``? 
+
+Ebbene, le cose stanno così: di solito un ``wx.CLOSE_EVENT`` ha il potere di ``Veto``. Questo, per esempio, accade quando l'evento si innesca in seguito al clic sul pulsante di chiusura, alla combinazione "Alt+F4" nei sistemi Windows, etc. oppure quando voi chiamate ``Close()`` su una finestra. 
+
+Tuttavia, se voi chiamate ``Close`` con l'opzione ``Close(force=True)``, allora il ``wx.EVT_CLOSE`` che si genera *non ha il potere di "vietare"* un bel niente (più precisamente, restituisce ``False`` quando testate per ``CanVeto()``). 
+
+Questo, come vedete, può essere un bel problema per il codice che gestisce la chiusura: non potete sapere se sarà eseguito in seguito a una chiamata ``Close()`` o a una chiamata ``Close(True)``. Per questo, l'unica soluzione è appunto *testare sempre* se l'evento ``CanVeto()`` prima di chiamare eventualmente il ``Veto()``. 
 
 
-Come mantenere in vita la ``wx.App``.
--------------------------------------
+Essere sicuri che una finestra si chiuda davvero.
+-------------------------------------------------
 
-Ma c'è ancora dell'altro da sapere. Potrebbe capitarvi di *non* volere che la ``wx.App`` termini, ma che il suo ``MainLoop`` resti attivo anche dopo che l'ultima finestra è stata chiusa. (Dopo tutta la fatica che abbiamo fatto nel paragrafo precedente per assicurarci che la ``wx.App`` muoia davvero, sembra una beffa. Ma può succedere.) 
+Ancora una precisazione. L'opzione ``force=True`` del metodo ``Close`` è un pochino ingannevole. Non significa affatto, di per sé, che la chiusura della finestra verrà forzata e quindi garantita in ogni caso. Vuol dire solo che l'evento non avrà il potere di "vietare" la chiusura. Ma, come abbiamo visto, se voi intercettate l'evento e nel callback finite per non chiudere la finestra, ebbene la finestra resterà viva anche in seguito a un ``Close(force=True)``. 
 
-Per fare questo, vi basta chiamare ``SetExitOnFrameDelete(False)`` sulla ``wx.App``. Potete farlo proprio all'inizio, in ``OnInit``::
+Ovviamente scrivere un callback che non chiude la finestra, nonostante l'evento non abbia il potere di ``Veto``, deve essere considerato una cattiva pratica, se non un errore di programmazione vero e proprio. Ma wxPython non ha modo di rilevare una cosa del genere a runtime, e voi non potete sapere se state chiamando ``Close`` su una finestra con un callback scritto male (da qualcun altro, ovviamente!). 
 
-    class MyApp(wx.App):
-        def OnInit(self):
-            self.SetExitOnFrameDelete(False)
-            return True
-            
-Oppure potete farlo successivamente, in un momento qualunque della vita del vostro programma, da dentro un frame qualsiasi::
+In definitiva, l'unico modo per essere certi che una finestra si chiuda davvero è chiamare direttamente ``Destroy()``, ma così facendo vi perdete l'eventuale gestione dell'evento di chiusura. In generale, non lo consiglio.
 
-    wx.GetApp().SetExitOnFrameDelete(False)
-    
-Potete farlo perfino, proprio all'ultimo, intercettando il ``wx.EVT_CLOSE`` dell'ultima finestra principale che sta per chiudersi. L'unico momento in cui ormai è troppo tardi è nel ``wx.App.OnExit``. 
+Questo lascia aperto il problema: come faccio a sapere se una finestra è stata davvero distrutta?
 
-Con questa opzione, il ``MainLoop`` non termina quando l'ultima finesta muore. A questo punto, se volete, potete andare avanti creando delle nuove finestre top-level. Ecco una possibile strategia::
+Ebbene, dopo che avete chiamato ``Close()`` (magari con l'aggiunta di ``force=True``), l'unico modo di sapere se la finestra è stata davvero distrutta, è... chiamarla, ovviamente! Sul "lato Python" di wxPython, il riferimento all'oggetto resterà ancora nel namespace corrente. Ma sul "lato C++" di wxWidgets, quando una finestra è distrutta, semplicemente smetterà di funzionare. Quindi una chiamata successiva a un metodo qualsiasi dovrebbe sollevare un'eccezione ``PyDeadObjectError``, che voi opportunamente intrappolerete in un ``try/except``. Per andare sul sicuro, scegliete un metodo che ogni widget deve avere per forza, per esempio ``GetId``. Qualcosa come::
+                                        
+    try:
+        my_widget.GetId()
+    except PyDeadObjectError:
+        # siamo sicuri che e' davvero morto
+                                        
+Ma ci sarebbe ancora un problema (ve lo aspettavate, dite la verità). Quando chiamate ``Close`` o addirittura ``Destroy``, questo impegna wxPython a distruggere la finestra... *appena possibile*, ma non necessariamente subito. Di sicuro la distruzione avverrà entro il prossimo ciclo del ``MainLoop``, ma se chiamate ``GetId`` su un frame *immediatamente dopo* averlo distrutto, la chiamata per il momento andrà ancora a segno. 
 
-    class MyApp(wx.App):
-        def OnInit(self):
-            self.SetExitOnFrameDelete(False)
-            self.Bind(wx.EVT_IDLE, self.create_new_toplevel)
-            wx.Frame(None, title='PRIMA GENERAZIONE').Show()
-            return True
-        
-        def create_new_toplevel(self, evt):
-            if not wx.GetTopLevelWindows():
-                wx.Frame(None, title='SECONDA GENERAZIONE!!').Show()
-                # dopo questa volta pero' basta...
-                self.SetExitOnFrameDelete(True)
-                            
-    app = MyApp(False)
-    app.MainLoop()
+Provate questo codice, per esempio::
 
-La procedura è chiara: all'inizio (riga 3) settiamo il flag a ``False``, e quindi creiamo e mostriamo il primo frame top-level. Tuttavia (riga 4) chiediamo anche alla ``wx.App`` di eseguire a ripetizione il metodo ``create_new_toplevel`` nei momenti liberi del ``MainLoop``. Questo metodo controlla se non sono più rimaste vive finestre top level (riga 9), e in questo caso crea e mostra una "seconda generazione" di finestre. Contestualmente (riga 12) riportiamo il flag a ``True``, in modo che alla prossima chiusura il ``MainLoop`` questa volta termini davvero. 
-
-Ecco un altro possibile approccio::
-
-    class MyFrame(wx.Frame):
+    class MyTopFrame(wx.Frame):
         def __init__(self, *a, **k):
             wx.Frame.__init__(self, *a, **k)
+            kill = wx.Button(self, -1, 'uccidi il figlio', pos=(10, 10))
+            kill.Bind(wx.EVT_BUTTON, self.on_kill)
+            autopsy = wx.Button(self, -1, "verifica se e' morto", pos=(10, 50))
+            autopsy.Bind(wx.EVT_BUTTON, self.on_autopsy)
+            
+            self.child = wx.Frame(self, -1, 'FRAME FIGLIO')
+            self.child.Show()
+            
+        def on_kill(self, evt):
+            self.child.Destroy() # andiamo sul sicuro...
+            self.child.GetId()
+            
+        def on_autopsy(self, evt):
+            self.child.GetId()
+        
+    app = wx.App(False)
+    MyTopFrame(None, size=(150, 150)).Show()
+    app.MainLoop()
+
+Sorprendentemente, la chiamata della riga 14 andrà ancora a segno, anche se avete appena distrutto il frame. Se invece, dopo aver distrutto il frame, premete il pulsante "verifica", la chiamata della riga 17 solleverà il tanto sospirato ``PyDeadObjectError``. 
+
+In definitiva, non c'è modo di sapere esattamente *quando* un widget verrà distrutto. Tuttavia, dopo un ragionevole intervallo di tempo, è molto facile capire *se* è stato distrutto. 
+
+
+Distruggere un singolo widget.
+------------------------------
+
+Praticamente tutti i widget in wxPython hanno un metodo ``Close`` e un metodo ``Destroy``. Se volete distruggere un pulsante, per esempio, potete regolarvi come abbiamo visto sopra. 
+
+In genere preferite chiamare direttamente ``Destroy``, perché non avete bisogno di catturare il ``wx.EVT_CLOSE`` di un widget qualsiasi. Tuttavia, nessuno vi vieta di sottoclassare un widget, e prescrivere un comportamento particolare da tenere quando qualcuno cerca di chiuderlo. 
+
+Tuttavia, è raro distruggere un singolo widget. In genere si preferisce disabilitarlo, al limite nasconderlo: distruggerlo lascia un "buco" nel layout sottostante, che bisogna riaggiustare. 
+
+Un caso limite sono i ``Panel``, ovviamente. Questi contenitori sono "quasi" dei frame, e quindi talvolta potrebbe aver senso distruggerli, e perfino gestire qualche raffinatezza con ``Close``. Personalmente, io consiglio di non distruggere mai neppure i ``Panel``. Ovviamente, se distruggete un ``Panel`` (o un altro widget qualsiasi) anche tutti i suoi "figli" verranno spazzati via. 
+
+Ecco un esempio di ``Panel`` "schizzinoso" che potrebbe opporsi alla sua distruzione::
+
+    class MyPanel(wx.Panel):
+        def __init__(self, *a, **k):
+            wx.Panel.__init__(self, *a, **k)
+            self.SetBackgroundColour(wx.RED) # per distinguerlo...
             self.Bind(wx.EVT_CLOSE, self.on_close)
 
         def on_close(self, evt):
-            wx.CallLater(1, wx.GetApp().create_new_toplevel)
-            self.Destroy()
-                
-    class MyApp(wx.App):
-        def OnInit(self):
-            self.SetExitOnFrameDelete(False)
-            MyFrame(None, title='PRIMA GENERAZIONE').Show()
-            return True
-        
-        def create_new_toplevel(self):
-            MyFrame(None, title='SECONDA GENERAZIONE!!').Show()
-            self.SetExitOnFrameDelete(True)
-        
-    app = MyApp(False)
-    app.MainLoop()
+            msg = wx.MessageDialog(self, 'Sei proprio sicuro?', 'Distruggi Panel', 
+                                   wx.ICON_QUESTION|wx.YES_NO)
+            if msg.ShowModal() == wx.ID_NO:
+                evt.Veto()
+            else:
+                self.Destroy()
+            msg.Destroy()
 
-Qui invece è l'ultima finestra top-level che, al momento della sua chiusura (riga 7) utilizza ``wx.CallLater`` per chiedere alla ``wx.App`` di creare una "seconda generazione" di frame immediatamente dopo la sua morte. 
-
-Notate l'utilizzo di ``wx.CallLater``, che aspetta un certo periodo (in questo caso, 1 ms, il minimo possibile) e poi chiama una funzione. Lo abbiamo scelto perché non tiene impegnato il ``MainLoop``, e quindi ci serve a dimostrare che il ``MainLoop`` resta vivo comunque, per ragioni sue (ossia, perché abbiamo settato il flag a ``False``). 
-
-Avremmo potuto invece usare ``wx.CallAfter``, che è "quasi uguale", nel senso che chiama una data funzione dopo che tutti i gestori degli eventi correnti sono stati processati. Il punto però è che ``wx.CallAfter`` aggiunge la sua funzione in coda ai compiti del ``MainLoop``, e quindi lo tiene impegnato almeno fino a quel momento. E siccome nel nostro caso la funzione chiamata è ``create_new_toplevel`` che appunto crea una nuova finestra top-level, in sostanza il ``MainLoop`` non ha mai modo di terminare, indipendentemente da come è stato settato il flag ``SetExitOnFrameDelete``. 
-
-Provate a sostituire la riga 7 dell'esempio precedente con::
-
-    wx.CallAfter(wx.GetApp().create_new_toplevel)
-
-Quando si distrugge la "prima generazione" compare la seconda, come previsto. Ma quando provate a distruggere anche questa, la ``wx.App`` non termina come prima, anche se il flag è ormai settato a ``True``. Invece, ogni volta appare una nuova "seconda generazione", all'infinito. Questo perché ``wx.CallAfter`` tiene in vita il ``MainLoop`` fino al momento di chiamare ``create_new_toplevel``, dove però si crea una nuova finestra top-level, e quindi il ``MainLoop`` trova un'altra ragione per proseguire la sua attività, e così all'infinito. 
-
-In altri termini ``wx.CallAfter``, usato così, potrebbe essere un'altra strada per non far terminare il ``MainLoop``, senza dover usare ``SetExitOnFrameDelete``. L'esempio di sopra potrebbe essere scritto anche così:
-
-    class MyFrame(wx.Frame):
+    class TopFrame(wx.Frame):
         def __init__(self, *a, **k):
             wx.Frame.__init__(self, *a, **k)
-            self.Bind(wx.EVT_CLOSE, self.on_close)
+            p = wx.Panel(self)
+            b = wx.Button(p, -1, 'distruggi panel')
+            b.Bind(wx.EVT_BUTTON, self.on_clic)
+            self.b = b
+            
+            self.mypanel = MyPanel(p)
+            s = wx.BoxSizer(wx.VERTICAL)
+            s.Add(wx.TextCtrl(self.mypanel, -1, 'figlio di MyPanel'), 
+                  0, wx.EXPAND|wx.ALL, 15)
+            self.mypanel.SetSizer(s)
+            
+            s = wx.BoxSizer(wx.VERTICAL)
+            s.Add(self.mypanel, 1, wx.EXPAND)
+            s.Add(b, 0, wx.EXPAND|wx.ALL, 5)
+            p.SetSizer(s)
+            
+        def on_clic(self, evt):
+            ret = self.mypanel.Close()
+            if ret:
+                pass # etc. etc.
 
-        def on_close(self, evt):
-            wx.CallAfter(wx.GetApp().create_new_toplevel)
-            self.Destroy()
-                
-    class MyApp(wx.App):
-        def OnInit(self):
-            MyFrame(None, title='PRIMA GENERAZIONE').Show()
-            return True
-        
-        def create_new_toplevel(self):
-            MyFrame(None, title='SECONDA GENERAZIONE!!').Show()
-        
-    app = MyApp(False)
+    app = wx.App(False)
+    TopFrame(None).Show()
     app.MainLoop()
 
-Naturalmente questo lascia aperto il problema di capire come terminare, a un certo punto, la ``wx.App``. Ma non è un problema enorme. Si potrebbe aggiungere un test nel gestore ``on_close``, in modo da chiamare ``wx.CallAfter`` una volta sola. Oppure si potrebbe chiamare ``wx.Exit()``... 
-
-Ma questo è appunto l'argomento del prossimo paragrafo.
-
-
-Altri modi di terminare la ``wx.App``.
---------------------------------------
-
-sdfdfsdgf
+Come si vede, se il ``Panel`` si chiude davvero, resta un buco. Alla riga 38, bisognerà fare qualcosa: riempire il buco, riaggustare il layout, etc. 
 
