@@ -8,14 +8,13 @@ Appunti wxPython
 
 .. toctree::
    :numbered:
-   :maxdepth: 2
+   :maxdepth: 3
    
    intro
    documentarsi
-   wxapp_basi
-   wxapp_avanzata
-   chiusura
-
+   base_index
+   intermedio_index
+   
 Indices and tables
 ==================
 
