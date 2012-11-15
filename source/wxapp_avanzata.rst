@@ -1,5 +1,9 @@
 .. _wxapp_avanzata:
 
+.. index::
+   single: wx; App()
+   single: wx.App; MainLoop()
+   
 ``wx.App``: concetti avanzati.
 ==============================
 
@@ -9,7 +13,9 @@ In sostanza, si tratta di creare la ``wx.App``, creare e mostrare il frame princ
 
 Questo in genere è più che sufficiente per i casi più semplici. Tuttavia, per le applicazioni un po' più complesse, potreste volere qualche tipo di controllo in più su questo processo di avviamento. 
 
-
+.. index::
+   single: wx.App; OnInit()
+   
 ``wx.App.OnInit``: il bootstrap della vostra applicazione.
 ----------------------------------------------------------
 
@@ -114,6 +120,9 @@ Infine, una piccola eleganza: avete notato che quando chiudiamo ``MyLoginDialog`
 
 .. _wxapp_avanzata_onexit:
 
+.. index::
+   single: wx.App; OnExit()
+   
 ``wx.App.OnExit``: gestire le operazioni di chiusura.
 -----------------------------------------------------
 

@@ -5,7 +5,9 @@ wxPython è un framework vasto e complesso, e soprattutto all'inizio può disori
 
 Il problema con tutti questi materiali, ovviamente, è che sono in inglese. Non esiste nulla in italiano... il che sarebbe poi la ragione dell'esistenza di questi appunti. Tuttavia non potete prescindere da un po' di fatica linguistica, se volete fare qualche progresso con wxPython (e con Python, e con la programmazione in generale). 
 
-
+.. index:: 
+   single: demo di wxPython
+   
 La demo.
 --------
 
@@ -29,7 +31,9 @@ Scaricando il pacchetto della demo, installate anche alcune piccole applicazioni
 
 Molto utili sono anche gli snippet raccolti in ``.../wxPython2.8 Docs and Demos/wxPython/samples/wxPIA_book``. Questi sono esempi tratti dal libro `WxPython in Action <http://www.manning.com/rappin/>`_. L'unico problema di questi esempi è che, essendo tratti dal libro, sono organizzati secondo i capitoli, ed è un po' noioso provarli tutti per vedere cosa fanno.
 
-
+.. index::
+   single: documentazione
+   
 La documentazione wxPython.
 ---------------------------
 
@@ -43,21 +47,25 @@ La documentazione wxWidget.
 ---------------------------
 
 Come ormai dovreste sapere, wxPython è il porting per Python del framework C++ wxWidgets. La documentazione delle API di wxWidgets è molto completa e ricca, ed è compresa nel pacchetto della demo, per cui la trovate installata in 
-``.../wxPython2.8 Docs and Demos/docs``. In alternativa, potete consultare la versione on line `qui <http://docs.wxwidgets.org/stable/>`_. 
+``.../wxPython2.8 Docs and Demos/docs``. In alternativa, potete consultare `la versione on line qui <http://docs.wxwidgets.org/stable/>`_. 
 
 Naturalmente, il problema qui è che tutta la sintassi, gli esempi, le convenzioni tipografiche etc., si riferiscono al mondo C++. Non è troppo difficile, con un po' di allenamento, tradurre al volo nel nostro linguaggio preferito; tuttavia non è neppure proprio facilissimo. 
 
 Tuttavia la documentazione wxWidgets resta in certi casi l'ultima risorsa. Tra l'altro, al suo interno si trovano anche delle note specifiche per wxPython (e wxPerl!), nei punti in cui le API differiscono. 
 
-
+.. index::
+   single: EventsinStyle
+   
 Events in Style!
 ----------------
 
-"Events in Style" è un modulo del sempre geniale Andrea Gavana (disponibile `qui <http://xoomer.virgilio.it/infinity77/Zipped/EventsInStyle.py>`_, semplicemente salvate la pagina). E' una piccola gui che punta alla documentazione online (va usato con una connessione internet) e scarica la parte relativa agli eventi e agli stili (da cui il nome!) disponibili per ciascun widget. 
+"Events in Style" è un modulo del sempre geniale Andrea Gavana (disponibile `alla pagina <http://xoomer.virgilio.it/infinity77/Zipped/EventsInStyle.py>`_, semplicemente salvate la pagina). E' una piccola gui che punta alla documentazione online (va usato con una connessione internet) e scarica la parte relativa agli eventi e agli stili (da cui il nome!) disponibili per ciascun widget. 
 
 E' uno strumento molto comodo per farsi un'idea veloce di due aspetti (eventi e stili, appunto) che di solito nessuno riesce mai a ricordarsi. 
 
-
+.. index::
+   single: libri
+   
 Libri wxPython.
 ---------------
 
@@ -67,7 +75,9 @@ Ce ne sono due che valgono la pena:
 
 * `wxPython 2.8 Application Development Cookbook <http://www.packtpub.com/wxpython-2-8-application-development-cookbook/book>`_ di Cody Precord (l'autore dell'IDE Editra, vedi sotto), è un manuale più avanzato, che offre anche esempi di buone pratiche di programmazione. Leggetelo solo se avete già un'idea di base di come funziona wxPython. Altrimenti può essere disorientante. 
 
-
+.. index::
+   single: wiki
+   
 Siti wxPython.
 --------------
 
@@ -79,7 +89,9 @@ Il problema qui è che wxPython è un framework *anziano* e *popolare*, il che s
 
 Per dovere di cronaca, devo citare almeno il `wiki ufficiale <http://wiki.wxpython.org/>`_, che però è poco sistematico, e talvolta presenta ancora degli esempi superati. Tuttavia, molte pagine sono invece assolutamente ben scritte e aggiornate. 
 
-
+.. index::
+   single: Editra
+   
 Un buon editor.
 ---------------
 

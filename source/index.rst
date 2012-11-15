@@ -17,10 +17,7 @@ Appunti wxPython
    intermedio_index
    todolist
    
-Indices and tables
-==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
 

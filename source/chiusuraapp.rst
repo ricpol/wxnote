@@ -3,6 +3,15 @@
 .. highlight:: python
    :linenothreshold: 7
 
+.. index::
+   single: wx; App()
+   single: wx.App; MainLoop()
+   single: wx.App; OnExit()
+   single: wx.Window; Close()
+   single: wx; EVT_CLOSE
+   single: chiusura; di una wx.App
+   single: wx.App; chiusura
+   
 Terminare la ``wx.App``.
 ========================
 
@@ -61,7 +70,11 @@ Ovviamente non sono ipotesi frequenti. Devo dire però di non aver mai usato, in
 
 **La soluzione corretta** è invece *tenere sempre traccia* di tutte le finestre che aprite, soprattutto quelle top-level, e di accertarvi sempre di chiuderle appena non servono più. In questo modo, quando arriva il momento di chiudere anche l'ultima finestra principale, siete sicuri che anche la ``wx.App`` terminerà la sua vita in modo onesto e dignitoso. 
 
-
+.. index::
+   single: wx.App; SetExitOnFrameDelete()
+   single: wx; CallLater()
+   single: wx; CallAfter()
+   
 Come mantenere in vita la ``wx.App``.
 -------------------------------------
 
@@ -162,6 +175,9 @@ Naturalmente questo lascia aperto il problema di capire come terminare, a un cer
 
 Ma questo è appunto l'argomento del prossimo paragrafo.
 
+.. index::
+   single: wx; Exit()
+   single: wx.App; ExitMainLoop()
 
 Altri modi di terminare la ``wx.App``.
 --------------------------------------

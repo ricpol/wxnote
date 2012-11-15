@@ -3,6 +3,10 @@
 
 .. _wxapp_basi:
 
+.. index:: 
+   single: wx; App()
+   single: wx.App; MainLoop()
+   
 ``wx.App``: le basi da sapere.
 ==============================
 

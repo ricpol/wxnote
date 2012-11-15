@@ -3,6 +3,9 @@
 .. highlight:: python
    :linenothreshold: 12
 
+.. index::
+   single: id in wxPython
+   
 Gli Id in wxPython.
 ===================
 
@@ -16,6 +19,11 @@ Quindi gli Id ci sono, e ci saranno sempre. wxPython potrebbe decidere di nascon
 
 In questa pagina diamo uno sguardo alle cose fondamentali da sapere sugli Id, e poi vedremo qualche raro caso in cui possono ancora tornare comodi. 
 
+.. index::
+   single: wx; ID_ANY
+   single: wx; NewId()
+   single: wx; ID_LOWEST
+   single: wx; ID_HIGHEST
 
 Assegnare gli Id.
 -----------------
@@ -50,6 +58,10 @@ Tuttavia, questo è uno scrupolo inutile nella maggior parte dei casi. In genere
 
 Terzo, tenete conto che, tecnicamente, gli Id dovrebbero essere univoci *nello stesso frame*, ma tra diversi frame è permesso duplicarli. Ovviamente il consiglio è cercare comunque di mantenere Id univoci in tutta l'applicazione. Confesso di non aver mai perso troppo tempo a controllare come si comporta wxPython con gli Id che genera lui: se ricomincia la numerazione o ogni nuovo frame, se si sente libero di riciclare gli Id quando distruggete un frame, e così via. 
 
+.. index::
+   single: wx.Window; GetId()
+   single: wx.Window; SetId()
+   single: wx; FindWindowById()
 
 Lavorare con gli Id.
 --------------------
@@ -70,6 +82,8 @@ Quando gli Id possono tornare utili.
 
 Anche in wxPython, ci sono occasioni in cui lavorare direttamente con gli Id è comodo, o addirittura ancora necessario. Vediamone alcune tipiche, senza pretese di completezza. 
 
+.. index::
+   single: stock buttons
 
 StockButtons.
 ^^^^^^^^^^^^^
@@ -80,15 +94,21 @@ Voi potete scegliere di non usare gli Id, ma wxWidgets li usa eccome. Ci sono mo
     
 produrrà un pulsante "copia", e così via. 
 
-
+.. index::
+   single: wx; MessageDialog()
+   single: wx; ID_YES
+   single: wx; ID_NO
+   single: wx; Dialog()
+   single: dialoghi; con risposte predefinite
+   
 Dialoghi con risposte predefinite.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Un altro uso tipico degli Id predefiniti avviene nei dialoghi. Ci sono molti dialoghi "standard" che non avete bisogno di disegnare nel dettaglio; potete però impostarli perché abbiano certi pulsanti predefiniti. A seconda dei pulsanti che inserite, il dialogo restituisce alla chiusura l'Id (predefinito) del pulsante premuto, come risultato del metodo ``Show()`` o ``ShowModal``: questo vi consente di conoscere la sua decisione, e regolarvi di conseguenza. Per esempio::
 
-    msg = wx.MessageBox(None, -1, 'Vuoi il gelato?', 'Decisioni...',
-                        # questo determina 3 pulsanti: si', no, annulla:
-                        style = wx.YES|wx.NO|wx.CANCEL) 
+    msg = wx.MessageDialog(None, -1, 'Vuoi il gelato?', 'Decisioni...',
+                           # questo determina 3 pulsanti: si', no, annulla:
+                           style = wx.YES|wx.NO|wx.CANCEL) 
     retcode = msg.ShowModal()
     if retcode == wx.ID_YES:   # ha premuto si'
         ...
@@ -100,6 +120,11 @@ Un altro uso tipico degli Id predefiniti avviene nei dialoghi. Ci sono molti dia
     
 Ovviamente l'uso di questi dialoghi (oltre a ``wx.MessageBox`` ne esistono altri simili: cercate "Dialog" nella demo per avere un'idea) è possibile solo quando sapete dell'esistenza dei vari Id predefiniti. Ci sono ``wx.ID_OK``, ``wx.ID_CANCEL``, ``wx.ID_ABORT``, ``wx.ID_YES``, ``wx.ID_NO`` e altri ancora, che corrispondono alle scelte ``wx.OK``, ``wx.CANCEL``, ``wx.ABORT``, ``wx.YES``, ``wx.NO`` (e la combinazione ``wx.YES_NO``) del parametro ``style`` del dialogo. 
 
+.. index::
+   single: wx; ID_OK
+   single: wx; ID_CANCEL
+   single: wx; Dialog()
+   single: dialoghi; con pulsanti predefiniti
 
 Dialoghi personalizzati con pulsanti predefiniti.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -149,7 +174,12 @@ Notate che non abbiamo bisogno di collegare esplicitamente i nostri due pulsanti
 
 Ovviamente questo funziona solo per il pulsanti con Id "predefiniti": se aggiungete un terzo pulsante con un Id qualsiasi, per farlo funzionare dovrete collegarlo normalmente a un evento. 
 
-
+.. index::
+   single: wx; Dialog()
+   single: dialoghi; con validazione automatica
+   single: wx; PyValidator()
+   single: validatori; validazione automatica
+   
 Validatori.
 ^^^^^^^^^^^
 
@@ -180,7 +210,12 @@ e poi modificate la creazione di ``self.flavor`` aggiungendo il validatore::
 
 Come vedete, adesso quando premete il pulsante contrassegnato con ``wx.ID_OK``, ottenete gratis una validazione del dialogo. 
 
-
+.. index::
+   single: menu; uso degli id
+   single: wx; EVT_MENU
+   single: wx; EVT_MENU_RANGE
+   single: lambda-binding
+   
 Menu.
 ^^^^^
 
