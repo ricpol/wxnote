@@ -90,6 +90,5 @@ Quindi, per "ingranare" la nostra applicazione, bastano di solito le tre righe m
 
 Ci sono però ancora parecchie cose da sapere sulla ``wx.App``: ma sono :ref:`argomenti più avanzati <wxapp_avanzata>` che per il momento non vi servono. 
 
-Per completare il quadro, abbiamo detto: si esce dal ``MainLoop`` quando l'ultimo elemento della gui viene distrutto. Dovremmo specificare meglio: quando l'ultima finestra "top level" viene chiusa e distrutta. Ma per questo bisogna prima spiegare meglio il concetto di "top level frame", e, più in generale, della catena dei "parent". Dedichiamo a questo argomento :ref:`una pagina separata <wxapp_avanzata>`. 
+Per completare il quadro, abbiamo detto: si esce dal ``MainLoop`` quando l'ultimo elemento della gui viene distrutto. Dovremmo specificare meglio: quando l'ultima finestra "top level" viene chiusa e distrutta. Ma per questo bisogna prima spiegare meglio il concetto di "top level frame", e, più in generale, della catena dei "parent". Dedichiamo a questo argomento :ref:`una pagina separata <catenaparent>`. 
 
-.. todo:: una pagina per top level frame, catena dei parent

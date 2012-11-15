@@ -71,6 +71,7 @@ Le catene dei "parent" possono essere lunghe e complicate. wxPython mette a disp
 
 * ``GetChildren``, chiamato su un genitore, restituisce l'elenco di tutti i suoi figli (solo i figli diretti: ma potete chiamare ricorsivamente ``GetChildren`` per ricostruire tutta la discendenza di un widget, per esempio). 
 
+.. _finestre_toplevel:
 
 Le finestre top-level.
 ----------------------
