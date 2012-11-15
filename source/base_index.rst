@@ -7,3 +7,5 @@ Appunti wxPython - livello base
 
    wxapp_basi
    catenaparent
+   id
+   
