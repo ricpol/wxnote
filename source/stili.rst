@@ -118,9 +118,7 @@ Gli extra-style in genere hanno scopi abbastanza esotici, e servono di rado. Alc
 
 .. todo:: una pagina sui validatori.
 
-* ``wx.WS_EX_BLOCK_EVENTS`` dice alla finestra di bloccare la propagazione degli eventi che partono dai suoi figli. Gli eventi arrivano fin qui, ma poi non si propagano oltre. Notare che i ``wx.Dialog`` hanno questo flag settato per default. 
-
-.. todo:: una pagina sulla differenza frame/dialog con un rimando qui
+* ``wx.WS_EX_BLOCK_EVENTS`` dice alla finestra di bloccare la propagazione degli eventi che partono dai suoi figli. Gli eventi arrivano fin qui, ma poi non si propagano oltre. Notare che i ``wx.Dialog``, :ref:`a differenza dei frame <wxdialog>`, hanno questo flag settato per default. 
 
 * ``wx.WS_EX_CONTEXTHELP``, ``wx.DIALOG_EX_CONTEXTHELP``, ``wx.FRAME_EX_CONTEXTHELP`` aggiungono il pulsante della guida rapida alla barra del titolo della finestra. 
 

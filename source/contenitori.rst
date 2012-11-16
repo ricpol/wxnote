@@ -131,7 +131,9 @@ In conclusione, i panel sono un ottimo strumento per organizzare i widget, sia p
    single: dialoghi; con validazione automatica
    single: dialoghi; chiusura
    single: chiusura; di un dialogo
-   
+
+.. _wxdialog:
+
 ``wx.Dialog``.
 --------------
 
