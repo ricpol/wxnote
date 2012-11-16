@@ -1,3 +1,5 @@
+.. _documentarsi:
+
 Documentazione wxPython.
 ========================
 
@@ -53,9 +55,11 @@ Naturalmente, il problema qui è che tutta la sintassi, gli esempi, le convenzio
 
 Tuttavia la documentazione wxWidgets resta in certi casi l'ultima risorsa. Tra l'altro, al suo interno si trovano anche delle note specifiche per wxPython (e wxPerl!), nei punti in cui le API differiscono. 
 
+.. _EventsinStyle:
+
 .. index::
    single: EventsinStyle
-   
+
 Events in Style!
 ----------------
 
