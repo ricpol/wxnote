@@ -7,6 +7,7 @@ Appunti wxPython - livello base
 
    wxapp_basi
    catenaparent
+   contenitori
    id
    stili
    

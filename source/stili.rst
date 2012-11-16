@@ -90,6 +90,7 @@ Tuttavia non è un'operazione da fare a cuor leggero. A seconda dei widget e deg
 
 In ogni caso, è molto probabile che dobbiate chiamare ``Refresh()`` sul widget, per vedere gli effetti delle modifiche. 
 
+.. _extrastyle:
 
 .. index:: 
    single: stili; extra-style

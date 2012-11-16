@@ -126,6 +126,8 @@ Ovviamente l'uso di questi dialoghi (oltre a ``wx.MessageBox`` ne esistono altri
    single: wx; Dialog()
    single: dialoghi; con pulsanti predefiniti
 
+.. _idpredefiniti: 
+
 Dialoghi personalizzati con pulsanti predefiniti.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -179,7 +181,9 @@ Ovviamente questo funziona solo per il pulsanti con Id "predefiniti": se aggiung
    single: dialoghi; con validazione automatica
    single: wx; PyValidator()
    single: validatori; validazione automatica
-   
+
+.. _validazione_automatica:
+
 Validatori.
 ^^^^^^^^^^^
 
