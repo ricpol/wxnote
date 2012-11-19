@@ -187,9 +187,7 @@ Ovviamente questo funziona solo per il pulsanti con Id "predefiniti": se aggiung
 Validatori.
 ^^^^^^^^^^^
 
-Ai validatori bisognerà dedicare una sezione apposta, ma qui basta un appunto per ricordare un altro vantaggio dell'Id predefinito ``wx.ID_OK``. Se nel vostro dialogo inserite un pulsante con questo Id, oltre ai benefici visti sopra, wxPython inserisce anche una validazione automatica del dialogo, prima di chiuderlo, quando si preme questo pulsante. 
-
-.. todo:: una pagina sui validatori
+Ai validatori :ref:`dedichiamo una sezione apposta <validatori>`, ma qui basta un appunto per ricordare un altro vantaggio dell'Id predefinito ``wx.ID_OK``. Se nel vostro dialogo inserite un pulsante con questo Id, oltre ai benefici visti sopra, wxPython inserisce anche una validazione automatica del dialogo, prima di chiuderlo, quando si preme questo pulsante. 
 
 Ovviamente dovete impostare qualche validatore che faccia davvero un controllo. Per esempio, aggiungete al codice del paragrafo precedente questo stupido validatore che impedisce di selezionare il gusto "crema"::
 

@@ -66,7 +66,9 @@ Ma non è solo un problema di estetica. Il fatto è che un frame manca di alcune
    single: wx; TAB_TRASVERSAL
    single: panel; tab trasversing
    single: wx.Button; SetDefault()
-   
+
+.. _wxpanel: 
+
 ``wx.Panel``.
 -------------
 
@@ -234,9 +236,7 @@ Con queste premesse, il procedimento di creazione del dialogo e raccolta dei dat
 
 Se l'utente fa clic sul pulsante contrassegnato da ``wx.ID_OK``, avviene anche la validazione automatica, che in questo caso passa sempre senza conseguenze, perché non abbiamo definito nessun validatore. 
 
-I validatori possono inoltre essere una valida alternativa per trasferire i dati dal dialogo alla finestra madre, alla chiusura (e in senso contrario all'apertura). Parliamo di questo nella sezione apposita.
-
-.. todo:: una pagina sui validatori.
+I :ref:`validatori <validatori>` possono inoltre essere una valida alternativa per trasferire i dati dal dialogo alla finestra madre, alla chiusura (e in senso contrario all'apertura). Parliamo di questo nella sezione apposita.
 
 Rimando infine anche agli esempi della sezione dedicata :ref:`alla chiusura delle finestre <chiusura>` e di quella :ref:`sui dialoghi con pulsanti predefiniti <idpredefiniti>`. 
 

@@ -114,9 +114,7 @@ Questo dovrebbe aiutare un pochino.
 
 Gli extra-style in genere hanno scopi abbastanza esotici, e servono di rado. Alcuni sono platform-specific, per esempio ``wx.FRAME_EX_METAL`` ha effetto solo sul MacOS. Tuttavia ce ne sono alcuni che dovete tener presente:
 
-* ``wx.WS_EX_VALIDATE_RECURSIVELY`` dice alla finestra di validare non solo tutti i suoi figli diretti (comportamento di default), ma anche i figli dei figli, etc. Utile quando si usano i validatori, e la finestra contiene per esempio dei panel con dentro degli altri panel. 
-
-.. todo:: una pagina sui validatori.
+* ``wx.WS_EX_VALIDATE_RECURSIVELY`` dice alla finestra di validare non solo tutti i suoi figli diretti (comportamento di default), ma anche i figli dei figli, etc. Utile quando si usano i :ref:`validatori <validatori>`, e la finestra contiene per esempio dei panel con dentro degli altri panel. 
 
 * ``wx.WS_EX_BLOCK_EVENTS`` dice alla finestra di bloccare la propagazione degli eventi che partono dai suoi figli. Gli eventi arrivano fin qui, ma poi non si propagano oltre. Notare che i ``wx.Dialog``, :ref:`a differenza dei frame <wxdialog>`, hanno questo flag settato per default. 
 
