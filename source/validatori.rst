@@ -224,7 +224,7 @@ Anche dopo che il widget è stato creato, potete assegnarli un validatore, chiam
 .. index::
    single: validatori; validazione automatica
    single: dialoghi; con validazione automatica
-   singe: wx; ID_OK
+   single: wx; ID_OK
    
 La validazione automatica dei dialoghi.
 ---------------------------------------
