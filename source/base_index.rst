@@ -10,4 +10,5 @@ Appunti wxPython - livello base
    contenitori
    id
    stili
+   eventi_basi
    

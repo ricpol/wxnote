@@ -8,5 +8,6 @@ Appunti wxPython - livello intermedio
    wxapp_avanzata
    chiusura
    chiusuraapp
+   eventi_avanzati
    validatori
    validatoridue
