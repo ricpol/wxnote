@@ -32,3 +32,6 @@ nosetests.xml
 # sphinx
 Makefile
 make.bat
+
+# notes
+notes.txt
