@@ -15,6 +15,7 @@ Appunti wxPython
    nonusare
    base_index
    intermedio_index
+   ricette_index
    todolist
    
 
