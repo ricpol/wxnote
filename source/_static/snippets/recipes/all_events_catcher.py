@@ -4,20 +4,18 @@
 #
 import wx
 
-class TopFrame(wx.Dialog):
+class TopFrame(wx.Frame):
     def __init__(self, *a, **k):
-        wx.Dialog.__init__(self, *a, **k)
-        b1 = wx.Button(self, -1, 'riempitivo')
-        
+        wx.Frame.__init__(self, *a, **k)
+        p = wx.Panel(self)
         # qui mettete il widget che volete testare, al posto del wx.Button
-        test_widget = wx.Button(self)
+        test_widget = wx.Button(p, -1, 'test me!')
         
-        b2 = wx.TextCtrl(self, -1, 'altro riempitivo')
+        self.output = wx.TextCtrl(p, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
         s = wx.BoxSizer(wx.VERTICAL)
-        s.Add(b1, 0, wx.EXPAND|wx.ALL, 5)
         s.Add(test_widget, 1, wx.EXPAND|wx.ALL, 5)
-        s.Add(b2, 0, wx.EXPAND|wx.ALL, 5)
-        self.SetSizer(s)
+        s.Add(self.output, 1, wx.EXPAND|wx.ALL, 5)
+        p.SetSizer(s)
 
         binder_names = [i for i in dir(wx) if i.startswith('EVT_')]
         # questi due non si possono collegare con Bind:
@@ -33,7 +31,7 @@ class TopFrame(wx.Dialog):
         self.binder_dict = {}
         
         for binder_name in binder_names:
-            obj_binder = eval('wx.'+binder_name)
+            obj_binder = getattr(wx, binder_name)
             if len(obj_binder.evtType) == 1:
                 test_widget.Bind(obj_binder, self.callback)
                 binder_type = obj_binder.evtType[0]
@@ -45,13 +43,14 @@ class TopFrame(wx.Dialog):
         evt.Skip()
         evt_type = self.binder_dict[evt.GetEventType()]
         if evt_type != self.last_printed_event:
-            print '\n'+evt_type, 
+            txt =  '\n%s %s' % (evt.__class__.__name__, evt_type)
             self.last_printed_event = evt_type
         else:
-            print '.',
+            txt = '-'
+        self.output.AppendText(txt)
 
 
 app = wx.App(False)
-TopFrame(None).Show()
+TopFrame(None, title='Event Test').Show()
 app.MainLoop()
 

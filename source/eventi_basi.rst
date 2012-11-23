@@ -1,3 +1,9 @@
+.. _eventibasi:
+
+.. index::
+   single: eventi
+   
+   
 Gli eventi: le basi da sapere.
 ==============================
 
@@ -11,6 +17,10 @@ Come potete immaginare, wxPython offre moltissime possibilità di controllo sugl
 Gli attori coinvolti.
 ---------------------
 
+.. index::
+   single: wx; Event
+   single: eventi; wx.Event()
+   
 Che cosa è un evento.
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -20,7 +30,9 @@ Tuttavia, a causa del complesso sistema con cui wxWidgets (il framework C++ su c
 
 E allora, che cosa incontrate in genere nella vita di tutti i giorni? Ancora un po' di pazienza, prego.
 
-
+.. index::
+   single: eventi; callback
+   
 Che cosa è un callback.
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -55,6 +67,9 @@ Attenzione, ancora un po' di confusione: spesso nei testi inglesi trovate "handl
 
 Ma come potete collegare effettivamente il callback all'evento che volete intercettare? Ancora un po' di pazienza! 
 
+.. index::
+   single: eventi; handler
+   single: wx; EvtHandler()
 
 Che cosa è un handler.
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -65,7 +80,10 @@ Di nuovo, non incontrerete mai un handler nella vita di tutti i giorni. Ma quest
 
 E come fate a usare queste capacità di handler? Ancora un attimo di pazienza... ci siamo quasi. 
 
-
+.. index::
+   single: eventi; event type
+   single: wx; wxEVT_*
+   
 Che cosa è un event type.
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -88,6 +106,10 @@ Gli event type sono un'altra delle cose che non entreranno a far parte della vos
 
 Ma per capire come, in pratica, potete riferirvi agli eventi... ehm, dovete pazientare un'ultima volta. 
 
+.. index::
+   single: eventi; binder
+   single: wx; PyEventBinder()
+   single: wx; EVT_*
 
 Che cosa è un binder.
 ^^^^^^^^^^^^^^^^^^^^^
@@ -123,6 +145,10 @@ Ma prima, ancora un pizzico di confusione, questa volta però comprensibile e sa
 
 Detto questo, finalmente siamo pronti per rispondere a tutte le domande!
 
+.. index::
+   single: eventi; Bind()
+   single: wx.EvtHandler; Bind()
+   single: wx.PyEventBinder; Bind()
 
 ``Bind``: collegare eventi e callback, in pratica.
 --------------------------------------------------
@@ -152,7 +178,9 @@ Tutto ciò che dobbiamo fare è chiamare il metodo ``Bind`` dell'handler che sce
     
     e si vedeva chiaramente che era proprio il binder a lavorare. Tuttavia, questo sistema appariva poco "object-oriented", perché sembrava di chiamare direttamente un oggetto, e per di più un oggetto che sembra una costante. In effetti però ``wx.PyEventBinder.__call__`` è ancora lì per retrocompatibilità, e potete ancora vedere questo stile di collegamento nel codice più vecchio (ed è anche la ragione di questa nota un po' pedante). 
 
-
+.. index::
+   single: eventi; Bind()
+   
 Altri modi di usare ``Bind``.
 -----------------------------
 
@@ -199,9 +227,11 @@ Nella documentazione di ciascuna, ci sono i nomi dei vari binder che possono rif
 
 In definitiva, è facile trovare subito gli eventi più comuni per un certo widget, ma occorre un po' di esperienza per scoprire gli altri. 
 
-Infine, ho scritto una ricetta apposta per cercare di risolvere questo problema: provatela, potrebbe tornarvi utile. 
+Infine, :ref:`ho scritto una ricetta apposta <catturaeventi>` per cercare di risolvere questo problema: provatela, potrebbe tornarvi utile. 
 
-
+.. index::
+   single: eventi; metodi e proprietà
+   
 Estrarre informazioni su un evento nel callback.
 ------------------------------------------------
 

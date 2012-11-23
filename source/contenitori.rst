@@ -171,9 +171,8 @@ Ecco le funzionalità che i dialoghi hanno in più rispetto ai frame:
 
 Ed ecco infine le cose che, semplicemente, sono diverse:
 
-* hanno :ref:`l'extra-sytle <extrastyle>` ``wx.WS_BLOCK_EVENTS`` settato per default. Il che significa che gli eventi generati dai widget interni non possono propagarsi al di fuori del dialogo stesso. Questo è in linea con il principio che i dialoghi dovrebbero sempre "sbrigarsi da soli le proprie faccende", e limitarsi a restituire al mondo esterno un codice di uscita. 
+* hanno :ref:`l'extra-sytle <extrastyle>` ``wx.WS_BLOCK_EVENTS`` settato per default. Il che significa che gli eventi generati dai widget interni :ref:`non possono propagarsi <eventi_avanzati>` al di fuori del dialogo stesso. Questo è in linea con il principio che i dialoghi dovrebbero sempre "sbrigarsi da soli le proprie faccende", e limitarsi a restituire al mondo esterno un codice di uscita. 
 
-.. todo:: pagina sulla propagazione degli eventi...
 
 * :ref:`rispondono diversamente <chiusura>` al metodo ``Close()``: un frame chiama automaticamente ``Destroy()``, mentre un dialogo non si distrugge subito, ma si limita a nascondersi restando ancora in vita. Questo perché è frequente voler conservare il dialogo, dopo che l'utente lo ha "chiuso", per raccogliere i suoi dati. Questo significa però che dovete sempre preoccuparvi di chiamare voi stessi ``Destroy()`` quando il dialogo davvero non vi serve più. 
 

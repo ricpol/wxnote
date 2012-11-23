@@ -15,9 +15,7 @@ Per esempio, se chiudete una finestra, tutti i suoi "figli" verranno distrutti a
 
 Ma gli effetti delle relazioni padre-figlio si manifestano anche in altre occasioni. Alcuni widget possono trasmettere automaticamente certe proprietà ai figli. Per esempio, se settate un particolare font per un ``wx.Panel``, questo verrà automaticamente trasmesso a tutti i figli. Se chiamate ``Validate()`` su un ``wx.Dialog``, tutti i suoi figli verranno automaticamente "validati" (posto che abbiano un ``wx.Validator`` appropriato). E gli esempi potrebbero continuare a lungo. 
 
-.. todo:: una pagina per la propagazione degli eventi.
-
-Forse però l'esempio più clamoroso che si deve citare è la propagazione degli eventi. Ce ne occupiamo in modo specifico in una pagina separata, ma per il momento basta dire che un ``wx.CommandEvent`` si propaga dal widget che lo ha originato al suo genitore, e poi al genitore del genitore, e così via fino all'ultimo genitore "top-level" e poi ancora da questo alla ``wx.App``. Così, per esempio, se avete un frame con dentro un panel con dentro un pulsante, e ci cliccate sopra, il ``wx.EVT_BUTTON`` si trasmette all'indietro dal pulsante al panel, al frame, e finalmente alla ``wx.App``, permettendovi di intercettarlo a ogni "fermata".
+Forse però l'esempio più clamoroso che si deve citare è la propagazione degli eventi. Ce ne occupiamo in modo specifico :ref:`in una pagina separata <eventi_avanzati>`, ma per il momento basta dire che un ``wx.CommandEvent`` si propaga dal widget che lo ha originato al suo genitore, e poi al genitore del genitore, e così via fino all'ultimo genitore "top-level" e poi ancora da questo alla ``wx.App``. Così, per esempio, se avete un frame con dentro un panel con dentro un pulsante, e ci cliccate sopra, il ``wx.EVT_BUTTON`` si trasmette all'indietro dal pulsante al panel, al frame, e finalmente alla ``wx.App``, permettendovi di intercettarlo a ogni "fermata".
 
 La catena dei rapporti padre-figlio è quindi un concentto importante. In questa pagina cerchiamo di analizzare il problema a fondo.
 
