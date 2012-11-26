@@ -3,6 +3,8 @@
 
 .. index:: frame, dialoghi, panel
 
+.. _contenitori:
+
 Frame, dialoghi, panel: contenitori wxPython.
 =============================================
 

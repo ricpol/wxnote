@@ -11,4 +11,5 @@ Appunti wxPython - livello base
    id
    stili
    eventi_basi
+   questioni_stile
    

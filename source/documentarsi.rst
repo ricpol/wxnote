@@ -19,6 +19,7 @@ La demo è un pacchetto che si scarica e si installa a parte `sul sito di wxPyth
 
 L'unico problema della demo è che spesso gli esempi sono eccessivamente complessi: nello sforzo di dimostrare tutte le possibilità dei vari widget, il codice si allunga a dismisura, e non è sempre facile orientarsi. 
 
+.. _altri_esempi:
 
 Gli altri esempi.
 -----------------

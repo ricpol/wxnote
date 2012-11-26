@@ -1,3 +1,5 @@
+.. _non_usare:
+
 Gli strumenti da non usare.
 ===========================
 
