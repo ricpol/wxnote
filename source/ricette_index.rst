@@ -6,3 +6,5 @@ Ricette wxPython
    :maxdepth: 2
    
    catturaeventi
+   ricette_period_widget
+   

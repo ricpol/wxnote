@@ -216,7 +216,7 @@ Come vedete, adesso quando premete il pulsante contrassegnato con ``wx.ID_OK``, 
    single: menu; uso degli id
    single: wx; EVT_MENU
    single: wx; EVT_MENU_RANGE
-   single: lambda-binding
+   single: eventi; lambda binding
    
 Menu.
 ^^^^^
@@ -262,7 +262,7 @@ Oltretutto, se avete l'accortezza di assegnare Id *consecutivi* alle voci che vo
 
 e l'utilità di ``wx.EVT_MENU_RANGE`` diventa subito meno evidente... Ma di nuovo, dovete considerare che avete dalla vostra l'espressività e la compattezza di Python... 
 
-E parlando di espressività e compattezza, per chiudere in bellezza aggiungo che potete evitare del tutto l'uso degli Id con i menu (anche quando intendete collegare più voci allo stesso callback), facendo uso del trucco del "lambda-binding" per passare a ``Bind`` un parametro in più::
+E parlando di espressività e compattezza, per chiudere in bellezza aggiungo che potete evitare del tutto l'uso degli Id con i menu (anche quando intendete collegare più voci allo stesso callback), facendo uso del :ref:`trucco del "lambda binding" <lambda_binding>` per passare a ``Bind`` un parametro in più::
 
     # al momento di creare il menu:
     for label in ('crema', 'cioccolato', 'stracciatella'):
@@ -274,7 +274,4 @@ E parlando di espressività e compattezza, per chiudere in bellezza aggiungo che
     # e poi, nel callback:
     def on_menu(self, evt, label):
         print label # -> restituisce la voce selezionata
-
-.. todo:: una pagina sul binding con una nota per il lambda-binding, oppure una pagina separata nella sezione avanzata dedicata solo al lambda-binding
-
 
