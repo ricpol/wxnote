@@ -21,7 +21,7 @@ e perfino con i sizer::
 
     self.sizer_1 = wx.BoxSizer(...)
 
-Il principiante ne ricava spesso la sensazine che il ``self.`` sia necessario. In realtà wxPython non richiede assolutamente niente del genere. 
+Il principiante ne ricava spesso la sensazione che il ``self.`` sia necessario. In realtà wxPython non richiede assolutamente niente del genere. 
 
 Regolatevi *come fareste per un normale programma a oggetti*: solo quando vi serve mantenere un riferimento visibile anche negli altri metodi della classe, allora usate il ``self.``. Altrimenti, potete benissimo farne a meno. 
 
@@ -41,15 +41,15 @@ E ancora: le label (``wx.StaticText``) vengono dichiarate e inserite nel layout,
     
 ovvero, creare un label "anonima" solo nel momento in cui bisogna aggiungerla al layout. Il nome della label qui *non è specificato*, perché non serve neppure all'interno dell'``__init__``. 
 
-In definitiva, è anche una questione di stile personale. Potete benissimo aggiungere ``self.`` ovunque: inquinerete un pochino il namespace della vostra classe, ma non è grave. Per quel che vale, io preferisco regolarmi in modo diverso: uso ``self.`` solo per i nomi che effettivamente utilizzo anche altrove, e mantengo locali tutti gli altri. Questo mi consente di vedere a colpo d'occhio i widget più "importanti" nella mia gui. 
+In definitiva, è anche una questione di stile personale. Potete benissimo aggiungere ``self.`` ovunque: inquinerete il namespace della vostra classe, ma non è grave. Per quel che vale, io preferisco regolarmi in modo diverso: uso ``self.`` solo per i nomi che effettivamente utilizzo anche altrove, e mantengo locali tutti gli altri. Questo mi consente di vedere a colpo d'occhio i widget più "importanti" nella mia gui. 
 
 
 Costruire il layout nell'``__init__`` o no?
 -------------------------------------------
 
-Ovviamente il layout di un frame, di un dialogo o di un panel va specificato nell'``__init__``, prima di mostrarlo all'utente. Tuttavia, alcuni preferiscono spostare il disegno "puro e semplice" del layout (creazione e popolamento dei sizer) in un metodo separato (``_do_layout`` o qualcosa del genere) che viene richiamato dall'``__init__``. 
+Ovviamente il layout di un frame, di un dialogo o di un panel va specificato nell'``__init__``, prima di mostrarlo all'utente. Tuttavia, alcuni preferiscono spostare il disegno "puro e semplice" del layout (creazione e popolamento dei sizer) in un metodo separato ``_do_layout`` o qualcosa del genere, che viene richiamato dall'``__init__``. 
 
-Più o meno quindi il pattern è questo::
+Più o meno il pattern è questo::
 
     def __init__(self, ...):
         self.button_A = wx.Button(...)
@@ -76,13 +76,13 @@ Ma allora basta usare qualche divisore "grafico", qualcosa del genere::
         text_A = wx.TextCtrl(...)
         # etc. etc. 
 
-        # layout ------------------------------------------------------
+        # layout -----------------------------
         sizer = wx.BoxSizer(...)
         sizer.Add(button_A, ...)
         sizer.Add(text_A, ...)
         # etc. etc.
         
-        # eventi ------------------------------------------------------
+        # eventi ----------------------------
         button_A.Bind(wx.EVT_BUTTON, ...)
         # etc. etc.
         
