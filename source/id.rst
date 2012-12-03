@@ -82,6 +82,9 @@ Quando gli Id possono tornare utili.
 
 Anche in wxPython, ci sono occasioni in cui lavorare direttamente con gli Id è comodo, o addirittura ancora necessario. Vediamone alcune tipiche, senza pretese di completezza. 
 
+
+.. _stockbuttons:
+
 .. index::
    single: stock buttons
 
@@ -93,6 +96,9 @@ Voi potete scegliere di non usare gli Id, ma wxWidgets li usa eccome. Ci sono mo
     copy = wx.Button(parent, wx.ID_COPY)
     
 produrrà un pulsante "copia", e così via. 
+
+L'utilizzo di questo tipo di pulsanti può essere reso ancora più semplice dall'impiego di :ref:`un sizer generato automaticamente <createbuttonsizer>`.
+
 
 .. index::
    single: wx; MessageDialog()

@@ -10,6 +10,7 @@ Appunti wxPython - livello base
    contenitori
    id
    stili
+   sizer_basi
    eventi_basi
    questioni_stile
    

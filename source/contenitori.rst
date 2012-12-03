@@ -51,9 +51,7 @@ Alla riga 1, definisco una sottoclasse personalizzata di ``wx.Frame``. Alla riga
 
 Alle righe 4 e 5, creo due widget "figli" che saranno contenuti nel frame. Definisco il rapporto di parentela passando ``self`` come primo argomento (il "parent"). In questo modo saranno figli della futura istanza di ``MyFrame``, quando verrà creata. Un discorso più ampio sulle catene di relazioni padre-figlio è affrontato :ref:`in una pagina separata <catenaparent>`. 
 
-.. note:: in questi esempi minimali, usiamo il cosiddetto "posizionamento assoluto" dei widget, ovvero specifichiamo la posizione in pixel. Questo è decisamente sconsigliato nel mondo reale. Usate i sizer, invece. 
-
-.. todo:: una pagina sui sizer
+.. note:: in questi esempi minimali, usiamo il cosiddetto "posizionamento assoluto" dei widget, ovvero specifichiamo la posizione in pixel. Questo è decisamente sconsigliato nel mondo reale. :ref:`Usate i sizer <sizer_basi>`, invece. 
 
 Alle righe 7 e 10, avvio la macchina della ``wx.App`` e del suo ``MainLoop``. Di nuovo, potete trovare informazioni più accurate su questo :ref:`in un'altra sezione <wxapp_basi>`. 
 
