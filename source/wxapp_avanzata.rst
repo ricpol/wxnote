@@ -9,9 +9,9 @@
 
 :ref:`Abbiamo già visto <wxapp_basi>` i concetti di base sulla ``wx.App``, e come usarla per avviare la nostra applicazione wxPython. 
 
-In sostanza, si tratta di creare la ``wx.App``, creare e mostrare il frame principale (quello "top level": ma possono anche essere più di uno), e "avviare il motore" chiamando il ``MainLoop`` della nosrta ``wx.App``. 
+In sostanza, si tratta di creare la ``wx.App``, creare e mostrare il frame principale, e "avviare il motore" chiamando il ``MainLoop`` della nosrta ``wx.App``. 
 
-Questo in genere è più che sufficiente per i casi più semplici. Tuttavia, per le applicazioni un po' più complesse, potreste volere qualche tipo di controllo in più su questo processo di avviamento. 
+Questo in genere è più che sufficiente per i casi più semplici. Tuttavia, per le applicazioni più complesse, potreste volere qualche tipo di controllo in più su questo processo di avviamento. 
 
 .. index::
    single: wx.App; OnInit()
@@ -19,9 +19,9 @@ Questo in genere è più che sufficiente per i casi più semplici. Tuttavia, per
 ``wx.App.OnInit``: il bootstrap della vostra applicazione.
 ----------------------------------------------------------
 
-Per fare questo, dovete creare una sotto-classe personalizzata di ``wx.App``, e sovrascrivere il metodo ``OnInit``. 
+Per questo, dovete creare una sotto-classe personalizzata di ``wx.App``, e sovrascrivere il metodo ``OnInit``. 
 
-Il codice che scrivete in ``OnInit`` viene eseguito *non appena* la ``wx.App`` è stata istanziata, ma *prima* di entrare nel ``MainLoop``. E' il momento giusto, tipicamente, per inizializzare alcune risorse esterne (connessioni al database, log di sistema, file di configurazione, opzioni "globali"...). Infine, convine usare ``OnInit`` anche per istanziare e mostrare il frame principale dell'applicazione: infatti, farlo in questo momento assicura che la ``wx.App`` esiste già, e quindi la creazione di frame e altri elementi può avvenire senza problemi. 
+Il codice che scrivete in ``OnInit`` viene eseguito *non appena* la ``wx.App`` è stata istanziata, ma *prima* di entrare nel ``MainLoop``. E' il momento giusto, tipicamente, per inizializzare alcune risorse esterne (connessioni al database, log di sistema, file di configurazione, opzioni "globali"...). Infine, convine usare ``OnInit`` anche per istanziare e mostrare il frame principale dell'applicazione: infatti, farlo in questo momento garantisce che la ``wx.App`` esiste già, e quindi la creazione di frame e altri elementi può avvenire senza problemi. 
 
 Ecco un'idea di come potrebbero andare tipicamente le cose::
 
@@ -88,7 +88,7 @@ Inoltre, siccome al momento di ``OnInit`` la ``wx.App`` esiste già, è anche po
 Addirittura, potrebbe essere un buon momento per chiedere all'utente di effettuare il login::
 
     class MyLoginDialog(wx.Dialog):
-        # etc etc
+        pass # etc etc
     
     class MyApp(wx.App):
         def OnInit(self):
@@ -112,7 +112,7 @@ Addirittura, potrebbe essere un buon momento per chiedere all'utente di effettua
             top_frame.Show()     
             return True
 
-Come si vede, ``OnInit`` è molto flessibile, e consente di controllare un momento solitamente delicato come lo startup dell'applicazione in modo preciso, fornendo feedback all'utente ed eventualmente interagendo con lui. L'uso accorto di ``OnInit`` permette anche di velocizzare i tempi: se qualcosa deve andar storto, si può fermare tutto prima di caricare la parte più grossa dell'interfaccia. 
+Come si vede, ``OnInit`` è molto flessibile, e consente di controllare un momento solitamente delicato come lo startup dell'applicazione in modo preciso, compreso il feedback all'utente ed eventuali interazioni con lui. L'uso accorto di ``OnInit`` permette anche di velocizzare i tempi: se qualcosa deve andar storto, si può fermare tutto prima di caricare la parte più gravosa dell'interfaccia. 
 
 Infine, una piccola eleganza: avete notato che quando chiudiamo ``MyLoginDialog`` la nostra applicazione continua a vivere (almeno fin quando, eventualmente, non decidiamo di ``return False``), nonostante abbiamo appena chiuso l'unica finestra "top level" presente? In effetti questa è un'eccezione alla regola: wxPython non inizia il processo di chiusura, se non è mai entrato nel ``MainLoop``. Questo ci consente di aprire e chiudere finestre a nostro piacimento in ``OnInit`` senza paura di conseguenze spiacevoli.
 
@@ -130,11 +130,11 @@ In modo speculare, la ``wx.App`` fornisce anche un hook per il codice che volete
 
 In ``OnExit`` potete inserire il vostro codice di chiusura personalizzato: chiudere le connessioni al database, chiudere i log, salvare le configurazioni e le preferenze... 
 
-Proprio come avviene in ``OnInit``, anche in ``OnExit`` potete approfittarne per chiedere ancora qualche decisione all'utente. Potete ancora mostrare un ``wx.Dialog`` modale (ossia mostrato con ``ShowModal()``.
+Proprio come avviene in ``OnInit``, anche in ``OnExit`` potete approfittarne per chiedere ancora qualche decisione all'utente. Potete ancora mostrare un ``wx.Dialog`` modale (ossia mostrato con ``ShowModal()``).
 
 Se però cercate di creare e mostrare un nuovo frame "top level" a questo punto, nella speranza di prevenire la chiusura della ``wx.App``, ormai è troppo tardi. Il frame verrà mostrato per un attimo, ma poi si chiuderà subito e tutto terminerà. 
 
-.. note:: Avvertenza per gli spericolati: non vale neppure cercare di prevenire la chiusura dell'applicazione settando ``self.SetExitOnFrameDelete(False)`` *prima* di mostrare il nuovo frame top-level: effettivamente il frame resta visibile, ma l'applicazione si pianta. Questo codice, per esempio, *non funziona*:
+.. note:: Avvertenza per gli spericolati: non vale neppure cercare di prevenire la chiusura dell'applicazione settando ``self.SetExitOnFrameDelete(False)`` *prima* di mostrare il nuovo frame top-level. Effettivamente il frame resta visibile, ma l'applicazione si pianta. Questo codice, per esempio, *non funziona*:
 
     ::
 

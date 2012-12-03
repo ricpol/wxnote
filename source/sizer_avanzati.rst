@@ -21,7 +21,7 @@ Se ``wx.BoxSizer`` è una colonna (o una riga) singola, ``wx.GridSizer`` è inve
     
 avrà 3 righe e 2 colonne. Il terzo e il quarto argomento specificano lo spazio (verticale e orizzontale) da lasciare tra le celle, in pixel. 
 
-Una volta che avete creato il sizer, potete inserire i vari elementi usando ``Add`` come di consueto. Il sizer si riempirà man mano, da sinistra a destra e dall'alto in basso. 
+Una volta che avete creato il sizer, potete inserire i vari elementi usando ``Add`` come di consueto. Il sizer si riempirà da sinistra a destra e dall'alto in basso. 
 
 Il ``wx.GridSizer`` è una struttura rigida: il widget più grande determina la dimensione di tutte le celle. Se gli altri widget hanno flag ``wx.EXPAND`` e/o priorità superiore a 0, allora occuperanno l'intero spazio della cella. Altrimenti, resteranno più piccoli della cella (con eventuale allineamento se hanno flag ``wx.ALIGN_*``). 
 
@@ -58,7 +58,7 @@ Il ``wx.GridSizer`` non è molto usato in pratica. La sua struttura rigida è li
 ``wx.FlexGridSizer``: una griglia elastica.
 -------------------------------------------
 
-``wx.FlexGridSizer`` è una versione più flessibile di ``wx.GridSizer``, ed è quella che si utilizza più spesso. E' possibile infatti definire una o più righe (o colonne) che possono espandersi occupando lo spazio ancora disponibile dopo che tutte le colonne "normali" avranno occupato lo spazio minimo richiesto (basandosi sul widget più grande che devono contenere, come per il ``wx.GridSizer``). 
+``wx.FlexGridSizer`` è una versione più flessibile di ``wx.GridSizer``, ed è quella che si utilizza più spesso. E' possibile infatti definire una o più righe (e/o colonne) che possono espandersi occupando lo spazio ancora disponibile dopo che tutte quelle "normali" avranno occupato lo spazio minimo richiesto (basandosi sul widget più grande che devono contenere, come per il ``wx.GridSizer``). 
 
 Le righe/colonne "flessibili" si contendono lo spazio disponibile in base alla stessa regola delle priorità che abbiamo visto per il ``wx.BoxSizer``. Quindi, per esempio::
 
@@ -103,9 +103,9 @@ Un ``wx.GridBagSizer`` è come un ``wx.FlexGridSizer``, con due proprietà aggiu
 
 * è possibile fare in modo che un widget si estenda in più celle adiacenti (come si comportano le tabelle HTML).
 
-La prima proprietà può essere comoda in certi casi, ma se usate un ``wx.GridBagSizer`` solo per crearlo e riempirlo una volta per sempre, allora è più ordinato utilizzare un semplice `wx.(Flex)GridSizer``. La seconda proprietà, d'altra parte, può essere interessante. 
+La prima proprietà può essere comoda in certi casi, ma se usate un ``wx.GridBagSizer`` solo per crearlo e riempirlo una volta per sempre, allora è più ordinato utilizzare un semplice `wx.(Flex)GridSizer``. La seconda, d'altra parte, può essere interessante. 
 
-Entrambe le proprietà sono ottenute modificando il metodo ``Add``, che ora vuole due argomenti in più. Il primo (obbligatorio!) è ``pos``, una tupla per specificare la posizione di inserimento. Il secondo (facoltativo) è ``span``, per specificare per quante righe (o colonne) adiacenti occorre estendere il widget, a partire dalla cella di inserimento.
+Entrambe le proprietà sono ottenute modificando il metodo ``Add``, che ora vuole due argomenti nuovi. Il primo (obbligatorio!) è ``pos``, una tupla per specificare la posizione di inserimento. Il secondo (facoltativo) è ``span``, per specificare per quante righe (o colonne) adiacenti occorre estendere il widget, a partire dalla cella di inserimento.
 
 Per esempio::
 
@@ -113,9 +113,9 @@ Per esempio::
     
 vuol dire che il widget, a partire dalla prima cella in alto a sinistra, si espande per tre righe e due colonne. 
 
-In compenso, ``Add`` perde l'argomento ``proportion``, per cui dovete risolvere tutto con ``AddGrowableCol(Row)`` e specificando lo ``span``.
+In compenso, ``Add`` perde l'argomento ``proportion``, per cui dovete risolvere tutto con ``AddGrowableCol/Row`` e specificando lo ``span``.
 
-Usare i ``wx.GridBagSizer`` può essere comodo da un lato, fonte di confusione dall'altro. Ovviamente tutto ciò che potete fare con un ``wx.GridBagSizer`` potete farlo anche con la composizione di sizer più semplici. E' chiaro però che quando il layout che avete in mente assomiglia a una griglia, ma con forti irregolarità, potete prendere in considerazione il ``wx.GridBagSizer``. Questo, comunque, è definitivamente il genere di layout che dovete disegnare prima su un foglio di carta, per non confondervi troppo. 
+Usare i ``wx.GridBagSizer`` può essere comodo da un lato, fonte di confusione dall'altro. Ovviamente tutto ciò che potete fare con un ``wx.GridBagSizer`` potete farlo anche con la composizione di sizer più semplici. In generale, quando il layout che avete in mente assomiglia a una griglia con forti irregolarità, potete prendere in considerazione il ``wx.GridBagSizer``. Questo, comunque, è il genere di layout che dovete disegnare prima su un foglio di carta, per non confondervi troppo. 
 
 
 .. index:: 
@@ -177,4 +177,5 @@ Esempi di utilizzo dei sizer.
 -----------------------------
 
 Nella :ref:`documentazione <documentarsi>` trovate vari esempi di layout realizzati con i sizer. In particolare, potete cercare "sizer" nella demo. Inoltre, il capitolo 11 del libro "wxPython in action" è dedicato ai sizer, per cui tutti gli esempi della documentazione tratti da quel capitolo sono interessanti. In particolare, ``realworld.py`` mostra un tipico esempio di come i sizer possono essere usati nel "mondo reale". 
+
 

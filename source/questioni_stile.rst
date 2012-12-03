@@ -35,7 +35,7 @@ Se tutte queste operazioni avvengono nell'``__init__``, non avete bisogno di chi
 
 Un altro esempio: è rarissimo che vi serva il nome di un sizer al di fuori del metodo in cui lo avete creato. Premettere ``self.`` ai nomi dei sizer è quasi sempre inutile. 
 
-E ancora: le label (``wx.StaticText``) vengono dichiarate e inserite nel layout, e mai più toccate. E' un altro caso in cui il ``self.`` non serve a nulla. Addirittura, nel caso delle label è frequente trovare questo pattern::
+E ancora: le label (``wx.StaticText``) vengono dichiarate e inserite nel layout, e mai più toccate. E' un altro caso in cui il ``self.`` non serve a nulla. Addirittura, nel caso delle label è frequente trovare questo idioma::
 
     sizer.Add(wx.TextCtrl(...), ...)
     
@@ -63,7 +63,7 @@ Più o meno il pattern è questo::
         sizer.Add(self.text_A, ...)
         # etc. etc.
         
-Ovviamente si tratta di una separazione puramente estetica: se nel codice eliminate le due righe ``self._do_layout()`` e ``def _do_layout(self)``, tutto funziona esattamente come prima. E' uno schema molto usato nel codice generato automaticamente dagli stessi :ref:`pessimi assistenti <non_usare>` di cui sopra. 
+Si tratta di una separazione puramente estetica: se nel codice eliminate le due righe ``self._do_layout()`` e ``def _do_layout(self)``, tutto funziona esattamente come prima. E' uno schema molto usato nel codice generato automaticamente dagli stessi :ref:`pessimi assistenti <non_usare>` di cui sopra. 
 
 Lo schema può estendersi ulteriormente: per esempio, aggiungere un metodo ``_set_properties`` per impostare colori, font, etc. dei vari widget; aggiungere un metodo ``_do_binding`` per raccogliere tutti i collegamenti degli eventi ai callback. 
 

@@ -23,21 +23,21 @@ Prima di procedere, un avvertimento. Dopo aver letto questo capitolo, avrete l'i
 
 Ma non dovete dimenticare che wxPython è solo la superficie di un framework C++. Il punto è che in Python, quando de-referenziate un oggetto, automaticamente tutte le risorse collegate che non servono più vegono pulite dalla memoria dal garbage collector. Ma C++ non ha garbage collector, quindi la memoria va pulita "a mano". Ora, quando chiudete un frame, wxWidget naturalmente provvede da solo a eliminare anche tutti gli elementi di quel frame (pulsanti, caselle di testo, etc.). Ma tutte le risorse "esterne" eventualmente collegate e che non servono più (connessioni al database, strutture-dati presenti in memoria, etc.) devono essere cancellate a mano. 
 
-Ecco perché wxWidget, nel mondo C++, offre numerosi hook lungo il processo di chiusura, dove è possibile intervenire per fare cleanup, o anche ripensarci e tornare indietro. wxPython eredita questo sistema, anche se, onestamente, è raro che un programmatore Python lo utilizzi appieno. 
+Ecco perché wxWidget, nel mondo C++, offre numerosi hook lungo il processo di chiusura, dove è possibile intervenire per fare cleanup, o anche ripensarci e tornare indietro. wxPython eredita questo sistema, anche se, in effetti, è raro che un programmatore Python lo utilizzi appieno. 
 
 
 La chiusura di una finestra.
 ----------------------------
 
-La chiusura di una "finestra" (un frame o un dialogo) succede (di solito!) in due modi:
+La chiusura di una "finestra" (un frame o un dialogo) può capitare (di solito!) in due modi:
 
-* perché l'utente fa clic sul pulsante di chiusura (quello con la X, per intenderci), o usa "Alt+F4" o altri equivalenti; 
+* perché l'utente fa clic sul pulsante di chiusura (quello con la X, per intenderci), o usa "Alt+F4", "Mela-Q" o altri equivalenti; 
 
 * perché voi chiamate ``Close()`` sul frame. 
 
-In entrambi i casi, si innesca un evento particolare, ``wx.EVT_CLOSE``, che segnala al sistema che la finestra sta per chiudersi. 
+In entrambi i casi, si innesca un evento particolare, ``wx.EVT_CLOSE``, che segnala al sistema che la finestra sta per chiudersi. Quanto segue presuppone che voi abbiate un'idea di come funziona :ref:`il meccanismo degli eventi <eventibasi>`.
 
-Se voi non fate nulla, la parola passa al gestore di default, che si comporta in due modi differenti:
+Dunque, se voi non fate nulla, la parola passa al gestore di default, che si comporta in due modi differenti:
 
 * per un ``wx.Frame``, semplicemente chiama ``Destroy()``, e questo pone fine alla vita del frame e ovviamente di tutti i suoi figli;
 
@@ -92,7 +92,7 @@ Chiamare ``Veto()`` se non si vuole chiudere.
 
 Se alla fine decidete di non chiudere la finestra, è buona norma chiamare sempre ``Veto()`` sull'evento ``wx.EVT_CLOSE``, per segnalare al resto del sistema che la richiesta di chiusura è stata respinta. 
 
-Per esempio, nel codice appena visto, dovreste aggiungere ``evt.Veto()`` alla fine del gestore ``on_close``. Ora, in questo specifico caso non vi serve comunque a nulla, perché nessun'altra parte del vostro codice è interessata alla chiusura di quella finestra. 
+Per esempio, nel codice appena visto, dovreste aggiungere ``evt.Veto()`` alla fine del gestore ``on_close``. Ora, in questo specifico caso non vi serve comunque a nulla, perché nessun'altra parte del vostro codice è interessata alla sorte di quella finestra. 
 
 Ma ``Veto()`` diventa utile, per esempio, quando chiamate ``Close()`` su una finestra *da un'altra finestra*: in questo caso, la finestra che ordina la chiusura potrebbe essere interessata a sapere se l'ordine è stato eseguito o rifiutato. 
 
@@ -142,7 +142,7 @@ In questo esempio, il frame principale crea e poi cerca di chiudere (alla riga 1
 
 Non chiudere un frame e "vietare" l'evento *sono due cose indipendenti*: se vietate ma poi chiudete lo stesso, ``Close()`` restituisce comunque ``False``, anche se la chiusura in effeti c'è stata. E viceversa. Quindi sta a voi non fare pasticci. 
 
-Dite la verità, vi sembra un po' cervellotico... ve l'avevo detto. E non è ancora finita. 
+Questo, dite la verità, vi sembra un po' cervellotico... ve l'avevo detto. E non è ancora finita. 
 
 .. index::
    single: wx.Event; CanVeto()
@@ -154,7 +154,7 @@ E non è ancora finita, dicevamo. Chiamare semplicemente ``Veto()`` su un evento
 
 Attenzione! Se chiamate ``Veto()`` alla cieca, e l'evento in realtà non può "vietare" un bel niente, wxPython solleva un'eccezione e tutto si pianta... 
 
-Quindi la cosa giusta è verificare sempre se l'evento può "vietare", prima di chiamare ``Veto()``. La verifica può essere fatta chiamando ``CanVeto()`` sull'evento stesso. Ecco come deve essere modificato il callback dell'esempio precedente::
+Quindi la cosa giusta è verificare sempre se l'evento effettivamente può "vietare", *prima* di chiamare ``Veto()``. La verifica può essere fatta chiamando ``CanVeto()`` sull'evento stesso. Ecco come dovrebbe essere modificato il callback dell'esempio precedente::
 
     def on_close(self, evt):
         if evt.CanVeto():
@@ -168,23 +168,25 @@ Quindi la cosa giusta è verificare sempre se l'evento può "vietare", prima di 
         else: # se non possiamo vietare, dobbiamo distruggere per forza...
             self.Destroy()
 
-Uhm... in verità l'annotazione della riga 10 non è del tutto corretta. Anche se non possiamo "vietare" l'evento, possiamo sempre scegliere di non distruggere la finestra, e fare qualcos'altro. Ma questa sarebbe proprio una cosa da non fare. Primo perché ovviamente, se non distruggiamo mai in risposta a un ``wx.EVT_CLOSE``, la nostra finestra non si chiuderà mai (a meno di non distruggerla esplicitamente chiamando ``Destroy()`` anziché ``Close()``). Secondo, perché se non chiamiamo ``Veto()`` (perché non possiamo) e non distruggiamo neppure la finestra, la chiamata a ``Close()`` restituirà comunque ``True`` (perché l'evento non è stato "vietato"), *anche se la finestra non è stata davvero chiusa*. Quindi il codice chiamante potrebbe avere problemi a regolarsi. 
+Ora, in verità l'annotazione della riga 10 non è del tutto corretta. Anche se non possiamo "vietare" l'evento, possiamo sempre scegliere di non distruggere la finestra, e fare qualcos'altro (ricordiamo che "vietare" l'evento e chiudere effettivamente sono due cose separate). Ma questa sarebbe proprio una cosa da non fare. Primo perché ovviamente, se non distruggiamo mai in risposta a un ``wx.EVT_CLOSE``, la nostra finestra non si chiuderà mai (a meno di non distruggerla esplicitamente chiamando ``Destroy()`` anziché ``Close()``). Secondo, perché se non chiamiamo ``Veto()`` (perché non possiamo) e non distruggiamo neppure la finestra, la chiamata a ``Close()`` restituirà comunque ``True`` (perché l'evento non è stato "vietato"), *anche se la finestra non è stata davvero chiusa*. Quindi il codice chiamante potrebbe avere problemi a regolarsi. 
 
 Resta solo una domanda: in quali casi un evento potrebbe non avere il potere di ``Veto``? 
 
 Ebbene, le cose stanno così: di solito un ``wx.CLOSE_EVENT`` ha il potere di ``Veto``. Questo, per esempio, accade quando l'evento si innesca in seguito al clic sul pulsante di chiusura, alla combinazione "Alt+F4" nei sistemi Windows, etc. oppure quando voi chiamate ``Close()`` su una finestra. 
 
-Tuttavia, se voi chiamate ``Close`` con l'opzione ``Close(force=True)``, allora il ``wx.EVT_CLOSE`` che si genera *non ha il potere di "vietare"* un bel niente (più precisamente, restituisce ``False`` quando testate per ``CanVeto()``). 
+Tuttavia, se voi chiamate ``Close`` con l'opzione ``Close(force=True)``, allora il ``wx.EVT_CLOSE`` che si genera *non ha il potere di "vietare"* un bel niente (o più precisamente, restituisce ``False`` quando testate per ``CanVeto()``). 
 
-Questo, come vedete, può essere un bel problema per il codice che gestisce la chiusura: non potete sapere se sarà eseguito in seguito a una chiamata ``Close()`` o a una chiamata ``Close(True)``. Per questo, l'unica soluzione è appunto *testare sempre* se l'evento ``CanVeto()`` prima di chiamare eventualmente il ``Veto()``. 
+Questo, come vedete, può essere un bel problema per il codice che gestisce la chiusura: non potete sapere se verrà eseguito in seguito a una chiamata ``Close()`` o a una chiamata ``Close(True)``. Per questo, l'unica soluzione è appunto *testare sempre* se l'evento ``CanVeto()`` prima di chiamare eventualmente il ``Veto()``. 
 
+
+.. _chiusura_forzata:
 
 Essere sicuri che una finestra si chiuda davvero.
 -------------------------------------------------
 
-Ancora una precisazione. L'opzione ``force=True`` del metodo ``Close`` è un pochino ingannevole. Non significa affatto, di per sé, che la chiusura della finestra verrà forzata e quindi garantita in ogni caso. Vuol dire solo che l'evento non avrà il potere di "vietare" la chiusura. Ma, come abbiamo visto, se voi intercettate l'evento e nel callback finite per non chiudere la finestra, ebbene la finestra resterà viva anche in seguito a un ``Close(force=True)``. 
+Ancora una precisazione. L'opzione ``force=True`` del metodo ``Close`` è un pochino ingannevole. Non significa affatto, di per sé, che la chiusura della finestra verrà forzata e quindi garantita in ogni caso. Vuol dire solo che l'evento non avrà il potere di "vietare" la chiusura. Ma, ricordiamolo ancora una volta, "vietare" l'evento e chiudere davvero la finestra sono due cose indipendenti. Se voi intercettate l'evento e nel callback finite per non chiudere la finestra, ebbene la finestra resterà viva anche in seguito a un ``Close(force=True)``. 
 
-Ovviamente scrivere un callback che non chiude la finestra, nonostante l'evento non abbia il potere di ``Veto``, deve essere considerato una cattiva pratica, se non un errore di programmazione vero e proprio. Ma wxPython non ha modo di rilevare una cosa del genere a runtime, e voi non potete sapere se state chiamando ``Close`` su una finestra con un callback scritto male (da qualcun altro, ovviamente!). 
+Ovviamente scrivere un callback che non chiude la finestra, nonostante l'evento non abbia il potere di ``Veto``, *deve essere considerato una cattiva pratica*, se non un errore di programmazione vero e proprio. Ma wxPython non ha modo di rilevare una cosa del genere a runtime, e voi non potete sapere se state chiamando ``Close(True)`` su una finestra con un callback scritto male (da qualcun altro, ovviamente!). 
 
 In definitiva, l'unico modo per essere certi che una finestra si chiuda davvero è chiamare direttamente ``Destroy()``, ma così facendo vi perdete l'eventuale gestione dell'evento di chiusura. In generale, non lo consiglio.
 
@@ -288,6 +290,5 @@ Ecco un esempio di ``Panel`` "schizzinoso" che potrebbe opporsi alla sua distruz
 
 Come si vede, se il ``Panel`` si chiude davvero, resta un buco. Alla riga 38, bisognerà fare qualcosa: riempire il buco, riaggustare il layout, etc. 
 
-Per finire, una menzione per ``DestroyChildren``: quest'arma di distruzione di massa, usata su un widget qualsiasi, lascia in vita lui ma distrugge automaticamente tutti i suoi "figli". Naturalmente, la distruzione di ciascun figlio comporta a catena la morte anche dei figli del figlio, e così via fino alla totale estinzione dell'albero dei discendenti. Può tornare comodo, per esempio, per svuotare un ``wx.Panel`` senza però distruggerlo, e quindi ripopolarlo daccapo. 
-
+Per finire, una menzione per ``DestroyChildren``: quest'arma di distruzione di massa, usata su un widget qualsiasi, lascia in vita lui ma distrugge automaticamente tutti i suoi "figli". Naturalmente, la distruzione di ciascun figlio comporta a catena la morte dei figli del figlio, e così via fino alla totale estinzione dell'albero dei discendenti. Può tornare comodo, per esempio, per svuotare un ``wx.Panel`` senza però distruggerlo, e quindi ripopolarlo daccapo. 
 

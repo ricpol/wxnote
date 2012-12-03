@@ -69,7 +69,7 @@ Può essere complicato orientarsi nella gergo di wxPython, e a maggior ragione t
 
 * "panel" è un ``wx.Panel``, un "pannello" che può contenere altri widget, e che di solito serve da "sfondo" a una finestra. Non ha né bordi ne barra del titolo. 
 
-* "finestra" è usato genericamente per "frame", "dialogo", e talvota anche per "panel": in pratica, un contenitore. 
+* "finestra" è usato genericamente per "frame", "dialogo", e talvolta anche per "panel": in pratica, un contenitore. 
 
 * "contenitore" è un widget che può contenere altri widget: ossia un dialogo, un frame o un panel, essenzialmente. 
 

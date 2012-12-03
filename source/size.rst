@@ -8,7 +8,7 @@
 Le dimensioni in wxPython.
 ==========================
 
-I questa pagina cerchiamo di capire come si specificano le dimensioni di un widget in wxPython. Gran parte delle cose che stiamo per dire hanno significato soprattutto quando sono applicate ai sizer. Quindi queste note sono un importante complemento alle :ref:`due <sizer_basi>` :ref:`pagine <sizer_avanzati>` che dedichiamo ai sizer. In questa pagina faremo riferimento ai sizer, dando per scontato che abbiate già letto le pagine relative. 
+I questa pagina vediamo come si specificano le dimensioni di un widget in wxPython. Gran parte delle cose che stiamo per dire hanno significato soprattutto quando sono applicate ai sizer. Quindi queste note sono un importante complemento alle :ref:`due <sizer_basi>` :ref:`pagine <sizer_avanzati>` che dedichiamo ai sizer: in questa pagina diamo per scontato che le abbiate già lette. 
 
 
 .. index:: 
@@ -27,7 +27,7 @@ Tuttavia in wxWidgets trovate anche alcuni metodi "doppioni" che vi consentono p
 
     button.SetSizeWH(50, 50)
     
-Talvolta invece accade il contrario. Il metodo "normale" richiede più argomenti, e tuttavia ne esiste anche una versione "doppia" che richiede l'uso di ``wx.Size``. Questi doppioni si riconoscono perché terminano in ``*.Sz``. Per esempio, ``SetSizeHints`` ha un doppio ``SetSizeHintsSz``. 
+Talvolta invece accade il contrario. Il metodo "normale" richiede due argomenti, e tuttavia ne esiste anche una versione "doppia" che consente l'uso di ``wx.Size``. Questi doppioni si riconoscono perché terminano in ``*.Sz``. Per esempio, ``SetSizeHints`` ha un doppio ``SetSizeHintsSz``. 
 
 In wxPython le cose sono più semplici da un lato, e involontariamente più complicate dall'altro. wxPython converte automaticamente le istanze di ``wx.Size`` in più confortevoli tuple. Potete ancora usare esplicitamente ``wx.Size`` se proprio volete, ma di solito si preferisce farne a meno::
 
@@ -35,15 +35,15 @@ In wxPython le cose sono più semplici da un lato, e involontariamente più comp
     
 Notate che comuque ``SetSize`` vuole un solo argomento! Soltanto, abbiamo scritto una tupla al posto dell'istanza di ``wx.Size``. Naturalmente si può sempre usare la versione ``*WH`` del metodo, se si preferisce passare due argomenti invece della tupla. 
 
-In aggiunta a questo, in wxPython alcuni metodi "getter" hanno dei "doppioni" che restituiscono una tupla al posto di istanze di ``wx.Size``. Si riconoscono perché terminano in ``*Tuple``. Per esempio, ``GetSize`` ha il doppio ``GetSizeTuple``. 
+In aggiunta a questo, in wxPython alcuni metodi "getter" hanno dei "doppioni" che restituiscono una tupla al posto di istanze di ``wx.Size``. Si riconoscono perché terminano in ``*Tuple``. Per esempio, ``GetSize`` ha il compagno ``GetSizeTuple``. 
 
-.. note:: Tutto questo è in effetti confuso e ridondante. E' vero, ma dovete ricordare che in C++ non sono disponibili le strutture-dati di alto livello di Python. Quindi wxWidgets definisce una lunga serie di tipi fondamentali, come ``wx.Point``, ``wx.Size``, ``wx.Rect``, ``wx.DateTime`` e molti altri. La versione wxPython da un lato semplifica le cose, dall'altro necessariamente le complica, perchè i nuovi oggetti Python devono coesistere con le classi preesistenti C++.
+.. note:: Tutto questo è in effetti confuso e ridondante. E' vero, ma dovete ricordare che in C++ non sono disponibili le strutture-dati di alto livello di Python. Quindi wxWidgets definisce una lunga serie di tipi fondamentali, come ``wx.Point``, ``wx.Size``, ``wx.Rect``, ``wx.DateTime`` e molti altri. wxPython da un lato semplifica le cose, dall'altro necessariamente le complica, perchè i nuovi oggetti Python devono coesistere con le classi preesistenti C++.
 
 Un'osservazione conclusiva: passare il valore ``-1`` a qualsiasi argomento di queste funzioni, è come dire "non mi importa". Per esempio, se scrivete::
 
     button.SetSize((50, -1))
     
-imponete che la larghezza del pulsante sia 50 pixel, ma lasciate che wxPython sia libero di determinare l'altezza. 
+imponete che la larghezza del pulsante sia 50 pixel, ma lasciate libero wxPython di determinare l'altezza. 
 
 
 .. index:: 
@@ -107,9 +107,9 @@ La cosa importante da capire qui è che potete indicare esattamente le dimension
 ``Fit`` e ``Layout``: ricalcolare le dimensioni.
 ------------------------------------------------
 
-Esistono apparentemente due versioni di ``Fit``, una come metodo di ``wx.Sizer`` (quindi di tutti i sizer disponibili) e un'altra come metodo di ``wx.Window`` (quindi di tutti i widget). In realtà il secondo finisce per chiamare il primo, quindi alla fine è indifferente quale utilizzate. 
+Esistono apparentemente due versioni di ``Fit``, una come metodo di ``wx.Sizer`` (quindi di tutti i sizer derivati) e un'altra come metodo di ``wx.Window`` (quindi di tutti i widget). In realtà il secondo finisce per chiamare il primo, quindi alla fine è indifferente quale utilizzate. 
 
-``wx.Sizer.Fit(window)`` (passando come argomento il contenitore a cui il sizer appartiene) dice al sizer di calcolare le dimensioni della finestra basandosi su tutto quello che conosce riguardo agli elementi che sono stati inseriti al suo interno. 
+``wx.Sizer.Fit(window)`` (passando come argomento il contenitore che il sizer gestisce) dice al sizer di calcolare le dimensioni della finestra basandosi su tutto quello che conosce riguardo agli elementi al suo interno. 
 
 ``wx.Window.Fit()`` (senza argomenti) dice alla finestra di calcolare le sue dimensioni, con strategie diverse a seconda dei casi. Se alla finestra è stato assegnato un sizer, chiama direttamente ``wx.Sizer.Fit(window)`` per fare il lavoro. Altrimenti sceglie il "best size" per la finestra. 
 
@@ -117,10 +117,10 @@ Anche ``Layout`` è disponibile sia come metodo dei sizer, sia dei contenitori (
 
 Ci sono due casi tipici in cui forzare il ricalcolo con ``Layout`` è utile:
 
-* quando date delle dimensioni fisse a un frame, e poi lo riempite con dei widget, li organizzate in un sizer e assegnate il sizer al frame, in effetti il frame non riceve alcun ``wx.EVT_SIZE`` dopo il primo dimensionamento, e quindi verrà disegnato correttamente. In questi casi, un ``self.Layout()`` proprio alla fine dell'``__init__`` risolve le cose (ma un'altra soluzione, beninteso, è ricordarsi di impostare le dimensioni del frame *come ultima cosa*, oppure non impostarle affatto);
+* quando date delle dimensioni fisse a un frame, e poi lo riempite con dei widget, li organizzate in un sizer e infine assegnate il sizer al frame, in effetti il frame non riceve alcun ``wx.EVT_SIZE`` dopo il primo dimensionamento, e quindi verrà disegnato male. In questi casi, un ``self.Layout()`` proprio alla fine dell'``__init__`` risolve le cose (ma un'altra soluzione, beninteso, è ricordarsi di impostare le dimensioni del frame *come ultima cosa*, oppure non impostarle affatto);
 
 * all'occorrenza, per ri-disegnare la finestra dopo che è stata mostrata, se per esempio sono stati aggiunti o nascosti dei widget. 
 
-In casi particolari potrebbe essere necessario innescare programmaticamente un ``wx.EVT_SIZE``, anche se la finestra non viene ridimensionata. Per esempio, se nascondete/mostrate una toolbar, o un menu, o una status bar, allora chiamare ``Layout`` non basterà a ridisegnare correttamente la finestra, perché questi elementi non sono gestiti direttamente dai sizer. In casi del genere, potete chiamare ``SendSizeEvent()`` sulla finesta per innescare programmaticamente un ``wx.EVT_SIZE``. 
+In casi particolari potrebbe essere necessario innescare programmaticamente un ``wx.EVT_SIZE``, anche se la finestra non viene ridimensionata. Per esempio, se nascondete/mostrate una toolbar, o un menu, o una status bar, allora chiamare ``Layout`` da solo non basta, perché questi elementi non sono gestiti direttamente dai sizer. In casi del genere, potete chiamare ``SendSizeEvent()`` sulla finestra per innescare programmaticamente un ``wx.EVT_SIZE``. 
 
 

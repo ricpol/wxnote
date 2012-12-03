@@ -21,15 +21,15 @@ In questa sezione analizziamo ciò che succede quando la ``wx.App`` termina, e c
 La chiusura "normale".
 ----------------------
           
-La storia semplice è questa: quando il ``MainLoop`` percepisce che anche l'ultima finestra "top level" è stata chiusa, allora decide che il suo lavoro è terminato. Una volta usciti dal ``MainLoop``, c'è ancora l'opportunità di fare qualche operazione di pulizia nel ``wx.App.OnExit``, :ref:`come abbiamo già visto <wxapp_avanzata_onexit>`. Tuttavia non è più possibile, a questo punto, creare una nuova finestra e tenere in vita la ``wx.App``, il cui destino è ormai segnato. Terminato il ``wx.App.OnExit``, la nostra applicazione defunge definitivamente. Dentro il namespace del modulo Python resta ovviamente ancora un riferimento nel nome ``app`` (o quello che avete usato per istanziare la ``wx.App``), ma ormai non ha più alcuna utilità. 
+La storia semplice è questa: quando il ``MainLoop`` percepisce che anche l'ultima :ref:`finestra "top level" <finestre_toplevel>` è stata chiusa, allora decide che il suo lavoro è terminato. Una volta usciti dal ``MainLoop``, c'è ancora l'opportunità di fare qualche operazione di pulizia nel ``wx.App.OnExit``, :ref:`come abbiamo già visto <wxapp_avanzata_onexit>`. Tuttavia non è più possibile, a questo punto, creare una nuova finestra e tenere in vita la ``wx.App``, il cui destino è ormai segnato. Terminato il ``wx.App.OnExit``, la nostra applicazione defunge definitivamente. Dentro il namespace del modulo Python resta ovviamente ancora un riferimento nel nome ``app`` (o quello che avete usato per istanziare la ``wx.App``), ma ormai non ha più alcuna utilità. 
 
 Questa è la storia semplice. Ma ovviamente avete ancora molti modi per complicarvi la vita. 
 
-Per prima cosa, ricordiamo che la ``wx.App`` termina una volta che *tutte* le :ref:`finestre top-level <finestre_toplevel>` sono state chiuse, ovvero tutte le finestre che hanno ``parent=None``, come abbiamo già visto. Quindi fate attenzione a non lasciare qualche finestra top-level nascosta ma ancora viva. I casi tipici sono due: avete creato qualche dialogo top-level e non l'avete mai distrutto esplicitamente (ricordiamo che chiamare solo ``Close()`` su un dialogo lo nasconde, ma non lo distrugge). Oppure, avete creato la ``wx.App`` con l'opzione ``redirect=True``, e la finestra dello streaming output è ancora viva ma nascosta per qualche ragione (di solito perché, per tutta la durata della vostra applicazione, non c'è stato niente da scrivere sullo streaming!). In questi casi, l'utente chiude il frame "principale", ma la ``wx.App`` *non termina davvero*. Forse pensate che questo non è un grande problema: l'utente ha comunque finito di interagire con la gui, e prima o poi spegnerà il computer... Ma se invece riavvia e poi "chiude" un po' di volte il programma, ben presto si trova la memoria intasata dalle vostre istanze fantasma. 
+Per prima cosa, ricordiamo che la ``wx.App`` termina una volta che *tutte* le :ref:`finestre top-level <finestre_toplevel>` sono state chiuse, ovvero tutte le finestre che hanno ``parent=None``, come abbiamo già visto. Quindi fate attenzione a non lasciare qualche finestra top-level nascosta ma ancora viva. I casi tipici sono due: avete creato qualche dialogo top-level e non l'avete mai distrutto esplicitamente (ricordiamo che chiamare ``Close()`` su un dialogo :ref:`lo nasconde ma non lo distrugge <chiusura>`). Oppure, avete creato la ``wx.App`` con l'opzione ``redirect=True``, e la finestra dello streaming output è ancora viva ma nascosta per qualche ragione (forse perché, per tutta la durata della vostra applicazione, non c'è stato niente da scrivere sullo streaming!). In questi casi, l'utente chiude il frame "principale", ma la ``wx.App`` *non termina davvero*. Forse pensate che questo non è un grande problema: l'utente ha comunque finito di interagire con la gui, e prima o poi spegnerà il computer... Ma se invece riavvia e poi "chiude" un po' di volte il programma, ben presto si troverà la memoria intasata dalle vostre istanze fantasma. 
 
 E c'è dell'altro: se avete scritto qualcosa nel ``wx.App.OnExit``, *non verrà mai eseguito*, perché non si esce mai dal ``MainLoop``. Inutile dire che, se questo codice comprende operazioni di assestamento dei dati nel database, o delle scritture nel log, queste non verranno eseguite, e la prossima volta che si aprirà il programma ci si troverà con dati inconsistenti. 
 
-Quindi fate sempre molta attenzione a non creare finestre top-level e poi lasciarle in giro senza sapere se ci sono ancora o no. Una strategia di emergenza è catturare il ``wx.EVT_CLOSE`` della finestra "principale" e, prima di distruggerla, verificare che non ci siano altre finestre top level ancora in vita (``wx.GetTopLevelWindows`` torna utile), ed eventualmente chiuderle. Anche in questo caso però fate attenzione perché non è detto che chiamare ``Close()`` basti a garantire la distruzione. La soluzione più brutale è chiamare direttamente ``Destroy()``, più o meno così::
+Quindi fate sempre molta attenzione a non creare finestre top-level e poi lasciarle in giro senza sapere se ci sono ancora o no. Una strategia di emergenza è catturare il ``wx.EVT_CLOSE`` della finestra "principale" e, prima di distruggerla, verificare che non ci siano altre finestre top-level ancora in vita (``wx.GetTopLevelWindows`` torna utile), ed eventualmente chiuderle. Anche in questo caso però fate attenzione perché non è detto che chiamare ``Close()`` basti a garantire la distruzione (abbiamo già visto perché :ref:`in un'altra pagina <chiusura_forzata>`). La soluzione più brutale è chiamare direttamente ``Destroy()``, più o meno così::
     
     # nel callback dell'EVT_CLOSE della "finestra principale"
     def on_close(self, evt): 
@@ -66,9 +66,11 @@ Nel dubbio, vi tocca controllare se si tratta di frame o di dialoghi, e agire co
             
 Come vedete (riga 5), siamo piombati nel difficile, molto difficile. E non è detto che funzioni: per esempio, se una delle finestre rifiuta di chiudersi, ma si "dimentica" di comunicare il suo ``Veto()``, allora ``window.Close()`` (riga 7) restituirà ``True``, e noi crederemo di averla chiusa quando invece è ancora in giro. Ci tocca aggiungere altri test per essere davvero sicuri... 
 
-Ovviamente non sono ipotesi frequenti. Devo dire però di non aver mai usato, in pratica, un metodo come questo per accertarmi che tutte le finestre top-level siano chiuse al momento di uscire dall'applicazione. E francamente vi sconsiglio di provarci. 
+Ovviamente non sono ipotesi frequenti. Devo dire di non aver mai usato, in pratica, un metodo come questo per accertarmi che tutte le finestre top-level siano chiuse al momento di uscire dall'applicazione. E francamente vi sconsiglio di provarci. 
 
-**La soluzione corretta** è invece *tenere sempre traccia* di tutte le finestre che aprite, soprattutto quelle top-level, e di accertarvi sempre di chiuderle appena non servono più. In questo modo, quando arriva il momento di chiudere anche l'ultima finestra principale, siete sicuri che anche la ``wx.App`` terminerà la sua vita in modo onesto e dignitoso. 
+**La soluzione corretta** è invece *tenere sempre traccia* di tutte le finestre che aprite, soprattutto quelle top-level, e di accertarvi sempre di chiuderle appena non servono più. In questo modo, quando arriva il momento di chiudere anche l'ultima finestra principale, siete sicuri che anche la ``wx.App`` terminerà la sua vita correttamente.
+
+E' opportuno ricordare che l'eventuale non-terminazione della ``wx.App`` non deve essere considerata come un'eventualità da gestire, ma come un vero e proprio baco da correggere. 
 
 .. index::
    single: wx.App; SetExitOnFrameDelete()
@@ -78,7 +80,7 @@ Ovviamente non sono ipotesi frequenti. Devo dire però di non aver mai usato, in
 Come mantenere in vita la ``wx.App``.
 -------------------------------------
 
-Ma c'è ancora dell'altro da sapere. Potrebbe capitarvi di *non* volere che la ``wx.App`` termini, ma che il suo ``MainLoop`` resti attivo anche dopo che l'ultima finestra è stata chiusa. (Dopo tutta la fatica che abbiamo fatto nel paragrafo precedente per assicurarci che la ``wx.App`` muoia davvero, sembra una beffa. Ma può succedere.) 
+Ma c'è ancora dell'altro da sapere. Potrebbe capitarvi di *non* volere che la ``wx.App`` termini, ma che invece il suo ``MainLoop`` resti attivo anche dopo che l'ultima finestra è stata chiusa. 
 
 Per fare questo, vi basta chiamare ``SetExitOnFrameDelete(False)`` sulla ``wx.App``. Potete farlo proprio all'inizio, in ``OnInit``::
 
@@ -139,7 +141,7 @@ Ecco un altro possibile approccio::
 
 Qui invece è l'ultima finestra top-level che, al momento della sua chiusura (riga 7) utilizza ``wx.CallLater`` per chiedere alla ``wx.App`` di creare una "seconda generazione" di frame immediatamente dopo la sua morte. 
 
-Notate l'utilizzo di ``wx.CallLater``, che aspetta un certo periodo (in questo caso, 1 ms, il minimo possibile) e poi chiama una funzione. Lo abbiamo scelto perché non tiene impegnato il ``MainLoop``, e quindi ci serve a dimostrare che il ``MainLoop`` resta vivo comunque, per ragioni sue (ossia, perché abbiamo settato il flag a ``False``). 
+Notate l'utilizzo di ``wx.CallLater``, che aspetta un certo periodo (in questo caso, 1 ms, il minimo possibile) e poi chiama una funzione. Lo abbiamo scelto perché ``wx.CallLater`` non tiene impegnato il ``MainLoop``, e quindi ci serve a dimostrare che il ``MainLoop`` resta vivo comunque, per altri motivi (ossia, perché abbiamo settato il flag a ``False``). 
 
 Avremmo potuto invece usare ``wx.CallAfter``, che è "quasi uguale", nel senso che chiama una data funzione dopo che tutti i gestori degli eventi correnti sono stati processati. Il punto però è che ``wx.CallAfter`` aggiunge la sua funzione in coda ai compiti del ``MainLoop``, e quindi lo tiene impegnato almeno fino a quel momento. E siccome nel nostro caso la funzione chiamata è ``create_new_toplevel`` che appunto crea una nuova finestra top-level, in sostanza il ``MainLoop`` non ha mai modo di terminare, indipendentemente da come è stato settato il flag ``SetExitOnFrameDelete``. 
 
@@ -147,7 +149,7 @@ Provate a sostituire la riga 7 dell'esempio precedente con::
 
     wx.CallAfter(wx.GetApp().create_new_toplevel)
 
-Quando si distrugge la "prima generazione" compare la seconda, come previsto. Ma quando provate a distruggere anche questa, la ``wx.App`` non termina come prima, anche se il flag è ormai settato a ``True``. Invece, ogni volta appare una nuova "seconda generazione", all'infinito. Questo perché ``wx.CallAfter`` tiene in vita il ``MainLoop`` fino al momento di chiamare ``create_new_toplevel``, dove però si crea una nuova finestra top-level, e quindi il ``MainLoop`` trova un'altra ragione per proseguire la sua attività, e così all'infinito. 
+Quando si distrugge la "prima generazione" compare la seconda, come previsto. Ma quando provate a distruggere anche questa, la ``wx.App`` non termina come prima, anche se il flag è ormai impostato a ``True``. Invece, ogni volta appare una nuova "seconda generazione", all'infinito. Questo perché ``wx.CallAfter`` tiene in vita il ``MainLoop`` fino al momento di chiamare ``create_new_toplevel``, dove però si crea una nuova finestra top-level, e quindi il ``MainLoop`` trova un'altra ragione per proseguire la sua attività, all'infinito. 
 
 In altri termini ``wx.CallAfter``, usato così, potrebbe essere un'altra strada per non far terminare il ``MainLoop``, senza dover usare ``SetExitOnFrameDelete``. L'esempio di sopra potrebbe essere scritto anche così::
 
@@ -171,7 +173,7 @@ In altri termini ``wx.CallAfter``, usato così, potrebbe essere un'altra strada 
     app = MyApp(False)
     app.MainLoop()
 
-Naturalmente questo lascia aperto il problema di capire come terminare, a un certo punto, la ``wx.App``. Ma non è un problema enorme. Si potrebbe aggiungere un test nel gestore ``on_close``, in modo da chiamare ``wx.CallAfter`` una volta sola. Oppure si potrebbe chiamare ``wx.Exit()``... 
+Naturalmente questo lascia aperto il problema di capire come terminare, a un certo punto, la ``wx.App``. Ma non è un problema enorme. Si potrebbe aggiungere un test nel callback ``on_close``, in modo da chiamare ``wx.CallAfter`` una volta sola. Oppure si potrebbe chiamare ``wx.Exit()``... 
 
 Ma questo è appunto l'argomento del prossimo paragrafo.
 

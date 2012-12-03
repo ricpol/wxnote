@@ -7,11 +7,11 @@
 Gli eventi: le basi da sapere.
 ==============================
 
-wxPython, come tutti i gui framework, è "event-driven": il suo ``MainLoop``, una volta avviato, si mette in ascolto degli eventi generati dall'utente, e risponde ad essi nel modo che voi avete stabilito. 
+wxPython, come tutti gli altri, è un gui framework "event-driven": il suo ``MainLoop``, una volta avviato, si mette in ascolto degli eventi generati dall'utente, e risponde a essi nel modo che voi avete stabilito. 
 
-Praticamente ogni istante della vita di un'applicazione wxPython è affollata di eventi, visto che praticamente ogni cosa innesca un evento: non solo le interazioni "di alto livello" (premere un pulsante, scegliere una voce di menu, etc.), ma anche la pressione dei tasti, lo spostamento del mouse, il cambiamento di dimensioni di una finestra, e molte molte altre cose ancora, generano eventi. Perfino quando tutto il resto tace, viene generato di continuo un ``wx.EVT_IDLE``, per segnalare che il ``MainLoop`` in quel momento non ha niente da fare!
+Ogni istante della vita di un'applicazione wxPython è affollata di eventi, visto che praticamente ogni cosa ne innesca uno: non solo le interazioni "di alto livello" (premere un pulsante, scegliere una voce di menu, etc.), ma anche la pressione dei tasti, lo spostamento del mouse, il cambiamento di dimensioni di una finestra, e molte molte altre cose ancora, tuuo genera eventi. Perfino quando tutto il resto tace, viene generato di continuo un ``wx.EVT_IDLE``, per segnalare che il ``MainLoop`` in quel momento non ha niente da fare!
 
-Come potete immaginare, wxPython offre moltissime possibilità di controllo sugli eventi. Il rovescio della medaglia è che il sistema degli eventi è molto difficile da comprendere nei dettagli. In questa pagina diamo uno sguardo a volo d'uccello ai vari attori coinvolti, ma esaminiamo esclusivamente gli aspetti più semplici, che vi servono a gestire le situazioni normali. Rimandiamo :ref:`a una pagina separata <eventi_avanzati>` l'analisi degli aspetti più complessi. 
+Come potete immaginare, wxPython offre moltissime possibilità di controllo sugli eventi. Il rovescio della medaglia è che il sistema è molto difficile da comprendere nei dettagli. In questa pagina diamo uno sguardo a volo d'uccello ai vari attori coinvolti, ma esaminiamo esclusivamente gli aspetti più semplici, che vi servono a gestire le situazioni normali. Rimandiamo :ref:`a una pagina separata <eventi_avanzati>` l'analisi degli aspetti più complessi. 
 
 
 Gli attori coinvolti.
@@ -28,7 +28,7 @@ Ecco, questo sarebbe già uno degli aspetti complessi. Per il momento vi basta s
 
 Tuttavia, a causa del complesso sistema con cui wxWidgets (il framework C++ su cui wxPython è basato) gestisce gli eventi, voi non incontrerete mai di persona un oggetto-evento, almeno finché vi limitate alle basi. 
 
-E allora, che cosa incontrate in genere nella vita di tutti i giorni? Ancora un po' di pazienza, prego.
+E allora, che cosa incontrate nella vita di tutti i giorni? Ancora un po' di pazienza, prego.
 
 .. index::
    single: eventi; callback
@@ -36,7 +36,7 @@ E allora, che cosa incontrate in genere nella vita di tutti i giorni? Ancora un 
 Che cosa è un callback.
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Questo è facile. Un callback è un pezzo di codice che volete che sia eseguito in risposta a un dato evento. E' semplicemente una funzione, o un metodo di una classe, che scrivete voi stessi. Per essere qualificato come callback, è necessario che la funzione *riceva uno e un solo argomento* (oltre a ``self`` se è un metodo, naturalmente): un riferimento all'oggetto-evento stesso. Quindi, qualcosa come::
+Questo è facile. Un callback è un pezzo di codice che volete che sia eseguito in risposta a un dato evento. E' semplicemente una funzione, o un metodo di una classe, che scrivete voi stessi. Per essere qualificato come callback, è necessario che la funzione *riceva uno e un solo argomento* (oltre a ``self`` se è un metodo, naturalmente). E questo argomento deve essere un riferimento all'oggetto-evento stesso. Quindi, qualcosa come::
 
     def my_callback(event):
         # etc etc
@@ -61,11 +61,11 @@ In questo modo, wxPython non avrà comunque problemi, e voi all'ccorrenza potete
 
     my_callback() # esegue manualmente il callback
     
-Resta inteso che, se il codice del callback fa davvero uso del riferimento all'evento, e se quindi si trova disorientato quando gli passate ``None``, questo è un problema vostro. 
+Resta inteso che, se il codice del callback fa davvero uso del riferimento all'evento, e quindi si trova disorientato quando gli passate ``None``, questo è un problema vostro. 
 
-Attenzione, ancora un po' di confusione: spesso nei testi inglesi trovate "handler" per dire semplicemente "callback". Il significato è in genere ovvio dal contesto. E' ancora più chiaro quando trovate "handler function" o "handler method": questo vuol dire senz'altro "callback".
+Attenzione, ancora un po' di confusione: spesso nei testi inglesi trovate "handler" per dire semplicemente "callback". Il significato è in genere ovvio dal contesto. E' ancora più chiaro quando trovate "handler function" o "handler method": questo vuol dire senz'altro "callback". Tuttavia, a rigore un "handler" è un'altra cosa, come vedremo subito.
 
-Ma come potete collegare effettivamente il callback all'evento che volete intercettare? Ancora un po' di pazienza! 
+Ora, come potete collegare effettivamente il callback all'evento che volete intercettare? Ancora un po' di pazienza! 
 
 .. index::
    single: eventi; handler
@@ -76,7 +76,7 @@ Che cosa è un handler.
 
 All'estremo opposto degli oggetti-evento, ci sono gli "handler" (gestori). Gli handler sono classi (derivate dal genitore astratto ``wx.EvtHandler``) che conferiscono la capacità di gestire un evento, appunto. La cosa interessante è che *tutta la gerarchia dei widget wxPython* deriva anche da ``wx.EvtHandler``. Questo è come dire che, in wxPython, ogni widget ha la capacità di gestire gli eventi provenienti da ogni altro widget. 
 
-Di nuovo, non incontrerete mai un handler nella vita di tutti i giorni. Ma questa volta il motivo è che gli handler "da soli" non esistono proprio: invece, è corretto dire che tutti i widget (pulsanti, frame, menu, liste...) *sono anche handler*. Quindi è corretto dire che, quando volete gestire un evento, a questo scopo usate le capacità di handler di un widget (di solito proprio lo stesso che ha anche emesso l'oggetto... guarda un po'). 
+Di nuovo, non incontrerete mai un handler nella vita di tutti i giorni. Ma questa volta il motivo è che gli handler "da soli" non esistono proprio: invece, è corretto dire che tutti i widget (pulsanti, frame, menu, liste...) *sono anche handler*. Quindi è corretto dire che, quando volete gestire un evento, a questo scopo usate le capacità di handler di un widget (di solito proprio lo stesso che ha anche emesso l'oggetto-evento!). 
 
 E come fate a usare queste capacità di handler? Ancora un attimo di pazienza... ci siamo quasi. 
 
@@ -87,7 +87,7 @@ E come fate a usare queste capacità di handler? Ancora un attimo di pazienza...
 Che cosa è un event type.
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Semplicemente, una costante numerica univoca che rappresenta un evento *specifico per un certo tipo di widget*. Detto più rapidamente: un certo tipo di evento. Qui occorre una precisazione. Le classi-evento (e i conseguenti oggetti-evento) sono poche, e molti widget possono innescare lo stesso evento. Per esempio, quando faccio clic su un pulsante e quando scelgo una voce di menu, in entrambi i casi si origina un ``wx.CommandEvent``. 
+Semplicemente, una costante numerica univoca che rappresenta un evento *specifico per un certo tipo di widget*. Detto più rapidamente: un certo tipo di evento. Qui occorre una precisazione. Le classi-evento (e i conseguenti oggetti-evento) sono poche, e molti widget possono innescare lo stesso evento. Per esempio, quando fate clic su un pulsante e quando scegliete una voce di menu, in entrambi i casi si origina un ``wx.CommandEvent``. 
 
 Un "event type", d'altra parte, identifica univocamente il tipo di evento in relazione al tipo di widget che lo emette. Per esempio::
 
@@ -118,7 +118,7 @@ Un binder è un oggetto usato per legare uno specifico event type, uno specifico
 
 I binder sono gli oggetti che potete incontrare davvero (finalmente!) nella normale programmazione wxPython. Tuttavia, nella vita di tutti i giorni, non vi troverete mai a creare o manipolare direttamente un binder. 
 
-In effetti tutti i binder necessari sono già creati da wxPython, e vivono pronti all'uso nel namespace ``wx``, sotto forma di simboli del tipo ``wx.EVT_*``. La loro nomenclatura mappa in effetti i nomi delle macro c++ che wxWidget utilizza dietro le quinte per fare i collegamenti. Inoltre, dal momento che non dovete mai creare o modificare un binder, dal vostro punto di vista sono un po' come delle costanti, e quindi ha senso che abbiano nomi tutti maiuscoli. Tuttavia in realtà basta poco per capire che sono oggetti a tutti gli effetti::
+In effetti tutti i binder necessari sono già creati da wxPython nella fase di startup (quando viene eseguita l'istruzione iniziale ``import wx``), e vivono pronti all'uso nel namespace ``wx``, sotto forma di simboli del tipo ``wx.EVT_*``. La loro nomenclatura mappa in effetti i nomi delle macro c++ che wxWidget utilizza dietro le quinte per fare i collegamenti. Inoltre, dal momento che non dovete mai creare o modificare un binder, dal vostro punto di vista sono un po' come delle costanti, e quindi ha senso che abbiano nomi tutti maiuscoli. Tuttavia in realtà basta poco per capire che sono oggetti a tutti gli effetti::
 
     >>> import wx
     >>> wx.EVT_BUTTON
@@ -162,9 +162,9 @@ Tutto ciò che dobbiamo fare è chiamare il metodo ``Bind`` dell'handler che sce
     button = wx.Button(...)
     button.Bind(wx.EVT_BUTTON, callback)
     
-``wx.EVT_BUTTON``, ormai lo sappiamo, è il binder che identifica il particolare evento che si genera quando un pulsante è premuto. ``callback`` è il nostro callback (di solito è un metodo della stessa classe in cui vivono le due righe di codice che abbiamo appena scritto, per cui lo trovate nella forma ``self.callback``). ``button`` è il nostro pulsante, del quale però stiamo utilizzando le sue capacità di handler. ``Bind`` è il metodo implementato da ``wx.EvtHandler`` (e pertanto ereditato anche da ``button``) che compie la magia del collegamento. 
+``wx.EVT_BUTTON``, ormai lo sappiamo, è il binder che identifica il particolare evento che si genera quando un pulsante è premuto. ``callback`` è il nostro callback (di solito è un metodo della stessa classe in cui vivono le due righe di codice che abbiamo appena scritto, per cui lo scrivete in genere nella forma ``self.callback``). ``button`` è il nostro pulsante, del quale però stiamo qui utilizzando le sue capacità di handler. ``Bind`` è il metodo implementato da ``wx.EvtHandler`` (e pertanto ereditato anche da ``button``) che compie la magia del collegamento. 
 
-.. note:: a prima vista sembra contradditorio. Non avevamo detto che erano i binder a collegare eventi, handler e callback? E non abbiamo visto che i binder hanno anche loro un metodo ``Bind``? E allora perché stiamo usanto ``wx.EvtHandler.Bind`` per fare il collegamento? In realtà ``wx.EvtHandler.Bind`` chiama semplicemnte ``wx.PyEventBinder.Bind``, quindi in definitiva sì, sono i binder a fare il collegamento dietro le quinte. Qui occorre una precisazione di carattere storico. I binder non solo hanno un loro ``Bind``, ma implementano anche un metodo ``__call__`` che consente di chiamarli come una funzione, e che iternamente chiama ``Bind``. Nelle vecchie versioni di wxPython, il collegamento era fatto in questo modo:
+.. note:: a prima vista sembra contradditorio. Non avevamo detto che erano i binder a collegare eventi, handler e callback? E non abbiamo visto che i binder hanno anche loro un metodo ``Bind``? E allora perché stiamo usanto ``wx.EvtHandler.Bind`` per fare il collegamento? In realtà ``wx.EvtHandler.Bind`` chiama semplicemnte ``wx.PyEventBinder.Bind``, quindi in definitiva sì, sono i binder a fare il collegamento dietro le quinte. Qui occorre una precisazione di carattere storico. I binder non solo hanno un loro ``Bind``, ma implementano anche un metodo ``__call__`` che consente di chiamarli come una funzione, e che internamente chiama ``Bind``. Nelle vecchie versioni di wxPython, il collegamento era fatto in questo modo:
 
     ::
 
@@ -176,7 +176,7 @@ Tutto ciò che dobbiamo fare è chiamare il metodo ``Bind`` dell'handler che sce
 
         wx.EVT_BUTTON.Bind(button.GetId(), callback)
     
-    e si vedeva chiaramente che era proprio il binder a lavorare. Tuttavia, questo sistema appariva poco "object-oriented", perché sembrava di chiamare direttamente un oggetto, e per di più un oggetto che sembra una costante. In effetti però ``wx.PyEventBinder.__call__`` è ancora lì per retrocompatibilità, e potete ancora vedere questo stile di collegamento nel codice più vecchio (ed è anche la ragione di questa nota un po' pedante). 
+    e si vedeva chiaramente che era proprio il binder a lavorare. Tuttavia, questo sistema appariva poco "object-oriented", perché sembrava di chiamare direttamente un oggetto, e per di più un oggetto che sembra una costante. In effetti però ``wx.PyEventBinder.__call__`` è ancora lì per retrocompatibilità, e potete ancora vedere questo stile di collegamento nel codice più vecchio (e questa è anche la ragione di questa nota un po' pedante). 
 
 .. index::
    single: eventi; Bind()
@@ -196,15 +196,17 @@ Si può anche scegliere un altro handler, però. Per esempio, se il pulsante sta
     button = wx.Button(self, ...) # 'self' e' un frame, dialog, panel...
     self.Bind(wx.EVT_BUTTON, callback, button)
 
-Notate che adesso ``Bind`` è stato chiamato passando ``button`` come terzo argomento. E' come dare questo ordine: handler ``self``, collega a ``callback`` tutti i ``wx.EVT_BUTTON`` che provengono da ``button``. 
+Notate che adesso ``Bind`` è stato chiamato passando ``button`` come terzo argomento. E' come dare questo ordine: handler ``self``, devi collegare a ``callback`` tutti i ``wx.EVT_BUTTON`` che provengono da ``button``. 
 
 Il terzo argomento è opzionale. Se però avessimo scritto soltanto::
 
     self.Bind(wx.EVT_BUTTON, callback) 
 
-questo avrebbe voluto dire: handler ``self``, collega a ``callback`` tutti i ``wx.EVT_BUTTON`` che provengono *da qualsiasi tuo "figlio"*. E naturalmente questa è una cosa utile talvolta, pericolosa di solito.
+questo avrebbe voluto dire: handler ``self``, devi collegare a ``callback`` tutti i ``wx.EVT_BUTTON`` che provengono *da qualsiasi tuo "figlio"*. E naturalmente questa è una cosa utile talvolta, pericolosa di solito.
 
 Che differenza c'è tra ``button.Bind(...)`` e ``self.Bind(..., button)``? Talvolta possono esserci differenze sottili, come vedremo :ref:`nella seconda parte <eventi_avanzati>` quando parleremo della propagazione degli eventi. Nella maggior parte dei casi, però non c'è alcuna differenza pratica. 
+
+Ancora una domanda: abbiamo visto che è possibile collegare a un evento anche l'handler di un altro widget "genitore" (o "progenitore" nella catena dei parent) del widget che lo ha emesso. E' possibile invece collegare l'evento all'handler di un widget "figlio", o all'handler di un widget che non ha niente a che vedere con chi ha emesso l'evento (per esempio, vive in un'altra finestra)? La risposta è no, perché l'evento non si propagherà mai in quella direzione. E' un'altra cosa che vedremo meglio parlando :ref:`di propagazione degli eventi <eventi_avanzati>`.
 
 
 Sapere quali eventi possono originarsi da un widget.
@@ -235,8 +237,8 @@ Infine, :ref:`ho scritto una ricetta apposta <catturaeventi>` per cercare di ris
 Estrarre informazioni su un evento nel callback.
 ------------------------------------------------
 
-Come abbiamo visto, i callback devono accettare come argomento un riferimento all'evento che li ha invocati::
-
+Come abbiamo visto, i callback devono accettare come argomento un riferimento all'evento che li ha invocati:
+ 
     def callback(self, event):
         # etc etc
         
@@ -251,9 +253,9 @@ Per esempio, un ``wx.ListCtrl`` emette vari tipi di eventi della classe ``wx.Lis
         
 La stessa classe-madre astratta ``wx.Event`` ha dei metodi utili, che tutte le altre classi-evento ereditano. Per esempio, ``GetEventObject()`` vi restituisce un riferimento al widget che ha emesso l'evento. ``GetEventType()`` vi dice l'event type esatto. 
 
-Non è detto che un oggetto-evento contenga informazioni utili per ciascun metodo previsto dalla sua classe, naturalmente. Per esempio, ``wx.CommandEvent.IsChecked()`` è significativo quando il ``wx.CommandEvent`` è stato emesso da una checkbox (o da una voce di menu che si può "flaggare"). Naturalmente, se il ``wx.CommandEvent`` proviene da un pulsante, questo metodo non avrà nessuna informazione.
+Non è detto che un oggetto-evento contenga informazioni utili per ciascun metodo previsto dalla sua classe, naturalmente. Per esempio, ``wx.CommandEvent.IsChecked()`` è significativo quando il ``wx.CommandEvent`` è stato emesso da una checkbox (o da una voce di menu che si può "flaggare"). Naturalmente, se il ``wx.CommandEvent`` proviene da un pulsante, questo metodo non conterrà niente di utile.
 
-Infine, se non siete sicuri di quale evento esattamente sta arrivando al callback, probabilmente siete ancora in fase di sviluppo. Quindi, un bel ``print event`` (o un più raffinato ``print event.__class__.__name__``, se preferite) basteranno a togliervi ogni dubbio.
+Infine, se non siete sicuri di quale evento sta arrivando al callback, probabilmente siete ancora in fase di sviluppo. Quindi, un bel ``print event`` (o un più raffinato ``print event.__class__.__name__``, se preferite) basteranno a togliervi ogni dubbio.
 
 
 Un esempio conclusivo.
