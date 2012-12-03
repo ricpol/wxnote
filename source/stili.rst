@@ -6,7 +6,7 @@
 I flag di stile.
 ================
 
-I flag di stile sono onnipresenti in wxPython. Al momento della creazione di un widget qualsiasi, è comune aggiungere un parametro ``style`` al costruttore. Ogni widget ha i suoi flag di stile predefiniti, che si possono combinare per ottenere varie personalizzazioni. 
+I flag di stile sono frequenti in wxPython. Al momento della creazione di un widget qualsiasi, è comune aggiungere un parametro ``style`` al costruttore. Ogni widget ha i suoi flag di stile predefiniti, che si possono combinare per ottenere varie personalizzazioni. 
 
 .. index::
    single: bitmask
@@ -14,15 +14,15 @@ I flag di stile sono onnipresenti in wxPython. Al momento della creazione di un 
 Che cos'è una bitmask.
 ----------------------
 
-Prima di tutto, una piccola spiegazione sulle bitmask: non è un argomento specifico di wxPython, ma serve a capire meglio il resto. Se avete già familiarità con il concetto, saltate pure questo paragrafo. 
+Prima di tutto, una piccola spiegazione sulle bitmask: non è un argomento specifico di wxPython, ma serve a capire meglio il resto. Se avete familiarità con il concetto, saltate questo paragrafo. 
 
-Ciascuno stile in wxPython è definito da una costante globale (wxPython fa uso smodato di costanti globali... lo avetate già notato?). Per esempio::
+Ciascuno stile in wxPython è definito da una costante globale. Per esempio::
 
     >>> import wx
     >>> wx.TE_READONLY # lo stile per i TextCtrl di sola lettura
     16
 
-Quello che alcuni noterebbero a prima vista, è che tutte queste costanti sono scelte per essere potenze di 2. La cosa è utile perché le potenze di 2, in notazione binaria, si possono sommare tra loro in modo che ciascun addendo contribuisca a modificare solo un bit della somma finale. In altre parole, è sempre possibile ricostruire gli addendi a partire dal risultato. Potete fare delle prove con carta e penna, se non ci credete... Non è compito di questo paragrafo convincervi della cosa.
+Quello che alcuni notano a prima vista, è che tutte queste costanti sono scelte per essere potenze di 2. La cosa è utile perché le potenze di 2, in notazione binaria, si possono sommare tra loro in modo che ciascun addendo contribuisca a modificare solo un bit della somma finale. In altre parole, è sempre possibile ricostruire gli addendi a partire dal risultato. 
 
 La comodità è che in questo modo potete combinare gli stili tra di loro, semplicemente sommandoli: dalla somma, wxPython ricava l'elenco di quelli che avete scelto. 
 
@@ -57,7 +57,7 @@ elimina anche la possibilità di espansione e riduzione a icona.
 Conoscere i flag di stile di un widget.
 ---------------------------------------
 
-Ogni widget può avere un set di stili personalizzati tra cui scegliere, e non esiste un metodo per sapere a runtime quali sono. Inoltre, siccome gli stili sono solo delle costanti numeriche, non esistono docstring che spiegano rapidamente che cosa fanno. 
+Ogni widget può avere un set di stili personalizzati tra cui scegliere, e non esiste un modo per sapere a runtime quali sono. Inoltre, siccome gli stili sono solo delle costanti numeriche, non esistono docstring che spiegano rapidamente che cosa fanno. 
 
 Tra l'altro, il nome stesso di "stile" è ingannevole. Alcuni stili effettivamente cambiano solo il look del widget a cui si applicano, ma molti si riferiscono a caratteristiche strutturali più profonde: ``wx.LI_VIRTUAL`` cambia completamente l'utilizzo di un ``wx.ListCtrl``. 
 
@@ -75,7 +75,7 @@ Per esempio, ``wx.TextCtrl.IsMultiline()`` restituisce ``True`` se avete settato
 
 Ma non dovete farci troppo affidamento. Per esempio, in corrispondenza dello stile ``wx.TE_READONLY`` non esiste nessun metodo ``IsReadOnly``. 
 
-Conoscere quali sono questi metodi è ovviamente una questione di sfogliare con pazienza la documentazione, caso per caso. Ovviamente, un po' di mestiere aiuta sempre... per esempio, prima di guardare alla cieca, iniziate a sfogliare i metodi che iniziano con ``Is*`` e poi quelli con ``Get*``. 
+Conoscere quali sono questi metodi è ovviamente una questione di sfogliare con pazienza la documentazione, caso per caso. Ovviamente, un po' di mestiere aiuta... per esempio, prima di guardare alla cieca, iniziate a sfogliare i metodi che iniziano con ``Is*`` e poi quelli con ``Get*``. 
 
 
 .. index::
@@ -98,11 +98,11 @@ In ogni caso, è molto probabile che dobbiate chiamare ``Refresh()`` sul widget,
 Che cosa sono gli extra-style. 
 ------------------------------
 
-Definire gli stili come costanti numeriche che si possono combinare con le bitmask è comodo all'inizio, ma prima o poi si arriva al punto dolente: non ci sono tante potenze di 2 in circolazione. Tutto va bene, se il widget ha bisogno di pochi stili. 
+Definire gli stili come costanti numeriche che si possono combinare con le bitmask è comodo all'inizio, ma prima o poi si arriva a un limite: non ci sono tante potenze di 2 in circolazione. 
 
-Tuttavia, man mano che occorrono sempre più stili per le più svariate necessità di un widget, ci si scontra con i limiti del tipo numerico (``long``) che C++ riserva per le costanti degli stili. 
+Se il widget ha bisogno di pochi stili, tutto va bene. Tuttavia, man mano che occorrono sempre più stili per le più svariate necessità di un widget, ci si scontra con i limiti del tipo numerico (``long``) che C++ riserva per le costanti degli stili. 
 
-Ed ecco che arrivano in soccorso gli extended style (o extra style). In pratica si tratta di stili aggiuntivi che non possono stare nello spazio delle normali bitmask, e vanno quindi aggiunti a parte, con il metodo ``SetExtraStyle``. Questo metodo va chiamato ovviamente dopo che il widget è stato creato, ma prima di mostrarlo (chiamando ``Show()`` sul widget stesso o sul suo parent contenitore). 
+Ed ecco che arrivano in soccorso gli "extended style" (o extra style). In pratica si tratta di stili aggiuntivi che non possono stare nello spazio delle normali bitmask, e vanno quindi aggiunti a parte, con il metodo ``SetExtraStyle``. Questo metodo va chiamato ovviamente dopo che il widget è stato creato, ma prima di mostrarlo (chiamando ``Show()`` sul widget stesso o sul suo parent contenitore). 
 
 Di nuovo, la documentazione è l'unico posto dove potete sapere se un certo widget prevede anche degli extra-style. In ogni caso, è utile sapere che ``wx.Window`` ha alcuni extra-style definiti, e siccome ``wx.Window`` è la classe progenitrice di tutti i widget, questi vengono ereditati da tutta la gerarchia (anche se naturalmente per la stragrande maggioranza dei widget non hanno alcun significato). Inoltre, anche ``wx.Frame`` e ``wx.Dialog`` (e quindi le loro sottoclassi dirette) ne aggiungono alcuni. 
 
@@ -116,7 +116,7 @@ Gli extra-style in genere hanno scopi abbastanza esotici, e servono di rado. Alc
 
 * ``wx.WS_EX_VALIDATE_RECURSIVELY`` dice alla finestra di validare non solo tutti i suoi figli diretti (comportamento di default), ma anche i figli dei figli, etc. Utile quando si usano i :ref:`validatori <validatori>`, e la finestra contiene per esempio dei panel con dentro degli altri panel. 
 
-* ``wx.WS_EX_BLOCK_EVENTS`` dice alla finestra di bloccare la propagazione degli eventi che partono dai suoi figli. Gli eventi arrivano fin qui, ma poi non si propagano oltre. Notare che i ``wx.Dialog``, :ref:`a differenza dei frame <wxdialog>`, hanno questo flag settato per default. 
+* ``wx.WS_EX_BLOCK_EVENTS`` dice alla finestra di bloccare la propagazione degli eventi che partono dai suoi figli. Gli eventi arrivano fin qui, ma poi non si propagano oltre. Notare che i ``wx.Dialog``, :ref:`a differenza dei frame <wxdialog>`, hanno questo flag impostato per default. 
 
 * ``wx.WS_EX_CONTEXTHELP``, ``wx.DIALOG_EX_CONTEXTHELP``, ``wx.FRAME_EX_CONTEXTHELP`` aggiungono il pulsante della guida rapida alla barra del titolo della finestra. 
 
@@ -126,5 +126,5 @@ In questi casi, occorre intraprendere una strada ancora più complicata, nota co
 
 .. todo:: una pagina sulla two-step creation.
 
-.. note:: Tutta questa complicazione degli extra-style a causa della limitazione delle bitmask, non denuncia forse un problema di design? Risposta breve: sicuramente sì. Detto questo, non è per difendere wxWidgets, ma praticamente qualsiasi grande framework con molta storia alle spalle accumula "regrets" dovuti a scarsa lungimiranza iniziale. Quando wxWidgets è nato, le finestre non avevano pulsanti "context help". Infine, va detto che gli extra-style sono rari: la stragrande maggioranza dei widget ha 3-4 stili definiti, e le bitmask sono più che sufficienti, e lasciano spazio anche per aggiunte future. 
+.. note:: Tutta questa complicazione degli extra-style a causa della limitazione delle bitmask, non denuncia forse un problema di design? Risposta breve: sicuramente sì. Detto questo, non è per difendere wxWidgets, ma praticamente qualsiasi grande framework con molta storia alle spalle accumula "regrets" dovuti a scarsa lungimiranza iniziale. Quando wxWidgets è nato, le finestre non avevano pulsanti "context help". Infine, va detto che gli extra-style sono rari: la stragrande maggioranza dei widget ha 3-4 stili definiti, e le bitmask sono più che sufficienti, lasciando spazio anche per aggiunte future. 
 

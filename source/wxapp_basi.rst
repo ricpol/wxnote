@@ -10,13 +10,13 @@
 ``wx.App``: le basi da sapere.
 ==============================
 
-Questa pagina racconta le pochissime cose assolutamente da sapere sulla ``wx.App``, che è il cuore di ogni applicazione wxPython. Se non avete mai toccato wxPython in vita vostra, dovete iniziare di qui. 
+Questa pagina racconta le pochissime cose assolutamente da sapere sulla ``wx.App``, che è il cuore di ogni applicazione wxPython. 
 
 
 Che cosa è una ``wx.App`` e come lavorarci.
 -------------------------------------------
 
-La classe ``wx.App`` è il motore della nostra interfaccia grafica. Ogni applicazione wxPython deve avere una ``wx.App`` istanziata e funzionante. 
+La classe ``wx.App`` è il motore della nostra interfaccia grafica. Ogni applicazione wxPython deve avere una, e solo una, ``wx.App`` istanziata e funzionante. 
 
 * La ``wx.App`` deve essere creata (istanziata) prima di istanziare ogni altra cosa, altrimenti wxPython darà errore; 
 
@@ -77,6 +77,8 @@ Prima e dopo il ``MainLoop``, il controllo è mantenuto normalmente dal modulo P
     raw_input('premere <invio> per terminare lo script Python.')
     
 Prima di entrare nel ``MainLoop``, la vostra gui non funziona. Ma una volta che ci siete entrati, non è possibile eseguire altro codice Python che risiede "fuori" da wxPython (a meno di non metterlo in un thread separato, si capisce... ma questo per il momento è fuori portata per noi). 
+
+.. todo:: una pagina sui thread
 
 Questo comportamento è tipico delle gui, e degli altri framework che devono rispondere a eventi (PyGame, per esempio). Devono stare in attesa delle interazioni dell'utente, e per questo "occupano" costantemente il flusso del programma con il loro mainloop. 
 

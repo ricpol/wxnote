@@ -30,15 +30,15 @@ Questo secondo problema si "risolve" in genere usando i RAD. In effetti, l'accop
 Usate i sizer, invece.
 ----------------------
 
-wxPython supporta, come abbiamo visto, anche il posizionamento assoluto. Ma il modo consigliato di organizzare il layout di una finestra sono invece i sizer. 
+wxPython supporta, come abbiamo visto, anche il posizionamento assoluto. Ma il modo consigliato di organizzare il layout di una finestra sono i sizer. 
 
 I sizer costituiscono ormai, e non solo in wxPython, la soluzione standard ai due problemi che abbiamo appena visto:
 
 * ri-calcolano la dimensione di tutti i widget man mano che l'utente ridimensiona la finestra, in modo che il contenuto sia sempre proporzionato al contenitore;
 
-* inserire o togliere elementi in un secondo momento diventa banale: siccome è il sizer a occuparsi di calcolare posizioni e dimensione, voi dovete solo dirgli che cosa c'è. 
+* inserire o togliere elementi in un secondo momento diventa banale: siccome è il sizer a occuparsi di calcolare posizioni e dimensione, voi dovete solo dirgli che cosa c'è dentro. 
 
-Lo svantaggio dei sizer è che richiedono parecchie righe di codice in più (bisogna dire al sizer che cosa includere e come, elemento per elemento), e che sono un po' più difficili da imparare. Inoltre, per i layout più complessi, pensare in termini di sizer può diventare complicato. 
+Lo svantaggio dei sizer è che richiedono parecchie righe di codice in più (bisogna dire al sizer che cosa includere e in che ordine), e che sono un po' più difficili da imparare.  
 
 Tuttavia, con un po' di pratica, i vantaggi superano ben presto gli svantaggi. Non a caso i sizer sono diventati praticamente onnipresenti nel mondo wxPython e non solo.
 
@@ -50,7 +50,7 @@ Tuttavia, con un po' di pratica, i vantaggi superano ben presto gli svantaggi. N
 Che cosa è un sizer.
 --------------------
 
-In wxPython esistono diversi tipi di sizer, tutti derivati dalla classe-madre ``wx.Sizer`` (che però è un genitore astratto, che non deve mai essere usato direttamente). 
+In wxPython esistono diversi tipi di sizer, tutti derivati dalla classe-madre ``wx.Sizer`` (che però è un genitore astratto e non deve mai essere usato direttamente). 
 
 ``wx.Sizer`` non deriva da ``wx.Window`` perché, semplicemente, un sizer non si deve vedere; e non deriva da ``wx.EvtHandler`` perché non ha bisogno di reagire agli eventi. Un sizer rappresenta semplicemente un algoritmo per disporre i widget in un contenitore. 
 
@@ -130,7 +130,7 @@ L'argomento ``flag`` di ``Add``.
 
 Il terzo argomento di ``wx.Sizer.Add`` è ``flag``, ed è una bitmask come quelle che abbiamo già visto :ref:`parlando degli stili <stili>`. In questa bitmask possono rientrare due indicazioni molto differenti tra loro:
 
-* primo, come allineare i widget, rispetto agli altri, e/o definirne le dimensioni;
+* primo, come allineare i widget rispetto agli altri, e/o definirne le dimensioni;
 
 * secondo, se lasciare dello spazio vuoto come bordo intorno al widget. 
 
@@ -144,7 +144,7 @@ Il primo aspetto è complicato. Potete scegliere tra varie opzioni:
 
 * ``wx.SHAPED`` è come ``wx.EXPAND``, ma forza il widget a mantenere le proporzioni originarie. 
 
-Un chiarimento importante riguardo a ``wx.EXPAND``. Questo flag forza il widget a espandersi lungo la direzione *secondaria* del sizer. Per contro, dare al widget una priorità superiore a 0 lo costringe a espandersi lungo la direzione *principale*, come abbiamo visto. Quindi se il widget ha sia priorità superiore a 0, sia il flag ``wx.EXPAND``, riempirà lo spazio disponibile in entrambe le direzioni. 
+Un chiarimento importante riguardo a ``wx.EXPAND``. Questo flag forza il widget a espandersi lungo la direzione *secondaria* del sizer. Per contro, dare al widget una priorità superiore a 0 lo costringe a espandersi lungo la direzione *principale*, come abbiamo visto. Quindi se il widget ha priorità superiore a 0 e il flag ``wx.EXPAND``, riempirà lo spazio disponibile in entrambe le direzioni. 
 
 In generale, dovete chiedervi in quale direzione ha senso far espandere i vostri widget. Per esempio, in un sizer verticale, in genere i widget "multilinea" (liste, etc.) dovrebbero espandersi in entrambe le direzioni, mentre gli altri (caselle di testo, combobox...) potrebbero espandersi solo nella direzione secondaria. Infine, altri ancora (pulsanti, spin...) non dovrebbero espandersi per nulla::
 
@@ -153,13 +153,13 @@ In generale, dovete chiedervi in quale direzione ha senso far espandere i vostri
     sizer.Add(wx.ListBox(...), 1, wx.EXPAND)  # cresce in entrambe le direzioni
     sizer.Add(wx.Button(...), 0, wx.ALIGN_CENTER_HORIZONTAL) # non cresce
     
-Quando al secondo punto, potete indicare una combinazione qualsiasi di ``wx.RIGHT``, ``wx.LEFT``, ``wx.TOP``, ``wx.BOTTOM`` oppure ``wx.ALL`` (che li comprende tutti) per indicare su quali lati volete che sia lasciato il bordo. 
+Quando al secondo aspetto dell'argomento ``flag``, ossia i bordi, potete indicare una combinazione qualsiasi di ``wx.RIGHT``, ``wx.LEFT``, ``wx.TOP``, ``wx.BOTTOM`` oppure ``wx.ALL`` (che li comprende tutti) per indicare su quali lati volete che sia lasciato il bordo. 
 
 
 L'argomento ``border`` di ``Add``.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Il quarto argomento di ``Add`` è anche il più semplice. Se nella bitmask del ``flag`` avete specificato che volete del bordo, indicate qui la dimensione del bordo, in pixel. 
+Il quarto argomento di ``Add`` è anche il più semplice. Se nella bitmask del ``flag`` avete specificato che volete lasciare del bordo, indicatene qui la dimensione, in pixel. 
 Non è possibile specificare bordi di differente ampiezza su lati diversi. 
 
 .. index:: 

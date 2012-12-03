@@ -73,6 +73,8 @@ Può essere complicato orientarsi nella gergo di wxPython, e a maggior ragione t
 
 * "contenitore" è un widget che può contenere altri widget: ossia un dialogo, un frame o un panel, essenzialmente. 
 
+* "parent", "padre" (o "madre"!), "figlio", si riferiscono al fatto che tutti i widget in wxPython stanno in una relazione padre-figlio (che non ha niente a che vedere con la normale gerarchia delle classi). Ne parliamo diffusamente in una pagina apposita.
+
 * "pulsante" è un ``wx.Button`` o affine: il normale pulsante di tutte le gui...
 
 * "sizer" è una delle sottoclassi di ``wx.Sizer``: si tratta di un modo intelligente di organizzare il layout dei widget dentro i contenitori.
