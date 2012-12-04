@@ -9,7 +9,7 @@
 Validatori: prima parte.
 ========================
 
-La validazione dei dati è un processo delicato. wxPython vi viene incontro con uno strumento apposito, la classe ``wx.PyValidator`` ("validatore" per gli amici), che ha delle funzionalità interessanti, ma che non è facile comprendere bene. 
+La validazione dei dati è un processo delicato. wxPython vi viene incontro con uno strumento apposito, la classe ``wx.PyValidator`` ("validatore" per gli amici), che ha delle funzionalità interessanti, ma che non è facile comprendere a fondo. 
 
 I validatori in wxPython servono a due cose complementari:
 
@@ -18,7 +18,7 @@ I validatori in wxPython servono a due cose complementari:
 
 Potete usare i validatori anche solo per una di queste due funzioni, o per entrambe, a vostro gusto. Noi dedichiamo questa sezione a spiegare la funzione di validazione, e :ref:`un'altra pagina <validatoridue>` per il trasferimento dei dati. 
 
-.. note:: se avete un editor con l'autocompletion, a quest'ora avrete probabilmente già scoperto che esiste anche la più "normale" classe ``wx.Validator``. Voi però dovete sempre usare la "versione python" ``wx.PyValidator``. La ragione della presenza di questi doppioni è complessa, e le dedicheremo una pagina separata. Affidatevi sempre a ``wx.PyValidator``, è tutto quello che vi serve sapere per usare bene i validatori.
+.. note:: se avete un editor con l'autocompletion, avrete probabilmente scoperto che esiste anche la più "normale" classe ``wx.Validator``. Voi però dovete sempre usare la "versione python" ``wx.PyValidator``. La ragione della presenza di questi doppioni è complessa, e le dedicheremo una pagina separata. Affidatevi sempre a ``wx.PyValidator``, è tutto quello che vi serve sapere per usare bene i validatori.
 
 .. todo:: una pagina sui pycontrols
 
@@ -48,7 +48,7 @@ Occorre semplicemente sottoclassare ``wx.PyValidator``. Ecco un esempio da manua
             
 Le righe 2, 3, 4 sono (purtroppo) boilerplate necessario. ``Clone`` deve esserci necessariamente, e deve restituire una istanza dello stesso validatore. I due ``Tranfer*`` servono solo se intendete usare il validatore per trasferire dati: tuttavia dovete comunque sovrascriverli e restituire ``True``, altrimenti wxPython emette un warning. 
 
-La parte interessante è ``Validate``: sovrascrivete questo metodo per fare la vostra validazione. ``Validate`` deve restituire ``True`` se la validazione ha successo, ``False`` altrimenti. Notate anche (riga 7) che all'interno del validatore, potete risalire a un'istanza del widget che state validando, chiamando ``GetWindow``. Forse pensate che il secondo, necessario, parametro di ``Validate`` (``ctl`` nel nostro esempio) abbia già un riferimento al widget validato, ma questo potrebbe non essere vero in caso di validazioni "a cascata", come il nostro esempio dimostrerà tra non molto. Quindi il modo più sicuro è usare  sempre ``GetWindow``. 
+La parte interessante è ``Validate``: sovrascrivete questo metodo per fare la vostra validazione. ``Validate`` deve restituire ``True`` se la validazione ha successo, ``False`` altrimenti. Notate anche (riga 7) che all'interno del validatore, potete risalire a un'istanza del widget che state validando, chiamando ``GetWindow``. Forse pensate che il secondo, necessario, parametro di ``Validate`` (``ctl`` nel nostro esempio) contenga già un riferimento al widget validato, ma questo potrebbe non essere vero in caso di validazioni "a cascata", come il nostro esempio dimostrerà tra non molto. Quindi il modo più sicuro è usare  sempre ``GetWindow``. 
 
 Il costruttore di un validatore, di norma, non prende argomenti. Tuttavia niente vi impedisce di passagli degli argomenti extra, se necessario. Per esempio, questo validatore garantisce che il valore immesso non sia in una bad-list di parole proibite::
 
@@ -69,9 +69,9 @@ Il costruttore di un validatore, di norma, non prende argomenti. Tuttavia niente
             else:
                 return True
 
-Chiaramente, in questo caso volete sovrascrivere anche l'``__init__`` per gestire i paramentri aggiuntivi. Non dimenticatevi di riportare gli argomenti correttamente anche in ``Clone`` (riga 6)... anche il boiledplate vuole un minimo di attenzione. 
+Chiaramente, in questo caso volete sovrascrivere anche l'``__init__`` per gestire i paramentri aggiuntivi. Non dimenticatevi di riportare gli argomenti correttamente anche in ``Clone`` (riga 6)... anche il boiledplate richiede un minimo di attenzione. 
 
-Una volta scritto, il validatore si applica al widget che intendete validare, al momento della sua creazione, passandolo direttamente come parametro ``validator`` del costruttore. Ovviamente potete usare lo stesso validatore (cioè: diverse istanze dello stesso validatore) per validare più widget, se ne avete bisogno. Ecco un esempio::
+Una volta scritto, il validatore si applica al widget che intendete validare, al momento della sua creazione, passandolo direttamente al costruttore (come parametro ``validator``). Ovviamente potete usare lo stesso validatore (cioè: diverse istanze dello stesso validatore) per validare più widget, se ne avete bisogno. Ecco un esempio::
 
     class YourNamePanel(wx.Panel):
         def __init__(self, *a, **k):
@@ -116,7 +116,7 @@ Come si vede (righe 4 e 5) due caselle di testo sono legate al nostro validatore
     ugly_names = ('Cunegonda', 'Dagoberto', 'Emerenzio', 'Pancrazia')
     self.first_name = wx.TextCtrl(self, validator=NotInBadListValidator(ugly_names))
 
-Abbiamo incorporato le caselle in un panel in parte perché è buona pratica raggruppare le funzionalità della gui in piccoli "mattoni" coerenti da combinare, :ref:`come abbiamo già detto altrove <wxpanel>`. Però in questo caso il panel ci torna utile anche per dimostrare la validazione "a cascata": quando chiamiamo ``Validate`` sul panel (riga 33), in effetti vengono validati tutti i widget figli del panel (purché abbiano un validatore associato, naturalmente). ``Validate`` chiamato sul panel restituisce ``True`` solo se tutti i figli passano la validazione, ``False`` altrimenti. 
+Come vedete, abbiamo incorporato le caselle in un panel, in parte perché è buona pratica raggruppare le funzionalità della gui in piccoli "mattoni" coerenti, :ref:`come abbiamo già detto altrove <wxpanel>`. Però in questo caso il panel ci torna utile anche per dimostrare la validazione "a cascata": quando chiamiamo ``Validate`` sul panel (riga 33), in effetti vengono validati tutti i widget figli del panel (purché abbiano un validatore associato, naturalmente). ``Validate`` chiamato sul panel restituisce ``True`` solo se tutti i figli passano la validazione, ``False`` altrimenti. 
 
 .. index::
    single: validatori; validazione a cascata
@@ -126,7 +126,7 @@ Quando fallisce una validazione a cascata.
 
 Nel caso di validazione a cascata, abbiamo però un problema aggiuntivo: il processo di validazione si ferma non appena uno dei test fallisce, ma il valore restituito ``False`` non ci dice nulla su quale widget esattamente non ha superato la validazione. 
 
-Quando è necessario dare all'utente anche questa informazione, occorre far sì che sia il validatore stesso a occuparsene, invece del codice chiamante (perché il codice chiamante si ritrova in mano solo un ``False``, alla fine). Per esempio, possiamo riscrivere il nostro ``NotEmptyValidator`` in questo modo::
+Quando è necessario dare all'utente anche questa informazione, occorre far sì che sia il validatore stesso a occuparsene, invece del codice chiamante (perché il codice chiamante si ritrova in mano solo un valore di ritorno ``False``). Per esempio, possiamo riscrivere il nostro ``NotEmptyValidator`` in questo modo::
 
     class NotEmptyValidator(wx.PyValidator):
         #Clone, TransferToWindow, TransferFromWindow... bla bla 
@@ -154,12 +154,12 @@ Questo però non è ancora sufficiente: se più caselle di testo hanno lo stesso
                 wx.MessageBox('Bisogna inserire del testo')
                 return False
             else:
-                # resettiamo il colore normale
+                # assicuriamoci di impostare il colore normale
                 win.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
                 win.Refresh() 
                 return True
 
-In questo caso però ci fidiamo che il nostro widget abbia un'interfaccia ``SetBackgroundColour``, cosa che per un ``wx.TextCtrl`` è senz'altro vera, ma di nuovo, dovete pensare al caso generale. 
+Notate che, facendo così, ci fidiamo che il nostro widget abbia un'interfaccia ``SetBackgroundColour``. Questo per un ``wx.TextCtrl`` è senz'altro vero, ma di nuovo, dovete pensare al caso generale. 
 
 Un'altra soluzione potrebbe essere per esempio recuperare il ``name`` del widget::
 
@@ -181,7 +181,7 @@ Anche questo sistema si basa sulla fiducia: confida nel fatto che noi abbiamo as
     self.first_name = wx.TextCtrl(self, name='Nome', validator=NotEmptyValidator())
     self.family_name = wx.TextCtrl(self, name='Cognome', validator=NotEmptyValidator())
 
-Il paramentro ``name`` del costruttore non è di solito molto utile. In Python si passano gli oggetti stessi come parametri, e questo rende superfluo contrassegnare ciascun widget con un identificativo statico da passare in giro tra le varie funzioni (abbiamo fatto lo stesso discorso :ref:`a proposito degli id <gli_id>`). Tuttavia, in casi del genere, è un modo veloce di aggiungere un "nickname" piacevole al widget, da presentare all'utente in caso di necessità. 
+Il paramentro ``name`` del costruttore non è di solito molto utile. In Python si passano gli oggetti stessi come parametri, e questo rende superfluo contrassegnare ciascun widget con un identificativo statico da passare in giro tra le varie funzioni (abbiamo fatto lo stesso discorso :ref:`a proposito degli id <gli_id>`). Tuttavia, in casi del genere, può essere un modo veloce di aggiungere un "nickname" piacevole al widget, da presentare all'utente in caso di necessità. 
 
 Il paramentro ``name`` (e quindi l'interfaccia ``GetName``) è sicuramente presente ovunque. Quindi, quale dei due sistemi sulla fiducia è il meno rischioso? Affidarsi a un'interfaccia che potrebbe non esistere (``SetBackgroundColour``) o a una che sicuramente esiste ma dipende da noi renderla significativa? La risposta sta al vostro stile, e alla dimensione del vostro progetto. Nelle situazioni più semplici, non dovete preoccuparvi in nessun caso. Se però iniziate a scrivere validatori "general purpose" e non sapete in anticipo a quali widget potrebbero essere assegnati, dovete muovervi con più cautela.           
 
@@ -194,13 +194,13 @@ Il paramentro ``name`` (e quindi l'interfaccia ``GetName``) è sicuramente prese
 La validazione ricorsiva.
 -------------------------
 
-La validazione a cascata si limita in genere ai soli figli diretti, ma è possibile fare in modo che venga applicata ricorsivamente anche ai figli dei figli, e così via. Per fare questo occorre settare lo stile ``wx.WX_EX_VALIDATE_RECURSIVELY``. Questo :ref:`è un extra-style <extrastyle>`, e quindi va settato dopo la creazione, usando il metodo ``SetExtraStyle``. 
+La validazione a cascata si limita ai soli figli diretti, ma è possibile fare in modo che venga applicata ricorsivamente anche ai figli dei figli, e così via. Per fare questo occorre settare lo stile ``wx.WX_EX_VALIDATE_RECURSIVELY``. Questo :ref:`è un extra-style <extrastyle>`, e quindi va settato dopo la creazione, usando il metodo ``SetExtraStyle``. 
 
 Facciamo degli esperimenti con il codice che abbiamo già scritto: per prima cosa, invece di validare il panel, proviamo a validare direttamente il frame. Alla riga 33, sostituite così::
 
     ret = self.Validate()  # era: ret = self.your_name.Validate()
 
-Come previsto, la validazione non avviene. La :ref:`catena dei parent <catenaparent>` in effetti è molto lunga: dopo il frame c'è il panel contenitore (quello che istanziamo alla riga 22 e chiamiamo semplicemente ``p``), quindi l'istanza di ``YourNamePanel``, e finalmente le caselle di testo che vogliamo validare. 
+Come previsto, la validazione non avviene. La :ref:`catena dei parent <catenaparent>` in effetti è lunga: dopo il frame c'è il panel contenitore (quello che istanziamo alla riga 22 e chiamiamo semplicemente ``p``), quindi l'istanza di ``YourNamePanel``, e finalmente le caselle di testo che vogliamo validare. 
 
 Tuttavia, proviamo adesso ad aggiungere all'inizio dell'``__init__`` l'extra-style::
 
@@ -208,7 +208,7 @@ Tuttavia, proviamo adesso ad aggiungere all'inizio dell'``__init__`` l'extra-sty
     wx.Frame.__init__(self, *a, **k)
     self.SetExtraStyle(wx.WS_EX_VALIDATE_RECURSIVELY)
 
-Ed ecco che la validazione avviene di nuovo. 
+Ecco che la validazione avviene di nuovo. 
 
 .. index::
    single: wx; SetValidator()
@@ -230,21 +230,21 @@ La validazione automatica dei dialoghi.
 
 Fin qui ci siamo limitati a chiamare ``Validate`` manualmente, per effettuare la validazione. L'unico automatismo possibile è che, chiamandolo su un panel, si possono validare a cascata tutti i figli diretti (eventualmente anche i nipoti etc., usando la validazione ricorsiva). 
 
-I :ref:`dialoghi <wxdialog>`, tuttavia, hanno una marcia in più. E' possible validare automaticamente un dialogo, se lo si fornisce di un apposito pulsante con id predefinito ``wx.ID_OK``. In questo caso, quando l'utente fa clic sul pulsante ``wx.ID_OK``, il dialogo chiama automaticamente ``Validate`` su se stesso, prima di chiudersi. Se i widget contenuti nel dialogo hanno dei validatori assegnati, entreranno in funzione. 
+I :ref:`dialoghi <wxdialog>`, tuttavia, hanno una marcia in più. E' possible validare automaticamente un dialogo, quando è dotato di un pulsante con id predefinito ``wx.ID_OK``. In questo caso, quando l'utente fa clic sul pulsante ``wx.ID_OK``, il dialogo chiama automaticamente ``Validate`` su se stesso, prima di chiudersi. Se i widget contenuti nel dialogo hanno dei validatori assegnati, entreranno in funzione. 
 
 Abbiamo già parlato di questa feature dei dialoghi quando ci siamo occupati :ref:`degli Id in wxPython <validazione_automatica>`: la sezione relativa contiene degli esempi che vi invitiamo a rileggere.
 
-Per quanto riguarda invece l'esempio che abbiamo seguito finora, ecco come diventerebbe se lo trasportassimo in un dialogo con validazione automatica:
+Per quanto riguarda invece l'esempio che abbiamo seguito finora, ecco come diventa se lo trasportiamo in un dialogo con validazione automatica:
     
 .. literalinclude:: /_static/snippets/validator_autovalidation.py
    :lines: 5-
    :linenos:
 
-Alcune considerazioni preliminari. Ho scelto la tecnica di assegnare un ``name`` a ciascun widget (righe 39 e 41), e di usare l'interfaccia ``GetName`` nei validatori per distinguerli (righe 10, 29). Il panel ``YourNamePanel`` è andato via, a invece i widget da validare sono stati inseriti direttamente nel dialogo ``NameDialog``. Questo perché un dialogo :ref:`ha già un suo panel predisposto <wxdialog>` e quindi appoggiargli sopra un altro frame avrebbe rischiesto l'uso di ``wx.WX_EX_VALIDATE_RECURSIVELY`` per garantire la validazione automatica (che, ricordiamo, avviene chiamando ``Validate`` *sul dialogo stesso*). Infine, ho aggiunto un frame top-level ``MyTopFrame`` solo per esemplificare il modo di chiamare il dialogo e poi distruggerlo. 
+Alcune considerazioni preliminari. Ho scelto la tecnica di assegnare un ``name`` a ciascun widget (righe 39 e 41), e di usare l'interfaccia ``GetName`` nei validatori per distinguerli (righe 10, 29). Il panel ``YourNamePanel`` è andato via, e invece i widget da validare sono stati inseriti direttamente nel dialogo ``NameDialog``. Questo perché un dialogo :ref:`ha già un suo panel predisposto <wxdialog>` e quindi appoggiargli sopra un altro frame avrebbe rischiesto l'uso di ``wx.WX_EX_VALIDATE_RECURSIVELY`` per garantire la validazione automatica (che, ricordiamo, avviene chiamando ``Validate`` *sul dialogo stesso*). Infine, ho aggiunto un frame top-level ``MyTopFrame`` solo per esemplificare il modo di chiamare il dialogo e poi distruggerlo. 
 
 Detto questo, passiamo alle cose più interessanti. Come abbiamo già visto :ref:`parlando degli Id <idpredefiniti>`, i due pulsanti "valida" e "annulla" (righe 43-44) sanno già che cosa fare, senza bisogno di collegarli a un evento. Entrambi tentano di chiudere il dialogo, ma quello contrassegnato con ``wx.ID_OK``, prima, esegue la validazione automatica. Tutti i widget nel dialogo vengono validati, proprio come se avessimo chiamato ``Validate`` sul dialogo. 
 
-Notate che *se la validazione fallisce il dialogo non si chiude*. Questo vuol dire che, finché la validazione non ha successo (o l'utente non preme "annulla", ovviamente), il codice chiamante resta bloccato alla riga 71. E' evidente che non c'è proprio alcun modo di affidare al codice chiamante il compito di informare l'utente sul risultato della validazione: è proprio necessario che siano i validatori stessi a pensarci. 
+Notate che *se la validazione fallisce il dialogo non si chiude*. Questo vuol dire che, finché la validazione non ha successo (o l'utente non preme "annulla"), il codice chiamante resta bloccato alla riga 71. E' evidente che non c'è proprio alcun modo di affidare al codice chiamante il compito di informare l'utente sul risultato della validazione: è proprio necessario che siano i validatori stessi a pensarci. 
 
 Il codice chiamante prosegue la sua corsa quando la validazione ha successo, il dialogo si chiude e ``ShowModal`` restituisce il codice corrispondente al pulsante premuto. Se adesso il codice è ``wx.ID_OK``, si può stare sicuri che i dati sono validi. Attenzione però: in caso di codice ``wx.ID_CANCEL``, la validazione non è avvenuta e i dati non sono sicuri. 
                                                                                         
@@ -260,9 +260,9 @@ Consigli sulla validazione.
 Composizione di validatori.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A una prima impressione, i validatori sembrano oggetti limitati: per esempio, non possono essere combinati tra loro per eseguire diversi test su un unico widget. Non è possibile chiamare diversi validatori uno dopo l'altro sullo stesso widget. Così, ogni validatore deve avere, nel suo metodo ``Validate``, tutti i test che servono per un dato widget in una data circostanza. Questo limita il loro utilizzo a un validatore per widget, o al massimo a un validatore per un limitato insieme di widget che si trovano per caso nelle medesime condizioni. 
+A una prima impressione, i validatori sembrano oggetti limitati: per esempio, non possono essere combinati tra loro per eseguire diversi test su un unico widget. Non è possibile chiamare diversi validatori uno dopo l'altro sullo stesso widget. Così, ogni validatore deve avere, nel suo metodo ``Validate``, tutti i test che servono per un dato widget in una data circostanza. Questo limita il riutilizzo del validatore per diversi widget in condizioni differenti.
 
-Tuttavia questa "limitazione" dipende spesso da un utilizzo errato dei validatori. Non dovete pensare che i validatori siano il posto in cui scrivere davvero i test di validazione. Dovrebbero essere invece solo il punto di raccordo finale tra la vostra suite di test di validazione e il widget che dovete validare. Il codice effettivamente contenuto in ``Validate`` dovrebbe essere breve, e avere solo quanto basta a gestire i dati in partenza e le risposte in arrivo. 
+Tuttavia questa "limitazione" dipende spesso da un utilizzo errato dei validatori. Non dovete pensare che i validatori siano il posto in cui scrivere effettivamente i test di validazione. Dovrebbero essere invece solo il punto di raccordo finale tra la vostra suite di test il widget che dovete validare. Il codice effettivamente contenuto in ``Validate`` dovrebbe essere breve, e avere solo quanto basta a gestire i dati in partenza e le risposte in arrivo. 
 
 Per esempio, io mi trovo spesso a scrivere cose come::
 
@@ -296,13 +296,13 @@ che poi può essere assegnato a diversi widget con diversi parametri::
     text_1 = wx.TextCtrl(..., validator=GroupTestValidator(test1, test2))
     text_2 = wx.TextCtrl(..., validator=GroupTestValidator(test1, test3, test4))
     
-Chiaro che poi non bisogna esagerare: non è che un singolo validatore "dinamico" può bastare per tutte le esigenze della vostra applicazione.
+Naturalmente non bisogna esagerare: un singolo validatore "dinamico" non può certo bastare per tutte le esigenze della vostra applicazione.
 
 
 Validazione a cascata.
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Sulla validazione a cascata, bisogna dire che è una grande comodità, tuttavia introduce dei limiti. Prima di tutto, la validazione si ferma al primo widget che non va bene, ma questo impedisce all'utente di sapere se ci sono altri errori, dopo. E' frustrante corregere un errore, premere di nuovo "invio", e scoprire che c'era un errore anche nel campo successivo. Se volete che tutti i widget siano validati comunque, non c'è niente da fare, dovete rinunciare alla validazione a cascata (e a maggior ragione a quella ricorsiva, e a quella automatica), e validare a mano tutti i widget. Fortunatamente in Python tutto diventa più semplice::
+Sulla validazione a cascata, bisogna dire che è una grande comodità, tuttavia introduce dei limiti. Prima di tutto, la validazione si ferma al primo widget che non va bene, ma questo impedisce all'utente di sapere se ci sono altri errori, dopo il primo. E' frustrante corregere un errore, premere di nuovo "invio", e scoprire che c'era un errore anche nel campo successivo. Se volete che tutti i widget siano validati comunque, non c'è niente da fare, dovete rinunciare alla validazione a cascata (e a maggior ragione a quella ricorsiva, e a quella automatica), e validare a mano tutti i widget. Fortunatamente in Python tutto diventa più semplice::
 
     failed = []
     for widget in (self.nome, self.cognome):
@@ -310,7 +310,7 @@ Sulla validazione a cascata, bisogna dire che è una grande comodità, tuttavia 
             failed.append(widget)
     # poi presento la lista degli errori, etc. etc.
 
-Basta un'occhiata a questo banale ciclo ``for``, e ci si chiede perchè perdere tempo con le validazioni a cascata, etc. Ancora una volta, questo è merito della grande flessibilità di Python. Tuttavia i meccanismi di wxPython possono tornare comodi per gestire i casi più consueti (e sicuramente saranno la maggioranza nelle varie applicazioni). 
+Basta un'occhiata a questo banale ciclo ``for``, e ci si chiede perchè perdere tempo con le validazioni a cascata, etc. Ancora una volta, è merito della grande flessibilità di Python. Tuttavia i meccanismi di wxPython possono tornare comodi per gestire i casi più consueti. 
 
 
 Validazione a seconda di un contesto.
@@ -332,7 +332,7 @@ Un altro limite dei validatori è che sono concepiti per validare un widget "di 
 
 Questo ovviamente rende impossibile ogni tipo di validazione automatica, ma abbiamo visto che con Python in genere non è un problema. 
 
-Ma c'è di più: sempre grazie alla flessibilità di Python, possiamo anche far calcolare il contesto dinamicamente al validatore stesso. Fino a cose un po' temerarie come questo esempio, dove un validatore ammette che una casella di testo sia vuota solo se un'altra è piena::
+Ma c'è di più: sempre grazie alla flessibilità di Python, possiamo anche far calcolare il contesto dinamicamente al validatore stesso. Possiamo spingerci a cose un po' temerarie come questo esempio, dove un validatore ammette che una casella di testo sia vuota solo se un'altra è piena::
 
     class AlternateEmptyValidator(wx.PyValidator):
         def __init__(self, context):
@@ -359,24 +359,24 @@ perché al momento di assegnare il validatore a ``text1``, ``text2`` non esiste 
     text1.SetValidator(AlternateEmptyValidator(text2.GetValue))
     text2.SetValidator(AlternateEmptyValidator(text1.GetValue))
 
-La cosa importante è che, grazie a Python, passiamo direttamente un "callable" come argomento del validatore, lasciando a lui il compito di... chiamarlo, appunto, quando necessario. 
+La cosa importante è che, grazie a Python, passiamo direttamente il "callable" ``GetValue`` come argomento del validatore, lasciando a lui il compito di... chiamarlo, appunto, quando necessario. 
 
 
 Problemi con i masked controls.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In ogni caso, altri problemi potrebbero spuntar fuori con i validatori. Per esempio, non giocano bene con i "masked controls" (cercateli sulla demo), una famiglia di widget che hanno un sistema di validazione interno, separato. Quando un masked control non è valido, produce un suo comportamento di default (per esempio si colora di giallo): ma siccome non ha un validatore vero e proprio attaccato, è difficile integrare questo suo comportamento in un processo di validazione a cascata, per esempio. 
+In ogni caso, altri problemi potrebbero spuntar fuori con i validatori. Per esempio, non giocano bene con i "masked controls" (cercateli sulla demo), una famiglia di widget con un sistema di validazione interno, separato. Quando un masked control non è valido, produce un suo comportamento di default (per esempio si colora di giallo): ma siccome non ha un validatore vero e proprio attaccato, è difficile integrare questo suo comportamento in un processo di validazione a cascata, per esempio. 
 
-Naturalmente si può argomentare che questo è colpa dei masked controls, e non dei validatori (che sono arrivati ben prima). In ogni caso i masked controls sono utili da usare, ed è spiacevole dover prevedere due flussi di validazione separati. 
+Naturalmente si può argomentare che questo è colpa dei masked controls, e non dei validatori (che sono arrivati ben prima). In ogni caso i masked controls sono utili da usare, ed è spiacevole dover gestire due flussi di validazione separati. 
 
 .. _validatori_controllilimitati:
 
 Problemi con i controlli limitati.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Una situazione analoga è quella che capita con i numerosi widget che, in wxPython, hanno la possibilità di limitare automaticamente i valori immessi. Per esempio, un ``wx.SpinCtrl`` può impostare un massimo e un minimo. Un ``wx.ListBox`` o un ``wx.ComboBox`` si caricano con una lista di valori tra cui scegliere, e così via. In questi casi la validazione, in un certo senso, avviene prima: una volta che il widget è mostrato, l'utente non può che inserire dati validi. 
+Una situazione analoga è quella che capita con i numerosi widget che, in wxPython, hanno la possibilità di limitare automaticamente i valori immessi. Per esempio, un ``wx.SpinCtrl`` può impostare un massimo e un minimo. Un ``wx.ListBox`` o un ``wx.ComboBox`` si caricano con una lista di valori tra cui scegliere, e così via. In questi casi la validazione, in un certo senso, è preventiva: una volta che il widget è mostrato, l'utente non può che inserire dati validi. 
 
-Non è detto che i validatori siano completamente fuori gioco, anche in questo caso. Potete lasciare che sia un validatore a caricare i dati in un ``wx.ComboBox``, o impostare i limiti di un ``wx.SpinCtrl``: è la funzione di trasferimento dati che vedremo :ref:`nella seconda parte <validatoridue>` di questa analisi. 
+Non è detto che i validatori siano completamente fuori gioco, neppure in questo caso. Potete lasciare che sia un validatore a caricare i dati in un ``wx.ComboBox``, o impostare i limiti di un ``wx.SpinCtrl``: è la funzione di trasferimento dati che vedremo :ref:`nella seconda parte <validatoridue>` di questa analisi. 
 
 In ogni caso, non è sempre facile gestire con disinvoltura questo doppio canale di validazione, per cui certi widget sono controllati "a priori" e certi altri "a posteriori". 
 
@@ -394,7 +394,7 @@ In conclusione: code smell?
 
 In conclusione, i validatori sono strumenti utili, ma può essere difficile farli funzionare in modo armonico. Da un lato, la loro praticità risalta soprattutto quando sono accoppiati ai dialoghi, con il meccanismo della validazione a cascata, e automatica. Basta fare clic su ``wx.ID_OK``, e ottieni gratis la validazione di tutto quanto. D'altra parte però con un ciclo ``for`` in Python, anche la validazione manuale è molto agevole, e consente inoltre di personalizzare più accuratamente che cosa e quando validare. Inoltre, sempre grazie a Python, è possibile scrivere validatori più generali e dinamici. 
 
-Dopo aver imparato a usare bene i validatori, resta comunque sempre un vago "code smell". C'è poco da fare: i validatori entrano in gioco in un segmento difficile del flusso di gestione dell'applicazione, ovvero quando i dati "sporchi" della gui si devono mescolare ai dati "puri" del modello sottostante. Vedremo anzi, :ref:`nella seconda parte di questa analisi <validatoridue>`, che il disagio può aumentare quando si usano i validatori anche per trasferire dati dal modello alla gui.  
+Anche dopo aver imparato a usare bene i validatori, resta comunque un vago "code smell". C'è poco da fare: i validatori entrano in gioco in un segmento difficile del flusso di gestione dell'applicazione, ovvero quando i dati "sporchi" della gui si devono mescolare ai dati "puri" del modello sottostante. Vedremo anzi, :ref:`nella seconda parte di questa analisi <validatoridue>`, che il disagio può aumentare quando si usano i validatori per trasferire dati dal modello alla gui.  
 
 Alla fine, i validatori sono uno strumento. Vanno senz'altro bene per i casi più semplici, e possono essere usati con successo anche in scenari più difficili: ma se non riuscite ad armonizzarli nel vostro framework di validazione complessivo, potete tranquillamente rinunciarvi.
 

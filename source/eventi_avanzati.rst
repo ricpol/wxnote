@@ -11,23 +11,23 @@ Gli eventi: concetti avanzati.
 
 In questa pagina affrontiamo alcuni aspetti degli eventi che non entrano quasi mai in gioco in un normale programma wxPython. Tuttavia è opportuno conoscerli, e in certi casi conviene utilizzarli. 
 
-La lettura di questa pagina è sconsigliata, se non avete seguito :ref:`la prima parte del discorso <eventibasi>`, che presenta la terminologia e i concetti di base che qui daremo per scontati. 
+La lettura di questa pagina è consigliata solo se avete seguito :ref:`la prima parte del discorso <eventibasi>`, che presenta la terminologia e i concetti di base che qui daremo per scontati. 
 
-Per cominciare, riprendiamo alcune cose già viste. Un evento può essere collegato a un handler e a un callback, usando il metodo ``Bind`` di un binder (in realtà, si usa il ``Bind`` dell'handler, ma questo invoca subito il ``Bind`` del binder per fare il lavoro). Lo stile che si usa in genere è questo::
+Per cominciare, riprendiamo alcune cose già viste. Un evento può essere collegato a un handler e a un callback, usando il metodo ``Bind`` di un binder (in pratica si usa il ``Bind`` dell'handler, ma questo invoca subito il ``Bind`` del binder per fare il lavoro). Lo stile che si usa in genere è questo::
 
     button = wx.Button(...)
     button.Bind(wx.EVT_BUTTON, callback)
     
 Questo stile trae vantaggio dal fatto che tutti gli elementi visibili in wxPython (i vari widget) derivano anche da ``wx.EvtHandler``, e quindi hanno la capacità di fare da handler per i loro stessi eventi. 
 
-Abbiamo anche visto che si può anche scegliere un altro handler, e scrivere per esempio::
+Abbiamo anche visto che si può scegliere anche un altro handler, e scrivere per esempio::
 
     button = wx.Button(self, ...)   # dove self e' un dialogo, per esempio
     self.Bind(wx.EVT_BUTTON, callback, button)
     
-E abbiamo detto che quasi sempre i due stili sono equivalenti... ma "quasi sempre" non significa "sempre", appunto. 
+E abbiamo detto che quasi sempre i due stili sono equivalenti... ma "quasi sempre" non è "sempre", appunto. 
 
-Per capire di più, dobbiamo parlare prima della propagazione degli eventi. 
+Per capire di più, dobbiamo parlare della propagazione degli eventi. 
 
 .. index::
    single: eventi; propagazione
@@ -37,13 +37,13 @@ Per capire di più, dobbiamo parlare prima della propagazione degli eventi.
 La propagazione degli eventi.
 -----------------------------
 
-Abbiamo detto che tutti gli eventi derivano da ``wx.Event``, ma questa in realtà è una classe-base che fa poco. Una distinzione più importante avviene al livello della sottoclasse ``wx.CommandEvent``: questi eventi (e tutti quelli delle classi derivate) si chiamano in gergo "command event", e **si propagano**. Tutti gli altri non si propagano. 
+Abbiamo detto che tutti gli eventi derivano da ``wx.Event``, ma questa in realtà è una classe-base che fa poco. Una distinzione più importante avviene al livello della sottoclasse ``wx.CommandEvent``: questi eventi (e tutti quelli delle classi derivate) si chiamano in gergo "command event", e *si propagano*. Tutti gli altri non si propagano. 
 
-Che cosa vuol dire "propagarsi"? Vuol dire che il segnale costituito dall'oggetto-evento, una volta creato, raggiunge in primo luogo il widget stesso che lo ha originato. Se l'evento è di quelli che non si propagano, allora il segnale si ferma lì, e nessun altro elemento della gui verrà mai a conoscenza che l'evento si è generato. In questo caso, in pratica, soltanto l'handler del widget stesso che ha prodotto l'evento ha la possibilità di intercettarlo: in altre parole, l'unico modo per intercettare questi eventi è usare lo stile ``widget.Bind(wx.EVT_*, callback)`` (ricordiamo che ogni widget è anche un handler, perché deriva anche da ``wx.EvtHandler``). 
+Che cosa vuol dire "propagarsi"? Vuol dire che il segnale costituito dall'oggetto-evento, una volta creato, raggiunge in primo luogo il widget stesso che lo ha originato. Se l'evento è di quelli che non si propagano, allora il segnale si ferma lì, e nessun altro elemento della gui verrà mai a conoscenza che l'evento si è generato. In questo caso, in pratica, soltanto l'handler del widget stesso che ha prodotto l'evento ha la possibilità di intercettarlo: in altre parole, l'unico modo per intercettare questi eventi è usare lo stile ``widget.Bind(wx.EVT_*, callback)`` (ricordiamo ancora che ogni widget è anche un handler). 
 
 Se invece l'evento si propaga, il segnale procede a visitare l'immediato "parent" del widget. Poi arriva al parent del parent, e continua ad arrampicarsi per tutta :ref:`la catena dei parent <catenaparent>`, fino a quando non raggiunge la finestra top-level. Di qui, salta direttamente alla ``wx.App``. 
 
-A ogni fermata di questa esplorazione, l'algoritmo di gestione dell'evento cerca se c'è un handler in grado di gestirlo, ovvero se quell'handler è stato preventivamente collegato, grazie a un binder, a quel tipo di evento e a un callback. Se sì, il callback viene eseguito e l'algoritmo si ferma lì. Se no, prosegue nel suo viaggio. Come ultima possibilità, quando arriva alla ``wx.App``, chiede anche al suo handler (sì, anche la ``wx.App`` deriva da ``wx.EvtHandler``, e quindi è possibile collegarla agli eventi). Se voi non avete previsto nessun collegamento neppure lì, allora la ``wx.App`` ha un comportamento di default, che semplicemente non fa nulla. E questo, finalmente, fa morire l'evento. 
+A ogni fermata di questa esplorazione, l'algoritmo di gestione dell'evento cerca se c'è un handler in grado di gestirlo, ovvero se quell'handler è stato preventivamente collegato, grazie a un binder, a quel tipo di evento e a un callback. Se sì, il callback viene eseguito e l'algoritmo si ferma. Se no, prosegue nel suo viaggio. Come ultima possibilità, quando arriva alla ``wx.App``, chiede anche al suo handler (sì, anche la ``wx.App`` deriva da ``wx.EvtHandler``, e quindi è possibile collegarla agli eventi). Se voi non avete previsto nessun collegamento neppure lì, allora la ``wx.App`` ha un gestore di default, che semplicemente non fa nulla. E questo, finalmente, fa morire l'evento. 
 
 Dopo aver capito a grandi linee il meccanismo di propagazione, vediamo come funziona nel dettaglio. 
 
@@ -59,14 +59,14 @@ Come un evento viene processato.
 
 .. topic:: Fase 0
 
-    nasce l'evento.
+    **nasce l'evento.**
 
 L'evento si genera da un widget. Dunque l'handler del widget stesso se ne occupa, passando l'evento al suo algoritmo interno ``wx.EvtHandler.ProcessEvent()``. E si va alla fase 1.
 
 
 .. topic:: FASE 1
 
-    l'handler è abilitato?
+    **l'handler è abilitato?**
 
 Qui la decisione che wxPython deve prendere è se questo handler è abilitato a processare eventi, oppure no. 
 
@@ -77,7 +77,7 @@ Se la risposta è no, si passa direttamente alla fase 5. Se la risposta è sì, 
 
 .. topic:: FASE 2
 
-    l'handler può gestire l'evento?
+    **l'handler può gestire l'evento?**
 
 Ovvero: avete collegato questo handler, per questo evento, a un callback, grazie a un binder? 
 
@@ -88,7 +88,7 @@ Se la risposta è no, ovviamente non c'è nessun callback da eseguire, e si proc
 
 .. topic:: FASE 3
 
-    l'evento dovrebbe propagarsi?
+    **l'evento dovrebbe propagarsi?**
 
 Se l'evento non è un "command event", non ha la potenzialità di propagarsi. 
 
@@ -100,7 +100,7 @@ Prima di tutto, ci sono due dettagli che bisogna considerare:
 
 * anche se un evento è "command", potrebbe non propagarsi all'infinito. Infatti gli eventi hanno un "livello di propagazione" interno. L'unico modo per conoscerlo è chiamare ``event.StopPropagation()``, che interrompe la propagazione e restituisce il livello di propagazione. Non dimenticatevi di chimare ``event.ResumePropagation()`` subito dopo. Se per esempio il livello è 1, l'evento non si propagherà oltre il diretto genitore. Se il livello è 2, andrà fino al parent del parent, ma poi si fermerà. In pratica però i normali "command event" hanno il livello di propagazione settato a ``sys.maxint``, e quindi si propagano effettivamente all'infinito. Ma potreste voler scrivere un classe-evento personalizzata che si propaga in modo più limitato, se necessario.
 
-Tenendo eventualmente conto di queste cose, se l'evento non è ancora stato processato in precedenza, si propaga senz'altro. 
+Tenendo anche conto di queste cose, se l'evento non è ancora stato processato in precedenza, si propaga senz'altro. 
 
 Se invece l'evento è già stato processato, e quindi un callback è stato appena eseguito, di regola ``ProcessEvent`` termina e restituisce ``True``, *a meno che* il callback non abbia chiamato ``Skip()`` sull'evento. Chiamare ``event.Skip()`` è un segnale che si richiede di continuare il processamento degli eventi. Su ``Skip()`` parleremo in modo più approfondito in seguito. 
 
@@ -111,7 +111,7 @@ Dopo che wxPython determina se l'evento dovrebbe propagarsi, con questa informaz
 
 .. topic:: FASE 4A 
 
-    passare all'handler successivo (versione "command event").
+    **passare all'handler successivo** (versione "command event").
 
 A questo punto l'algoritmo cerca l'handler successivo a cui bisogna rivolgersi. La ricerca avviene secondo le precedenze che elenchiamo qui sotto. In breve, ogni volta che viene trovato un handler, si torna alla fase 1, e si esegue il ciclo 1-2-3. Se la fase 3 determina che occorre una ulteriore propagazione, si torna a questa fase 4A, e si riprende la ricerca dal punto in cui era arrivata.
 
@@ -125,7 +125,7 @@ Prima si cerca nelle varie sovra-classi. Per ciascuna di esse, si interroga l'ha
 
 Qui in genere non succede mai nulla. Comunque, un widget potrebbe avere uno stack di numerosi handler, in aggiunta a quello suo proprio. Ovviamente è una tecnica piuttosto avanzata, ma potreste scrivere un handler personalizzato (una sottoclasse di ``wx.EvtHandler``) e assegnarlo a un widget chiamando ``widget.PushEventHandler(my_handler)``. 
 
-Se quindi ci sono altri handler in coda, per ciascuno di essi si passa attraverso le fasi 1, 2, e 3. Come sopra, se la fase 3, a un certo passaggio, determina che l'evento non può propagarsi ulteriormente, l'algoritmo si ferma. Altrimenti, tutti gli handler addizionali vengono interrogati in seguenza. Quando sono esauriti, si procede con la fase 4A.3.
+Quindi, se ci sono altri handler in coda, per ciascuno di essi si passa attraverso le fasi 1, 2, e 3. Come sopra, se la fase 3, a un certo passaggio, determina che l'evento non può propagarsi ulteriormente, l'algoritmo si ferma. Altrimenti, tutti gli handler addizionali vengono interrogati in seguenza. Quando sono esauriti, si procede con la fase 4A.3.
 
 * **4A.3**: handler del parent
 
@@ -136,12 +136,12 @@ Quando alla fine l'handler trovato
 * è un dialogo, oppure un frame con ``wx.WS_BLOCK_EVENTS`` settato, oppure
 * è una finestra top-level, 
 
-si esegue il ciclo 1-2-3 un'ultima volta, e poi, se alla fase 3 si decide che l'evento dovrebbe ancora propagarsi, allora si passa alla fase 5.
+si esegue il ciclo 1-2-3 un'ultima volta (compresa la fase 4 per la ricerca nelle sovra-classi, naturalmente), e poi, se alla fase 3 si decide che l'evento dovrebbe ancora propagarsi, allora si passa alla fase 5.
 
 
 .. topic:: FASE 4B
 
-    passare all'handler successivo (versione "non command").
+    **passare all'handler successivo** (versione "non command").
 
 Questa versione della fase 4 è analoga a quella dei "command event". Soltanto, l'evento non può propagarsi al suo parent. Tuttavia, la ricerca nelle sovra-classi e negli handler addizionali avviene ancora. Quindi, ecco quello che succede: 
 
@@ -161,7 +161,7 @@ Se l'evento non è stato ancora gestito, oppure se è stato gestito ma il callba
 
 .. topic:: FASE 5
 
-    la ``wx.App`` come ultimo handler.
+    **la ``wx.App`` come ultimo handler.**
 
 Se si arriva fino a questo punto e l'algoritmo non è ancora terminato (perché l'evento non è ancora stato processato, oppure perché finora tutti i callback incontrati hanno sempre chiamato ``Skip``), allora l'algoritmo chiede all'handler della ``wx.App`` se è in grado di occuparsene. 
 
@@ -197,7 +197,7 @@ Come vedete, il ciclo completo è piuttosto complicato, ma nel 99% dei casi si r
 Come funziona ``Skip()``.
 -------------------------
 
-``event.Skip()`` può essere chiamato sull'evento, dall'interno di un callback che lo gestisce. Non importa se viene chiamato all'inizio o alla fine del codice del vostro callback: in tutti i modi, imposta un flag interno dell'evento, che segnala all'algoritmo di gestione che, una volta terminato di eseguire il callback, dovrebbe continuare il processamento degli eventi in coda. Questo significa: 
+``event.Skip()`` può essere chiamato sull'evento, dall'interno di un callback che lo gestisce. Non importa se viene chiamato all'inizio o alla fine del codice del vostro callback: imposta comunque un flag interno all'evento, che segnala all'algoritmo di gestione che dovrebbe continuare il processamento degli eventi in coda. Questo significa: 
 
 * continuare a propagare l'evento corrente (se può farlo), come se non fosse stato trovato nessun callback. 
 
@@ -213,7 +213,7 @@ Il comportamento di default, quando occorre, *si aggiunge* a quello che voi even
 
 Torniamo all'esempio del clic sul pulsante, che genera ``wx.EVT_LEFT_DOWN``, ``wx.EVT_LEFT_UP`` e ``wx.EVT_BUTTON`` in sequenza. Se voi intercettate il primo e non chiamate ``Skip()``, non solo impedite l'esecuzione di ulteriori callback che potreste aver scritto in corrispondenza del secondo e del terzo; ma inoltre impedirete a wxPython di gestire correttamente lo stato del pulsante. 
 
-Per fortuna, i comportamenti di default di un pulsante sono codificati in risposta a ``wx.EVT_LEFT_DOWN`` e ``wx.EVT_LEFT_UP``, ossia gli eventi che in genere non vi interessano. L'evento che di solito intercettate è ``wx.EVT_BUTTON``, che però parte solo *dopo* che tutta la gestione di default del pulsante è stata già fatta (in particolare, è lanciato da ``wx.EVT_LEFT_UP`` alla fine del suo procedimento interno). Quindi potete tranquillamente dimenticarvi di chiamare ``Skip()``, e il vostro pulsante funzionerà come vi aspettate. 
+Per fortuna, i comportamenti di default di un pulsante sono codificati in risposta a ``wx.EVT_LEFT_DOWN`` e ``wx.EVT_LEFT_UP``, ossia gli eventi che in genere non vi interessano. L'evento che intercettate di solito è ``wx.EVT_BUTTON``, che parte solo *dopo* che tutta la gestione di default del pulsante è stata già completata (in particolare, ``wx.EVT_BUTTON`` è lanciato da ``wx.EVT_LEFT_UP`` alla fine del suo procedimento interno). Quindi potete tranquillamente dimenticarvi di chiamare ``Skip()`` nel callback di un ``wx.EVT_BUTTON``, e il vostro pulsante funzionerà come vi aspettate. 
 
 In genere, tutti i widget fanno partire in coda gli eventi "di più alto livello", che sono quelli che in genere volete intercettare. Così potete risparmiarvi di chiamare ``Skip()`` nel callback, perché wxPython ormai ha già fatto la sua parte. 
 
@@ -270,19 +270,19 @@ Come si vede, abbiamo creato una gerarchia di sotto-classi di ``wx.Button`` per 
 
 Stiamo intercettando contemporaneamente ``wx.EVT_LEFT_DOWN``, ``wx.EVT_LEFT_UP`` e ``wx.EVT_BUTTON``. Nella configurazione di base, tutti i callback chiamano ``Skip()``. Se provate a eseguire adesso lo script, trovate che l'ordine in cui i callback sono chiamati rispecchia la normale ricerca degli handler: prima ``on_down``, poi ``on_up``, poi ``on_clic`` e infine ``SuperButton.on_clic``. 
 
-Avvertenza: adesso abbiamo un piccolo problema terminologico. Da questo momento, quando dico "pulsante" intendo "pulsante sinistro del mouse". Quando dico "bottone" mi riferisco invece al ``wx.Button`` che sta disegnato sullo schermo. 
+Avvertenza: abbiamo un piccolo problema terminologico. Da questo momento, quando dico "pulsante" intendo "pulsante sinistro del mouse". Quando dico "bottone" mi riferisco invece al ``wx.Button`` disegnato sullo schermo. 
 
-Osserviamo più da vicino (attenzione! questo potrebbe differire tra le varie piattaforme): se abbassate il pulsante del mouse, ma poi allontanate il puntatore dall'area del bottone prima di rilasciarlo, allora verranno catturati il ``wx.EVT_LEFT_DOWN`` e anche il ``wx.EVT_LEFT_UP``, *tuttavia* il ``wx.EVT_BUTTON`` non verrà emesso. wxPython sa che il secondo evento "appartiene" ugualmente al bottone, anche se il puntatore si è spostato nel frattempo: lo sa perché ha avuto modo di completare correttamente il processo interno del primo evento, e adesso si aspetta comunque che il prossimo ``wx.EVT_LEFT_UP`` sia da attribuire al bottone. Tuttavia, quando il ``wx.EVT_LEFT_UP`` effettivamente si verifica, wxPython non innesca anche il ``wx.EVT_BUTTON``, se il puntatore non è rimasto nell'area del bottone. 
+Osserviamo più da vicino, con l'avvertenza che quanto segue potrebbe differire tra le varie piattaforme. Se abbassate il pulsante del mouse, ma poi allontanate il puntatore dall'area del bottone prima di rilasciarlo, allora verranno catturati il ``wx.EVT_LEFT_DOWN`` e anche il ``wx.EVT_LEFT_UP``, *tuttavia* il ``wx.EVT_BUTTON`` non verrà emesso. wxPython sa che il secondo evento "appartiene" ugualmente al bottone, anche se il puntatore si è spostato nel frattempo: lo sa perché ha avuto modo di completare correttamente il processo interno del primo evento, e adesso si aspetta che il prossimo ``wx.EVT_LEFT_UP`` sia da attribuire al bottone. Tuttavia, quando il ``wx.EVT_LEFT_UP`` effettivamente si verifica, wxPython non innesca anche il ``wx.EVT_BUTTON``, se il puntatore non è rimasto nell'area del bottone. 
 
 Specularmente, se abbassate il pulsante del mouse fuori dall'area del bottone, e poi lo rilasciate dopo averlo spostato all'interno dell'area, vedrete comparire soltanto un ``wx.EVT_LEFT_UP`` "orfano" (e ovviamente nessun ``wx.EVT_BUTTON``).
 
 Adesso, per prima cosa provate a eliminare lo ``Skip`` di ``on_clic`` (riga 34). Il risultato è che ``SuperButton.on_clic`` non verrà più eseguito. D'altra parte però il pulsante funzionerà correttamente, perché non c'è nessuna particolare routine di default che ``wx.Button`` deve svolgere in risposta a un ``wx.EVT_BUTTON``. 
 
-Invece, provate a togliere lo ``Skip`` di ``on_down`` (riga 26): il vostro callback verrà ovviamente ancora eseguito, ma ciò che succede dopo comincia a diventare... strano (e vi avverto, potrebbe differire leggermente a seconda delle piattaforme). La ricerca di handler nelle sovra-classi si arresta, e pertanto wxPython non è in grado di gestire il corretto funzionamento del bottone: notate infatti che non assume il caratteristico aspetto "abbassato". 
+Invece, provate a togliere lo ``Skip`` di ``on_down`` (riga 26): il vostro callback verrà ovviamente ancora eseguito, ma ciò che succede dopo comincia a diventare... strano. La ricerca di handler nelle sovra-classi si arresta, e pertanto wxPython non è in grado di gestire il corretto funzionamento del bottone: notate infatti che non assume il caratteristico aspetto "abbassato". 
 
-Il ``wx.EVT_LEFT_UP`` (contrariamente a quando forse vi aspettate) viene ancora chiamato quando sollevate il pulsante: in realtà l'oggetto-evento del mouse (l'istanza della classe ``wx.MouseEvent``) è creato da wxPython all'inizio, e resta sempre in circolazione: assume di volta in volta differenti "event type" (e quindi può essere collegato da differenti binder) a seconda dell'azione specifica del mouse in quel momento. Quindi non c'è niente di strano che un ``wx.EVT_LEFT_UP`` venga ugualmente ricosciuto e catturato, se rilasciate il pulsante del mouse finché il puntatore è ancora nell'area del bottone. 
+Il ``wx.EVT_LEFT_UP`` (contrariamente a quando forse vi aspettate) viene ancora emesso quando sollevate il pulsante: in realtà l'oggetto-evento del mouse (l'istanza della classe ``wx.MouseEvent``) è creato da wxPython allo startup dell'applicazione, e resta sempre in circolazione: assume di volta in volta differenti "event type" (e quindi può essere collegato da differenti binder) a seconda dell'azione specifica del mouse in quel momento. Quindi non c'è niente di strano che un ``wx.EVT_LEFT_UP`` venga ugualmente ricosciuto e catturato, se rilasciate il pulsante del mouse finché il puntatore è ancora nell'area del bottone. 
 
-Notate però che, se prima di risollevare il mouse allontanate il puntatore dall'area del bottone, allora il ``wx.EVT_LEFT_UP`` questa volta non verrà catturato: questo è spia di un cambiamento importante. A causa della gestione non completa del precedente ``wx.EVT_LEFT_DOWN``, adesso wxPython non è più in grado di capire che il ``wx.EVT_LEFT_UP`` deve essere attribuito comunque al bottone. Inutile dire che, in queste circostanze, non c'è modo per ``wx.EVT_LEFT_UP`` di chiudere in bellezza innescando il ``wx.EVT_BUTTON``, anche se avviene all'interno dell'area del bottone. Quando non avete eseguito il gestore di default del ``wx.EVT_LEFT_DOWN``, avete spezzato irrimediabilmente il meccanismo: una sequenza di "giù" e poi "su", anche se avviene nell'area del bottone, non basta più a far partire il ``wx.EVT_BUTTON``.
+Notate però che, se prima di risollevare il mouse allontanate il puntatore dall'area del bottone, allora il ``wx.EVT_LEFT_UP`` questa volta non verrà catturato: questo è spia di un cambiamento importante. A causa della gestione non completa del precedente ``wx.EVT_LEFT_DOWN``, adesso wxPython non è più in grado di capire che il ``wx.EVT_LEFT_UP`` deve essere attribuito comunque al bottone. Inutile dire che, in queste circostanze, non c'è modo per ``wx.EVT_LEFT_UP`` di chiudere in bellezza innescando il ``wx.EVT_BUTTON``, anche rimanete con il puntatore all'interno dell'area del bottone. Quando non avete eseguito il gestore di default del ``wx.EVT_LEFT_DOWN``, avete spezzato irrimediabilmente il meccanismo: una sequenza di "giù" e poi "su", sia pure nell'area del bottone, non basta più a far partire il ``wx.EVT_BUTTON``.
 
 Se infine togliete lo ``Skip`` del callback ``on_up`` (riga 30), le cose diventano se possibile ancora più strane. Chiaramente i callback ``on_down`` e ``on_up`` vengono eseguiti, ma da quel momento tutto smette di funzionare correttamente. wxPython non ha modo di completare la gestione di ``wx.EVT_LEFT_UP``, e quindi nessun ``wx.EVT_BUTTON`` viene innescato. Ma ciò che è peggio, il bottone resta costantemente "premuto" rifiutando di resettarsi (potete passarci sopra il puntatore del mouse per convincervi del problema). Inoltre, adesso wxPython attribuisce ogni successivo clic del mouse al bottone: fate clic al di fuori del bottone, e vedrete che i vostri callback continuano a essere chiamati lo stesso. Ovviamente, siccome tutti i clic sono attribuiti al bottone, non potete nemmeno più chiudere la finestra dell'applicazione!
 
@@ -309,7 +309,7 @@ Per la precisione, ci sono tre modi differenti di usare ``Bind``. Per esempio::
 
 Lo stile (1) collega l'evento generato da ``button`` direttamente all'handler ``button``. Questo significa che l'handler ``button`` sarà il primo a ricevere l'evento, e se ne occuperà eseguendo ``self.callback``. Se al suo interno ``self.callback`` non chiama ``Skip``, l'evento non si propagherà oltre. Nove volte su dieci, questo è lo stile di collegamento che vi serve davvero. 
 
-Lo stile (2) collega l'evento generato da ``button`` all'handler di ``self`` (che nel nostro esempio potrebbe essere un panel, o un altro contenitore). Nove volte su dieci, questo stile ha lo stesso effetto del precedente. Tuttavia è importante capire che in questo caso l'evento viene catturato solo dopo che si è propagato qualche volta. La catena dei parent da ``button`` a ``self`` potrebbe anche essere lunga. Se nessun altro handler interviene a gestire l'evento prima di ``self``, allora effettivamente non c'è differenza tra lo stile (1) e lo stile (2). Lo stile (2) torna utile solo nei casi un cui è utile inserire più handler lungo la catena di propagazione.  
+Lo stile (2) collega l'evento generato da ``button`` all'handler di ``self`` (che nel nostro esempio potrebbe essere un panel, o un altro contenitore). Nove volte su dieci, questo stile ha lo stesso effetto del precedente. Tuttavia è importante capire che in questo caso l'evento viene catturato solo dopo che si è propagato qualche volta. La catena dei parent da ``button`` a ``self`` potrebbe anche essere lunga. Se nessun altro handler interviene a gestire l'evento prima di ``self``, allora effettivamente non c'è differenza tra lo stile (1) e lo stile (2). Lo stile (2) torna utile solo nei casi un cui è utile inserire diversi handler lungo la catena di propagazione.  
 
 Ecco un esempio pratico:: 
 
@@ -348,7 +348,7 @@ Infatti, quando vogliamo usare il nostro pulsante nel mondo reale, è necessario
 
 Lo stile (3), infine, è incluso solo per maggiore chiarezza: infatti è identico allo stile (1) dal punto di vista della semantica. In entrambi i casi, colleghiamo un handler a un evento. Significa che l'handler gestirà quell'evento, ogni volta che passerà da lui, *non importa da dove provenga*. La differenza, chiaramente, è nel contesto. Nel caso dello stile (1), l'handler è un ``wx.Button`` o un altro widget specifico. E' altamente improbabile che un ``wx.Button`` sia parent di qualche altro ``wx.Button``, quindi gli unici ``wx.EVT_BUTTON`` che gli capiteranno mai sotto mano saranno quelli che emette lui stesso. D'altra parte, nel caso dello stile (3), l'handler è un contenitore che potrebbe avere al suo interno numerosi ``wx.Button``. L'handler gestirà i ``wx.EVT_BUTTON`` di *tutti* i pulsanti che sono (anche indirettamente) suoi figli. 
 
-Naturalmente, all'interno del callback potete risalire a quale figlio ha emesso l'evento originario chiamanto ``event.GetEventObject()``. Ecco un esempio::
+Naturalmente, all'interno del callback potete chiamare ``event.GetEventObject()`` e risalire così al pulsante specifico che ha emesso l'evento. Ecco un esempio::
 
     class TopFrame(wx.Frame): 
         def __init__(self, *a, **k): 
@@ -368,7 +368,7 @@ Naturalmente, all'interno del callback potete risalire a quale figlio ha emesso 
 
 Ricapitolando: lo stile (1) e lo stile (3) dicono entrambi all'handler di gestire ogni evento di quel tipo, non importa da dove è partito. Lo stile (2) dice all'handler di gestire solo gli eventi di quel tipo che sono partiti da un posto specifico. Lo stile (1) e lo stile (3) sono in effetti identici nella semantica: lo stile (3) è semplicemente lo stile (1) applicato a un contenitore. 
 
-Nella pratica, lo stile (1) è quello che va bene nella maggior parte dei casi. Lo stile (2) può aver senso se avete in mente di intercettare più di una volta lo stesso evento. Lo stile (3) è usato raramente, perché ha ovviamente il problema di intercettare più di quanto in genere si vorrebbe. 
+Nella pratica, lo stile (1) è quello che va bene nella maggior parte dei casi. Lo stile (2) può aver senso se avete in mente di intercettare più di una volta lo stesso evento. Lo stile (3) è usato raramente, perché ha il problema di intercettare più di quanto in genere si vorrebbe. 
 
 
 ``Bind`` per gli eventi "non command". 
@@ -380,8 +380,6 @@ Di fatto, è **l'unico** stile di collegamento che potete usare per gli eventi n
 
 Di conseguenza, lo stile (1) va bene per tutti gli eventi, "command" e no. 
 
-L'unica accortezza è che di solito per gli eventi "non command" bisogna ricordarsi di chiamare ``Skip`` nel callback, per permettere a wxPython di ricercare il comportamento predefinito nelle sovra-classi.
-
-
+Ricordatevi comunque di chiamare ``Skip`` nel callback degli eventi "non command", per permettere a wxPython di ricercare il comportamento predefinito nelle sovra-classi.
 
 

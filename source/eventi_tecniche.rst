@@ -16,7 +16,7 @@ La lettura di questa pagina presuppone la conoscenza delle due precedenti.
 Lambda binding.
 ---------------
 
-Abbiamo visto che un callback può, di regola, accettare un solo argomento: un riferimento all'evento che è stato intercettato. Questa è una limitazione piuttosto fastidiosa del framework c++ sottostante. In realtà spesso l'oggetto-evento porta con sé molte informazioni utili (``GetEventObject`` restituisce un riferimento all'oggetto originario, per esempio), ma ci sono casi in cui semplicemente si vorrebbe passare al callback qualcosa di più. 
+Abbiamo visto che un callback può, di regola, accettare un solo argomento: un riferimento all'evento che è stato intercettato. Questa è una limitazione piuttosto fastidiosa del framework c++ sottostante. In realtà spesso l'oggetto-evento porta con sé molte informazioni utili (``GetEventObject`` restituisce un riferimento all'oggetto originario, per esempio), ma ci sono casi in cui semplicemente si vorrebbe passare al callback qualcosa in più. 
 
 Una soluzione drastica sarebbe quella di creare un evento personalizzato (come mostriamo oltre in questa stessa pagina) che porti dentro di sé tutte le informazioni che ci servono. 
 
@@ -29,7 +29,7 @@ Tuttavia le funzioni anonime ``lambda`` ci offrono una soluzione molto più snel
                 
 
     def callback(self, evt, foo, bar): 
-        # ...
+        pass # ...
 
 La nostra funzione ``lambda`` riceve ancora l'argomento consueto ``evt`` (il riferimento all'evento), ma ne aggiunge anche altri a piacere. In questo modo possiamo passare a ``callback`` più informazioni di quelle contenute in ``evt``. 
 
@@ -51,7 +51,7 @@ Anche in questo caso, non c'è molto da spiegare::
     
     
     def callback(self, evt, foo, bar):
-        # ...
+        pass # ...
         
 In pratica, ``functools.partial`` è un wrapper del nostro callback che lascia fuori solo il primo argomento (il consueto riferimento all'evento), e specifica quelli successivi. 
 
@@ -127,7 +127,7 @@ Il widget è composto da un ``wx.ComboBox`` che elenca i trimestri, e uno ``wx.S
             year = self.year.GetValue()
             return datetime(year, *start), datetime(year, *end)
 
-Ora, naturalmente quando l'utente agisce sui due widget interni del nostro ``PeriodWidget``, emette degli eventi che possono essere intercettati. Noi vorremmo però presentare all'esterno un'interfaccia più coerente e pulita: il nostro widget dovrebbe emettere un evento personalizzato ogni volta che l'utente cambia il periodo oppure l'anno. 
+Quando l'utente agisce sui due widget interni del nostro ``PeriodWidget``, emette degli eventi che possono essere intercettati. Noi vorremmo però presentare all'esterno un'interfaccia più coerente e pulita: il nostro widget dovrebbe emettere un evento personalizzato ogni volta che l'utente cambia il periodo oppure l'anno. 
 
 Ecco quindi quello che dobbiamo fare.
 
@@ -147,9 +147,9 @@ Prima ancora di scrivere la nostra classe-evento, conviene definire un nuovo eve
 
 Come si vede, la cosa più difficile è la scelta del nome. In genere per l'event type si preferisce uno schema del tipo ``myEVT_*``, per mimare gli event type standard ``wx.wxEVT_*``. Sempre per consuetudine, il binder ha lo stesso nome dell'event type, tolto il prefisso ``my``. 
 
-``wx.NewEventType()`` restituisce sempliceente un nuovo identificatore non ancora usato per gli event type predefiniti. Ne abbiamo bisogno subito per definire il binder, e poi ne avremo ancora bisogno per istanziare l'oggetto-evento, come vedremo. 
+``wx.NewEventType()`` restituisce semplicemente un nuovo identificatore non ancora usato per gli event type predefiniti. Ne abbiamo bisogno subito per definire il binder, e poi ne avremo ancora bisogno per istanziare l'oggetto-evento, come vedremo. 
 
-Il nostro binder dovrà essere una istanza di ``wx.PyEventBinder``. Gli argomenti richiesti sono due: il primo è l'event type appena creato, e il secondo indica quanti Id ci si aspetta di ricevere al momento di creare l'evento. Questo sembra strano a prima vista, ma in realtà potremmo creare un evento di tipo ``EVT_*_RANGE`` (come per esempio ``wx.EVT_MENU_RANGE``) che accettano due Id. Naturalmente, nella stragrande maggioranza dei casi abbiamo invece bisogno di un solo Id, quindi basta passare "1" come abbiamo fatto noi. 
+Il nostro binder dovrà essere una istanza di ``wx.PyEventBinder``. Gli argomenti richiesti sono due: il primo è l'event type appena creato, e il secondo indica quanti Id ci si aspetta di ricevere al momento di creare l'evento. Questo sembra strano a prima vista, ma in realtà possiamo anche creare eventi "range" (come per esempio ``wx.EVT_MENU_RANGE``) che accettano due Id. Naturalmente, nella stragrande maggioranza dei casi abbiamo invece bisogno di un solo Id, quindi basta passare ``1``. 
 
 .. index::
    single: eventi; PyCommandEvent
@@ -160,11 +160,13 @@ Il nostro binder dovrà essere una istanza di ``wx.PyEventBinder``. Gli argoment
 Scrivere un evento personalizzato.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Si tratta adesso di derivare da ``wx.PyCommandEvent``, la classe che wxPython mette a disposizione, al posto di ``wx.CommandEvent``, proprio per permettere di sovrascrivere i metodi virtuali. Esiste anche una ``wx.PyEvent`` se si vuole scrivere un evento "non command", ma questo è naturalmente più inconsueto. 
+Si tratta adesso di derivare da ``wx.PyCommandEvent``, la classe che wxPython mette a disposizione, al posto di ``wx.CommandEvent``, per sovrascrivere i metodi virtuali. Esiste anche una ``wx.PyEvent`` se si vuole scrivere un evento "non command", ma questo è naturalmente più inconsueto. 
 
-Nella migliore delle ipotesi, basterà dichiarare la nostra sotto-classe (ma se è questo il vostro caso, allora c'è un modo ancora più facile di fare le cose, che vedremo oltre). 
+.. todo:: una pagina sui pycontrols
 
-Nel nostro caso, ne approfittiamo invece per aggiungere delle informazioni ulteriori che l'evento trasporterà con sé. Qui per esempio definiamo due proprietà per comunicare se l'utente ha modificato l'anno oppure il periodo (non dico che sia una cosa molto utile, ma è per fare un esempio!)::
+Nella migliore delle ipotesi, basterà dichiarare la nostra sotto-classe (ma se è questo il vostro caso, allora c'è un modo ancora più facile di procedere, che vedremo oltre). 
+
+Nel nostro caso, ne approfittiamo invece per aggiungere delle informazioni ulteriori che l'evento trasporterà con sé. Qui per esempio definiamo due proprietà per comunicare se l'utente ha modificato l'anno oppure il periodo (non dico che sia una cosa molto utile, ma è solo un esempio!)::
 
     class PeriodEvent(wx.PyCommandEvent):
         def __init__(self, evtType, id, mod_period=False, mod_year=False):
@@ -172,9 +174,9 @@ Nel nostro caso, ne approfittiamo invece per aggiungere delle informazioni ulter
             self.mod_period = mod_period
             self.mod_year = mod_year
 
-Come si vede, ``wx.PyCommandEvent`` accetta due argomenti: ``evtType`` è l'event type, e ``id`` è l'Id dell'oggetto da cui parte l'evento. Gli altri due argomenti sono una nostra aggiunta. Avremmo anche potuto aggiungere dei metodi getter e setter per queste due proprietà, naturalmente. 
+Come si vede, ``wx.PyCommandEvent`` accetta due argomenti: ``evtType`` è l'event type, e ``id`` è l'Id dell'oggetto da cui parte l'evento. Gli altri due argomenti sono una nostra aggiunta. Avremmo anche potuto aggiungere dei getter e setter per queste due proprietà, naturalmente. 
 
-Abbiamo lasciata "aperta" la possibilità di settare il parametro ``evtType`` al momento della creazione dell'istanza: in genere è quello che si preferisce fare, perché si potrebbero creare diversi event type per lo stesso evento. Tuttavia, se sappiamo che esiste solo un event type possibile per il nostro evento, possiamo anche impostarlo direttamente nella nostra classe:: 
+Abbiamo lasciata "aperta" la possibilità di settare il parametro ``evtType`` al momento della creazione dell'istanza: in genere è quello che si preferisce fare, perché si potrebbero creare diversi event type per lo stesso evento. Tuttavia, se sappiamo che esisterà solo un event type possibile per il nostro evento, possiamo anche impostarlo direttamente nella nostra classe:: 
 
     class PeriodEvent(wx.PyCommandEvent): # versione alternativa
         def __init__(self, id, mod_period=False, mod_year=False):
@@ -309,11 +311,11 @@ Se non avete bisogno di definire una classe per il vostro evento, allora ``wx.li
 
     PeriodEvent, EVT_PERIOD_MODIFIED = wx.lib.newevent.NewCommandEvent()
 
-Questo vi restituisce in un colpo solo una classe già costruita, e un binder. La classe è già predisposta con il type event corretto (che quindi non avete bisogno di conoscere). Quando volete creare l'istanza dell'evento, tutto ciò che dovete fare è passare un Id corretto al costruttore. Nel nostro esempio, sarebbe quindi::
+Questo vi restituisce in un colpo solo una classe già costruita, e un binder. La classe è già predisposta con il type event corretto (che quindi non avete bisogno di conoscere). Quando volete creare l'istanza dell'evento, dovete solo passare un Id corretto al costruttore. Nel nostro esempio, sarebbe quindi::
 
     my_event = PeriodEvent(self.GetId())
     
-Ovviamente, siccome ``PeriodEvent`` non è più una classe che abbiamo scritto noi stessi, non ha nessun metodo/proprietà aggiuntiva (o almeno, non *dovrebbe* averne... ma poi, suvvia, siamo pur sempre programmatori Python... un po' di monkey patching non ci spaventa certo!). 
+Ovviamente, siccome ``PeriodEvent`` non è più una classe che abbiamo scritto noi stessi, non ha nessun metodo/proprietà aggiuntiva (o almeno, non *dovrebbe* averne... ma poi siamo pur sempre programmatori Python... un po' di monkey patching non ci spaventa di certo!). 
 
 Quando vogliamo intercettare il nostro evento, possiamo usare il binder ``EVT_PERIOD_MODIFIED`` proprio come prima.
 
