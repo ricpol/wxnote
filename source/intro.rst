@@ -9,7 +9,7 @@ Questa prima pagina contiene le solite note introduttive... se non sapete nulla 
 Licenza.
 --------
 
-Questi appunti sono distribuiti con licenza `Creative Commons BY-NC-SA 3.0 <http://creativecommons.org/licenses/by-nc-sa/3.0/it/>`_. Detto in breve, siete liberi di tagliare e copiare e incollare e modificare... ma dovete sempre citarmi, e non potete fare uso commerciale di queste cose. 
+Questi appunti sono distribuiti con licenza `Creative Commons BY-NC-SA 3.0 <http://creativecommons.org/licenses/by-nc-sa/3.0/it/>`_. Detto in breve, siete liberi di tagliare e copiare e incollare e modificare... ma dovete sempre citarmi ((c) Riccardo Polignieri - 2012), e non potete fare uso commerciale di queste cose. 
 
 
 Che cos'è wxPython?

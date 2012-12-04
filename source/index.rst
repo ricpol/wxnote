@@ -21,5 +21,5 @@ Appunti wxPython
    
 
 * :ref:`genindex`
-* :ref:`search`
+
 
