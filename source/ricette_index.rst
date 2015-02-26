@@ -7,4 +7,5 @@ Ricette wxPython
    
    catturaeventi
    ricette_period_widget
+   ricette_checkpass_button
    
