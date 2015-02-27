@@ -10,6 +10,7 @@ Appunti wxPython
    :numbered:
    :maxdepth: 3
    
+   whatsnew
    intro
    documentarsi
    nonusare
