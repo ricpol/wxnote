@@ -142,7 +142,7 @@ In questo esempio, che riassume tutto quello che abbiamo detto fin qui, troviamo
   MyFrame(None).Show()
   app.MainLoop()
  
-Certamente possiamo usare una ``wx.AcceleratorTable`` anche per creare acceleratori legati alle voci di menu, all'occorrenza. 
+Certamente possiamo usare una ``wx.AcceleratorTable`` anche per creare acceleratori legati alle voci di menu, all'occorrenza:: 
 
   item1 = menu.Append(-1, 'Salva')
   #...
