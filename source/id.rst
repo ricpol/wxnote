@@ -218,6 +218,8 @@ e poi modificate la creazione di ``self.flavor`` aggiungendo il validatore::
 
 Come vedete, adesso quando premete il pulsante contrassegnato con ``wx.ID_OK``, ottenete gratis una validazione del dialogo. 
 
+.. _gli_id_nei_menu:
+
 .. index::
    single: menu; uso degli id
    single: wx; EVT_MENU
@@ -227,9 +229,7 @@ Come vedete, adesso quando premete il pulsante contrassegnato con ``wx.ID_OK``, 
 Menu.
 ^^^^^
 
-Lasciamo alla fine il caso di utilizzo più frequente per gli Id: i menu. Anche in questo caso, dovremo dedicare una pagina separata per approfondire l'uso dei menu. Qui ci limitiamo a qualche nota specifica sugli Id.  
-
-.. todo:: una pagina sui menu
+Lasciamo alla fine il caso di utilizzo più frequente per gli Id: i menu. Abbiamo dedicato :ref:`una pagina separata<menu_basi>` per approfondire l'uso dei menu. Qui ci limitiamo a qualche nota specifica sugli Id.  
 
 Intendiamoci, potete fare del tutto a meno degli Id quando lavorate con i menu. Se create ogni voce separatamente, e collegate ogni voce a un callback separato, le cose procedono senza intoppi::
 

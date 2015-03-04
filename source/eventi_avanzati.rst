@@ -294,6 +294,8 @@ Tuttavia, la regola generale resta quella: se siete in dubbio, chiamate ``Skip``
    single: eventi; Bind()
    single: eventi; propagazione
 
+.. _tre_stili_di_bind:
+
 ``Bind`` e la propagazione degli eventi.
 ----------------------------------------
 

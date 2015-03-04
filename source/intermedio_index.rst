@@ -11,5 +11,7 @@ Appunti wxPython - livello intermedio
    size
    sizer_avanzati
    eventi_avanzati
+   menu_avanzate
    validatori
    validatoridue
+    

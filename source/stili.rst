@@ -10,7 +10,9 @@ I flag di stile sono frequenti in wxPython. Al momento della creazione di un wid
 
 .. index::
    single: bitmask
-   
+
+.. _cosa_e_bitmask:
+
 Che cos'è una bitmask.
 ----------------------
 

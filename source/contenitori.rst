@@ -28,9 +28,7 @@ Non succede praticamente mai che si crei direttamente un ``wx.Frame``: la proced
 
 Il costruttore di ``wx.Frame`` prevede naturalmente un parametro ``style``, e ci sono moltissimi :ref:`stili <stili>` disponibili per variare l'aspetto e le funzionalità di un frame (e anche alcuni :ref:`extra-style <extrastyle>`). Potete consultare la documentazione per conoscerli tutti. La raccomandazione in ogni caso è di non variare mai troppo l'aspetto base del frame, soprattutto la finestra principale, per non disorientare (leggi: irritare) l'utente, che si aspetta la normale operatività delle finestre del suo desktop. Se non passate nessun parametro ``style``, verrà applicato il ``wx.DEFAULT_FRAME_STYLE``. 
 
-Oltre alla cornice, nel frame è possibile inserire una ``wx.MenuBar`` (ossia un barra dei menu), una ``wx.ToolBar`` (una barra dei pulsanti, in genere sotto i menu) e una ``wx.StatusBar`` (una barra di stato in basso). 
-
-.. todo:: sicuramente una pagina per i menu
+Oltre alla cornice, nel frame è possibile inserire una ``wx.MenuBar`` (ossia :ref:`una barra dei menu<menu_basi>`), una ``wx.ToolBar`` (una barra dei pulsanti, in genere sotto i menu) e una ``wx.StatusBar`` (una barra di stato in basso). 
 
 .. todo:: una pagina per la toobar e la statusbar?
 

@@ -12,5 +12,7 @@ Appunti wxPython - livello base
    stili
    sizer_basi
    eventi_basi
+   menu_basi
+   menu_basi2
    questioni_stile
    
