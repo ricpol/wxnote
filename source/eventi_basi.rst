@@ -69,7 +69,9 @@ Ora, come potete collegare effettivamente il callback all'evento che volete inte
 
 .. index::
    single: eventi; handler
-   single: wx; EvtHandler()
+   single: wx; EvtHandler
+
+.. _cosa_e_handler:
 
 Che cosa è un handler.
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -149,6 +151,8 @@ Detto questo, finalmente siamo pronti per rispondere a tutte le domande!
    single: eventi; Bind()
    single: wx.EvtHandler; Bind()
    single: wx.PyEventBinder; Bind()
+
+.. _che_cosa_e_bind:
 
 ``Bind``: collegare eventi e callback, in pratica.
 --------------------------------------------------

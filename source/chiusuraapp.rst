@@ -177,6 +177,8 @@ Naturalmente questo lascia aperto il problema di capire come terminare, a un cer
 
 Ma questo è appunto l'argomento del prossimo paragrafo.
 
+.. _wxexit:
+
 .. index::
    single: wx; Exit()
    single: wx.App; ExitMainLoop()

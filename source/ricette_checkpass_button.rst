@@ -75,9 +75,7 @@ E non solo: se vogliamo dirla tutta, il nostro approccio funziona solo perché s
 La seconda versione.
 --------------------
 
-Se questo trucco vi sembra un po' troppo sporco, in effetti esiste una soluzione più definitiva: basta scrivere un handler personalizzato, e spingerlo in cima allo stack degli handler. Nel nostro handler gestiremo l'evento con l'operazione prioritaria che ci sta a cuore. 
-
-.. todo:: una pagina sugli handler personalizzati
+Se questo trucco vi sembra un po' troppo sporco, in effetti esiste una soluzione più definitiva: basta scrivere un :ref:`handler personalizzato<handler_personalizzati>`, e spingerlo in cima allo stack degli handler. Nel nostro handler gestiremo l'evento con l'operazione prioritaria che ci sta a cuore. 
 
 Un esempio vale più di mille parole, come sempre:
 

@@ -57,6 +57,8 @@ Il ``MainLoop``: il motore della gui.
 
 Il ``MainLoop`` della ``wx.App`` è il ciclo principale della nosta applicazione wxPython. Potete pensarlo come un grande ``while True`` senza fine. A ogni iterazione del ciclo, wxPython controlla se gli elementi della gui si sono mossi, se sono partiti degli eventi a cui bisogna rispondere, e insomma gestisce tutte le fasi della vita della nostra gui. 
 
+.. note:: Questa è in realtà una semplificazione: va bene nella quasi totalità degli scenari che incontrerete, ma se vi trovate nella necessità di saperne di più, abbiamo scritto una :ref:`pagina separata<eventloop>` apposta.
+
 Il ciclo termina solo quando l'ultimo elemento della gui viene distrutto (tipicamente, quando l'utente chiude l'ultimo frame facendo clic sul pulsante di chiusura, con un menu, una scorciatoia da tastiera, o in qualsiasi altro modo). 
 
 .. highlight:: python
@@ -86,7 +88,7 @@ In sostanza, una volta entrati dentro wxPython, tutto deve essere pilotato da "d
 
 .. todo:: una pagina su MVC!
 
-Per il momento, non è molto quello che occorre sapere: il più delle volte, basta ricordarsi di creare la ``wx.App`` e quindi invocare il suo ``MainLoop``. Tutto il resto può essere pilotato direttamente dalla finestra principale della vostra gui.
+Anche se :ref:`ci sarebbe molto altro<eventloop>` da dire sul main loop, per iniziare non è poi molto quello che occorre sapere: il più delle volte, basta ricordarsi di creare la ``wx.App`` e quindi invocare il suo ``MainLoop``. Tutto il resto può essere pilotato direttamente dalla finestra principale della vostra gui.
 
 Quindi, per "ingranare" la nostra applicazione, bastano di solito le tre righe magiche::
 

@@ -53,7 +53,9 @@ Dopo aver capito a grandi linee il meccanismo di propagazione, vediamo come funz
    single: wx.EvtHandler; ProcessEvent()
    single: wx.EvtHandler; SetEvtHandlerEnabled()
    single: wx.Event; Skip()
-   
+
+.. _eventi_processamento:
+
 Come un evento viene processato. 
 --------------------------------
 
@@ -117,15 +119,17 @@ A questo punto l'algoritmo cerca l'handler successivo a cui bisogna rivolgersi. 
 
 Ecco le regole per la ricerca degli handler: 
 
-* **4A.1**: handler nelle sovraclassi
+.. _handler_addizionali: 
 
-Prima si cerca nelle varie sovra-classi. Per ciascuna di esse, si interroga l'handler che si trova, passando per la fase 1 (è abilitato?), la fase 2 (può gestire l'evento?) e la fase 3 (potrebbe ancora propagarsi?). Se, a un certo passaggio, la fase 3 determina che l'evento non si può propagare ulteriormente (tipicamente perché un callback è stato trovato ed eseguito nella fase 2, ma non ha chiamato ``Skip``) allora l'algoritmo si ferma, ``ProcessEvent`` termina e restituisce ``True``. Se invece a ogni passaggio la fase 3 determina che l'evento può ancora propagarsi, si passa alla sovra-classe successiva fino a esaurirle. Quindi si procede alla fase 4A.2 qui sotto. 
+* **4A.1**: handler addizionali
 
-* **4A.2**: handler addizionali
+Qui in genere non succede mai nulla. Comunque, un widget potrebbe avere uno stack di numerosi handler. Ovviamente è una tecnica piuttosto avanzata, ma potreste :ref:`scrivere un handler personalizzato<handler_personalizzati>` (una sottoclasse di ``wx.EvtHandler``) e aggiungerlo allo stack chiamando ``widget.PushEventHandler(my_handler)``. 
 
-Qui in genere non succede mai nulla. Comunque, un widget potrebbe avere uno stack di numerosi handler, in aggiunta a quello suo proprio. Ovviamente è una tecnica piuttosto avanzata, ma potreste scrivere un handler personalizzato (una sottoclasse di ``wx.EvtHandler``) e assegnarlo a un widget chiamando ``widget.PushEventHandler(my_handler)``. 
+L'handler di cui abbiamo parlato finora nelle fasi 1 e 2, è in realtà il primo handler dello stack (e anche il solo, se non ne avete aggiunti altri). Ma, se ci sono altri handler in coda, per ciascuno di essi si passa attraverso le fasi 1, 2, e 3. Come sopra, se la fase 3, a un certo passaggio, determina che l'evento non può propagarsi ulteriormente, l'algoritmo si ferma. Altrimenti, tutti gli handler addizionali vengono interrogati in seguenza. Quando sono esauriti, si procede con la fase 4A.2.
 
-Quindi, se ci sono altri handler in coda, per ciascuno di essi si passa attraverso le fasi 1, 2, e 3. Come sopra, se la fase 3, a un certo passaggio, determina che l'evento non può propagarsi ulteriormente, l'algoritmo si ferma. Altrimenti, tutti gli handler addizionali vengono interrogati in seguenza. Quando sono esauriti, si procede con la fase 4A.3.
+* **4A.2**: handler nelle sovraclassi
+
+Prima si cerca nelle varie sovra-classi. Per ciascuna di esse, si interroga l'handler che si trova, passando per la fase 1 (è abilitato?), la fase 2 (può gestire l'evento?) e la fase 3 (potrebbe ancora propagarsi?). Se, a un certo passaggio, la fase 3 determina che l'evento non si può propagare ulteriormente (tipicamente perché un callback è stato trovato ed eseguito nella fase 2, ma non ha chiamato ``Skip``) allora l'algoritmo si ferma, ``ProcessEvent`` termina e restituisce ``True``. Se invece a ogni passaggio la fase 3 determina che l'evento può ancora propagarsi, si passa alla sovra-classe successiva fino a esaurirle. Quindi si procede alla fase 4A.3 qui sotto. 
 
 * **4A.3**: handler del parent
 
@@ -158,6 +162,7 @@ E poi non si procede oltre, perché l'evento non può comunque propagarsi al par
 
 Se l'evento non è stato ancora gestito, oppure se è stato gestito ma il callback ha chiamato ``Skip``, si procede ancora con la fase 5. 
 
+.. _wxapp_ultimo_handler:
 
 .. topic:: FASE 5
 
@@ -384,4 +389,57 @@ Di conseguenza, lo stile (1) va bene per tutti gli eventi, "command" e no.
 
 Ricordatevi comunque di chiamare ``Skip`` nel callback degli eventi "non command", per permettere a wxPython di ricercare il comportamento predefinito nelle sovra-classi.
 
+.. _esempio_finale_propagazione:
 
+Un esempio finale per la propagazione degli eventi.
+---------------------------------------------------
+
+Questo esempio riassume quello che abbiamo detto fin qui sulla propagazione degli eventi. Fate girare questo codice, e osservate in che ordine vengono chiamati i callback::
+
+  class MyButton(wx.Button):
+      def __init__(self, *a, **k):
+          wx.Button.__init__(self, *a, **k)
+          self.Bind(wx.EVT_BUTTON, self.onclic)
+
+      def onclic(self, evt): 
+          print 'clic dalla classe Mybutton'
+          evt.Skip()
+
+
+  class Test(wx.Frame):
+      def __init__(self, *a, **k):
+          wx.Frame.__init__(self, *a, **k)
+          panel = wx.Panel(self)
+          button = MyButton(panel, -1, 'clic', pos=((50,50)))
+
+          button.Bind(wx.EVT_BUTTON, self.onclic_button)
+          panel.Bind(wx.EVT_BUTTON, self.onclic_panel, button)
+          self.Bind(wx.EVT_BUTTON, self.onclic_frame, button)
+          
+      def onclic_button(self, evt): 
+          print 'clic dal button'
+          evt.Skip()
+
+      def onclic_panel(self, evt):
+          print 'clic dal panel'
+          evt.Skip()
+
+      def onclic_frame(self, evt):
+          print 'clic dal frame'
+          evt.Skip()
+
+  class MyApp(wx.App):
+      def OnInit(self):
+          self.Bind(wx.EVT_BUTTON, self.onclic)
+          return True
+
+      def onclic(self, evt):
+          print 'clic dalla wx.App'
+          evt.Skip()
+
+
+  app = MyApp(False)
+  Test(None).Show()
+  app.MainLoop()
+
+Questo esempio copre i casi comuni e alcuni scenari più avanzati. Tuttavia, non è ancora completo: quando verrà il momento di parlare degli :ref:`handler personalizzati<handler_personalizzati>`, ne scriveremo :ref:`una versione più ampia<esempio_finale_propagazione_aggiornato>`.

@@ -1,3 +1,5 @@
+.. _eventitecniche:
+
 .. index::
    single: eventi
    
@@ -190,6 +192,8 @@ Abbiamo lasciata "aperta" la possibilità di settare il parametro ``evtType`` al
    single: wx.EvtHandler; ProcessEvent()
    single: wx; PostEvent()
 
+.. _lanciare_evento_personalizzato:
+
 Lanciare l'evento personalizzato.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -320,6 +324,3 @@ Ovviamente, siccome ``PeriodEvent`` non è più una classe che abbiamo scritto n
 Quando vogliamo intercettare il nostro evento, possiamo usare il binder ``EVT_PERIOD_MODIFIED`` proprio come prima.
 
 Oltre a ``wx.lib.newevent.NewCommandEvent()`` esiste anche ``wx.lib.newevent.NewEvent()`` per creare un evento "non command". 
-
-
-.. todo:: un'aggiunta sugli handler personalizzati?
