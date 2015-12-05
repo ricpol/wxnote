@@ -4,8 +4,7 @@
 .. _wxapp_basi:
 
 .. index:: 
-   single: wx; App()
-   single: wx.App; MainLoop()
+   single: wx.App
    
 ``wx.App``: le basi da sapere.
 ==============================
@@ -51,6 +50,8 @@ La riga successiva crea una istanza del nostro frame (di nuovo... non preoccupat
 
 E' solo quando, alla riga 18, invochiamo il ``MainLoop`` della nostra ``wx.App`` che le cose si mettono davvero in moto. 
 
+.. index:: 
+   single: wx.App; MainLoop
 
 Il ``MainLoop``: il motore della gui.
 -------------------------------------

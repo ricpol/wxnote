@@ -8,7 +8,7 @@ Avvertenza: questa pagina è "opinionated", come si dice. La includo in questi a
 La risposta breve è no, non usateli, punto. Dopo di che, se volete continuare a leggere, tenete presente che comunque questa è solo la mia opinione, e siete liberi di tenervi la vostra.
 
 .. index::
-   single: Boa Constructor
+   single: strumenti; Boa Constructor
    
 Boa Constructor.
 ----------------
@@ -24,7 +24,7 @@ Detto con franchezza, il motivo per cui viene ancora usato e se ne sente parlare
 Ora, non è il caso di ripetere la litania dei motivi per cui usare i RAD è **Male**. Chiunque programmi in Python dovrebbe portarsi questa convinzione nel dna. Ma in ogni caso, Boa è poco soddisfacente anche come RAD. 
 
 .. index::
-   single: wxGlade
+   single: strumenti; wxGlade
    
 wxGlade.
 --------
@@ -42,7 +42,8 @@ Forse wxGlade può essere adatto a costruire rapidamente interfacce non troppo c
 Forse wxGlade può essere di aiuto all'inizio, se si ha paura di perdersi nel mare delle opzioni, metodi e proprietà di ogni oggetto wxPython. Ma anche in questo caso, probabilmente si fa prima a imparare scrivendo il codice a mano. 
 
 .. index::
-   single: XmlResource()
+   single: strumenti; XmlResource
+   single: wx.xrc; XmlResource
 
 XmlResource.
 ------------

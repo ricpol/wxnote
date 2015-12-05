@@ -58,8 +58,8 @@ Anche in questo caso, non c'è molto da spiegare::
 In pratica, ``functools.partial`` è un wrapper del nostro callback che lascia fuori solo il primo argomento (il consueto riferimento all'evento), e specifica quelli successivi. 
 
 .. index::
-   single: eventi; eventManager
-   single: wx.lib; evtmgr
+   single: eventi; Event Manager
+   single: wx.lib.evtmgr; eventManager
 
 Event Manager.
 --------------
@@ -134,10 +134,10 @@ Quando l'utente agisce sui due widget interni del nostro ``PeriodWidget``, emett
 Ecco quindi quello che dobbiamo fare.
 
 .. index::
-   single: eventi; NewEventType
-   single: eventi; PyEventBinder
-   single: wx; NewEventType()
-   single: wx; PyEventBinder()
+   single: eventi; wx.NewEventType
+   single: eventi; wx.PyEventBinder
+   single: wx.NewEventType
+   single: wx.PyEventBinder
    
 Definire un event-type e un binder.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -154,10 +154,10 @@ Come si vede, la cosa più difficile è la scelta del nome. In genere per l'even
 Il nostro binder dovrà essere una istanza di ``wx.PyEventBinder``. Gli argomenti richiesti sono due: il primo è l'event type appena creato, e il secondo indica quanti Id ci si aspetta di ricevere al momento di creare l'evento. Questo sembra strano a prima vista, ma in realtà possiamo anche creare eventi "range" (come per esempio ``wx.EVT_MENU_RANGE``) che accettano due Id. Naturalmente, nella stragrande maggioranza dei casi abbiamo invece bisogno di un solo Id, quindi basta passare ``1``. 
 
 .. index::
-   single: eventi; PyCommandEvent
-   single: eventi; PyEvent
-   single: wx; PyCommandEvent()
-   single: wx; PyEvent()
+   single: eventi; wx.PyCommandEvent
+   single: eventi; wx.PyEvent
+   single: wx.PyCommandEvent
+   single: wx.PyEvent
    
 Scrivere un evento personalizzato.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -187,10 +187,10 @@ Abbiamo lasciata "aperta" la possibilità di settare il parametro ``evtType`` al
             self.mod_year = mod_year
 
 .. index::
-   single: eventi; ProcessEvent
-   single: eventi; PostEvent
-   single: wx.EvtHandler; ProcessEvent()
-   single: wx; PostEvent()
+   single: eventi; wx.EvtHandler.ProcessEvent
+   single: eventi; wx.PostEvent
+   single: wx.EvtHandler; ProcessEvent
+   single: wx.PostEvent
 
 .. _lanciare_evento_personalizzato:
 
@@ -305,8 +305,10 @@ Intercettare l'evento personalizzato.
 L'esempio che abbiamo appena riportato illustra anche come si intercetta il nostro evento personalizzato. Non c'è nulla di speciale da dire al riguardo. Il codice cliente deve usare ``Bind(EVT_PERIOD_MODIFIED, ...)`` come farebbe con un qualsiasi altro binder ``wx.EVT_*``. 
 
 .. index::
-   single: eventi; wx.lib.newevent
-   single: wx.lib; newevent
+   single: eventi; wx.lib.newevent.NewCommandEvent
+   single: eventi; wx.lib.newevent.NewEvent
+   single: wx.lib.newevent; NewCommandEvent
+   single: wx.lib.newevent; NewEvent
    
 Un modo più rapido di creare un evento.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

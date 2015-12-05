@@ -1,6 +1,7 @@
 .. index:: 
    single: date
-   single: wx; DateTime
+   single: wx.DateTime
+   single: date; wx.DateTime
 
 .. _ricette_datetime:
 

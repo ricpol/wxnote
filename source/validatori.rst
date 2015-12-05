@@ -4,7 +4,7 @@
 .. _validatori:
 
 .. index::
-   single: validatori
+   single: validatore
 
 Validatori: prima parte.
 ========================
@@ -23,10 +23,13 @@ Potete usare i validatori anche solo per una di queste due funzioni, o per entra
 .. todo:: una pagina sui pycontrols
 
 .. index::
-   single: wx; PyValidator()
-   single: PyValidator; Clone()
-   single: PyValidator; Validate()
-   single: validatori; validazione a cascata
+   single: wx.PyValidator
+   single: wx.PyValidator; Clone
+   single: wx.PyValidator; Validate
+   single: validatore; validazione a cascata
+   single: validatore; wx.PyValidator
+   single: validatore; wx.PyValidator.Clone
+   single: validatore; wx.PyValidator.Validate
 
 Come scrivere un validatore.
 ----------------------------
@@ -119,7 +122,7 @@ Come si vede (righe 4 e 5) due caselle di testo sono legate al nostro validatore
 Come vedete, abbiamo incorporato le caselle in un panel, in parte perché è buona pratica raggruppare le funzionalità della gui in piccoli "mattoni" coerenti, :ref:`come abbiamo già detto altrove <wxpanel>`. Però in questo caso il panel ci torna utile anche per dimostrare la validazione "a cascata": quando chiamiamo ``Validate`` sul panel (riga 33), in effetti vengono validati tutti i widget figli del panel (purché abbiano un validatore associato, naturalmente). ``Validate`` chiamato sul panel restituisce ``True`` solo se tutti i figli passano la validazione, ``False`` altrimenti. 
 
 .. index::
-   single: validatori; validazione a cascata
+   single: validatore; validazione a cascata
    
 Quando fallisce una validazione a cascata.
 ------------------------------------------
@@ -186,8 +189,10 @@ Il paramentro ``name`` del costruttore non è di solito molto utile. In Python s
 Il paramentro ``name`` (e quindi l'interfaccia ``GetName``) è sicuramente presente ovunque. Quindi, quale dei due sistemi sulla fiducia è il meno rischioso? Affidarsi a un'interfaccia che potrebbe non esistere (``SetBackgroundColour``) o a una che sicuramente esiste ma dipende da noi renderla significativa? La risposta sta al vostro stile, e alla dimensione del vostro progetto. Nelle situazioni più semplici, non dovete preoccuparvi in nessun caso. Se però iniziate a scrivere validatori "general purpose" e non sapete in anticipo a quali widget potrebbero essere assegnati, dovete muovervi con più cautela.           
 
 .. index:: 
-   single: validatori; validazione ricorsiva
-   single: wx; WX_EX_VALIDATE_RECURSIVELY
+   single: validatore; validazione ricorsiva
+   single: validatore; wx.WX_EX_VALIDATE_RECURSIVELY
+   single: wx.WX_EX_VALIDATE_RECURSIVELY
+   single: stili; wx.Window.SetExtraStyle
    single: wx.Window; SetExtraStyle
    single: stili; extra-style
    
@@ -211,7 +216,8 @@ Tuttavia, proviamo adesso ad aggiungere all'inizio dell'``__init__`` l'extra-sty
 Ecco che la validazione avviene di nuovo. 
 
 .. index::
-   single: wx; SetValidator()
+   single: wx.Window; SetValidator
+   single: validatore; wx.Window.SetValidator
    
 ``SetValidator``: cambiare il validatore assegnato.
 ---------------------------------------------------
@@ -221,9 +227,10 @@ Anche dopo che il widget è stato creato, potete assegnarli un validatore, chiam
 .. _validatori_validazioneautomatica:
 
 .. index::
-   single: validatori; validazione automatica
-   single: dialoghi; con validazione automatica
-   single: wx; ID_OK
+   single: validatore; validazione automatica
+   single: dialogo; con validazione automatica
+   single: wx.ID_OK
+   single: id in wxPython; wx.ID_OK
    
 La validazione automatica dei dialoghi.
 ---------------------------------------
@@ -256,6 +263,9 @@ Questo è importante: la validazione avviene solo in caso di ``wx.ID_OK``. Se si
 
 Consigli sulla validazione.
 ---------------------------
+
+.. index::
+   single: validatore; composizione
 
 Composizione di validatori.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -298,6 +308,8 @@ che poi può essere assegnato a diversi widget con diversi parametri::
     
 Naturalmente non bisogna esagerare: un singolo validatore "dinamico" non può certo bastare per tutte le esigenze della vostra applicazione.
 
+.. index::
+   single: validatore; validazione a cascata
 
 Validazione a cascata.
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -311,7 +323,6 @@ Sulla validazione a cascata, bisogna dire che è una grande comodità, tuttavia 
     # poi presento la lista degli errori, etc. etc.
 
 Basta un'occhiata a questo banale ciclo ``for``, e ci si chiede perchè perdere tempo con le validazioni a cascata, etc. Ancora una volta, è merito della grande flessibilità di Python. Tuttavia i meccanismi di wxPython possono tornare comodi per gestire i casi più consueti. 
-
 
 Validazione a seconda di un contesto.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -380,6 +391,8 @@ Non è detto che i validatori siano completamente fuori gioco, neppure in questo
 
 In ogni caso, non è sempre facile gestire con disinvoltura questo doppio canale di validazione, per cui certi widget sono controllati "a priori" e certi altri "a posteriori". 
 
+.. index::
+   single: validatore; validazione ricorsiva
 
 Validazione ricorsiva.
 ^^^^^^^^^^^^^^^^^^^^^^

@@ -4,13 +4,14 @@
    :linenothreshold: 7
 
 .. index::
-   single: wx; App()
-   single: wx.App; MainLoop()
-   single: wx.App; OnExit()
-   single: wx.Window; Close()
-   single: wx; EVT_CLOSE
+   single: wx.App
+   single: wx.App; MainLoop
+   single: wx.App; OnExit
+   single: wx.Window; Close
+   single: wx.EVT_CLOSE
    single: chiusura; di una wx.App
    single: wx.App; chiusura
+   single: eventi; wx.EVT_CLOSE
    
 Terminare la ``wx.App``.
 ========================
@@ -73,9 +74,10 @@ Ovviamente non sono ipotesi frequenti. Devo dire di non aver mai usato, in prati
 E' opportuno ricordare che l'eventuale non-terminazione della ``wx.App`` non deve essere considerata come un'eventualità da gestire, ma come un vero e proprio baco da correggere. 
 
 .. index::
-   single: wx.App; SetExitOnFrameDelete()
-   single: wx; CallLater()
-   single: wx; CallAfter()
+   single: wx.App; SetExitOnFrameDelete
+   single: wx.CallLater
+   single: wx.CallAfter
+   single: chiusura; wx.App.SetExitOnFrameDelete
    
 Come mantenere in vita la ``wx.App``.
 -------------------------------------
@@ -180,8 +182,10 @@ Ma questo è appunto l'argomento del prossimo paragrafo.
 .. _wxexit:
 
 .. index::
-   single: wx; Exit()
-   single: wx.App; ExitMainLoop()
+   single: wx.Exit
+   single: wx.App; ExitMainLoop
+   single: chiusura; wx.Exit
+   single: chiusura; wx.App.ExitMainLoop
 
 Altri modi di terminare la ``wx.App``.
 --------------------------------------

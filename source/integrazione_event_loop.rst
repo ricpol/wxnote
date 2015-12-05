@@ -100,6 +100,8 @@ Ma se avete la possibilità di frammentare in qualche modo il vostro loop in ope
 .. index:: 
    single: wx.GUIEventLoop; Yield
    single: wx.App; Yield
+   single: eventi; wx.GUIEventLoop.Yield
+   single: eventi; wx.App.Yield
 
 Soluzione 1: usare ``Yield``.
 -----------------------------
@@ -121,8 +123,10 @@ Vantaggi: è davvero molto facile da usare. Per i casi semplici, potrebbe davver
 Svantaggi: ``Yield`` e compagni godono in generale di cattiva fama tra i programmatori wxWidgets/wxPyhton. ``Yield`` è fragile: può andar bene per sbloccare la gui in situazioni occasionali e temporanee, ma fargli tenere in piedi la responsività della vostra applicazione lungo tutto il suo ciclo di vita... molti vi diranno che probabilmente è un po' troppo. Intanto dovete cautelarvi contro la possibilità che l'utente faccia qualcosa di "illogico", :ref:`come già detto<yield_etc>`. Ma quando le applicazioni diventano più complesse, e soprattutto quando i messaggi tra la gui e il "ciclo ospite" si fanno più intrecciati ed è cruciali risolverli nell'ordine corretto... le cose potrebbero diventare difficili da gestire e da debuggare. In essenza ``Yield`` scombina l'ordine naturale degli eventi nella coda. I problemi di "rientri" (ossia, un evento chiamato una seconda volta prima che il loop abbia avuto la possibilità di gestire la prima chiamata) sono sempre in agguato. 
 
 .. index:: 
-   single: wx; EVT_IDLE
+   single: wx.EVT_IDLE
    single: wx.IdleEvent; RequestMore
+   single: eventi; wx.EVT_IDLE
+   single: eventi; wx.IdleEvent.RequestMore
 
 Soluzione 2: catturare ``wx.EVT_IDLE``.
 ---------------------------------------
@@ -249,7 +253,7 @@ Più precisamente, uno step di wxPython (``make_wxStep``) corrisponde alla consu
 Naturalmente a un certo punto bisognerà uscire dal programma. Potete scegliere la strategia che preferite: per esempio, ci sarà un flag che provoca il ``break`` dal ciclo infinito di ``run``. Una volta smesso di processare gli eventi wxPython, tuttavia, l'interfaccia resterà sempre visibile ma inattiva. Ancora una volta dovrà essere la classe ``Game`` a intervenire, chiamando al momento opportuno ``stop_wxPython``. 
 
 .. index::
-   single: wx; CallAfter
+   single: wx.CallAfter
 
 Soluzione 6: usare un thread separato.
 --------------------------------------

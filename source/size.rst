@@ -2,7 +2,7 @@
 
 .. index:: 
    single: sizer; dimensioni dei widget
-   single: dimensioni
+   single: dimensioni in wxPython
    
    
 Le dimensioni in wxPython.
@@ -12,9 +12,10 @@ I questa pagina vediamo come si specificano le dimensioni di un widget in wxPyth
 
 
 .. index:: 
-   single: dimensioni; wx.Size
-   single: wx; Size()
-   single: wx.Window; SetSize()
+   single: dimensioni in wxPython; wx.Size
+   single: dimensioni in wxPython; wx.Window.SetSize*
+   single: wx.Size
+   single: wx.Window; SetSize*
 
 ``wx.Size``: la misura delle dimensioni.
 ----------------------------------------
@@ -47,22 +48,35 @@ imponete che la larghezza del pulsante sia 50 pixel, ma lasciate libero wxPython
 
 
 .. index:: 
-   single: dimensioni; metodi per le dimensioni
-   single: wx.Window; GetSize(Tuple)()
-   single: wx.Window; SetSize(WH)()
-   single: wx.Window; GetClientSize(Tuple)()
-   single: wx.Window; SetClientSize(WH)()
-   single: wx.Window; SetInitialSize()
-   single: wx.Window; GetMaxSize()
-   single: wx.Window; GetMinSize()
-   single: wx.Window; SetMaxSize()
-   single: wx.Window; SetMinSize()
-   single: wx.Window; SetSizeHints(Sz)()
-   single: wx.Window; GetVirtualSize(Tuple)()
-   single: wx.Window; SetVirtualSize(WH)()
-   single: wx.Window; SetVirtualSizeHints(Sz)()
-   single: wx.Window; GetBestSize(Tuple)()
-   
+   single: wx.Window; GetSize(Tuple)
+   single: wx.Window; SetSize(WH)
+   single: wx.Window; GetClientSize(Tuple)
+   single: wx.Window; SetClientSize(WH)
+   single: wx.Window; SetInitialSize
+   single: wx.Window; GetMaxSize
+   single: wx.Window; GetMinSize
+   single: wx.Window; SetMaxSize
+   single: wx.Window; SetMinSize
+   single: wx.Window; SetSizeHints(Sz)
+   single: wx.Window; GetVirtualSize(Tuple)
+   single: wx.Window; SetVirtualSize(WH)
+   single: wx.Window; SetVirtualSizeHints(Sz)
+   single: wx.Window; GetBestSize(Tuple)
+   single: dimensioni in wxPython; wx.Window.GetSize(Tuple)
+   single: dimensioni in wxPython; wx.Window.SetSize(WH)
+   single: dimensioni in wxPython; wx.Window.GetClientSize(Tuple)
+   single: dimensioni in wxPython; wx.Window.SetClientSize(WH)
+   single: dimensioni in wxPython; wx.Window.SetInitialSize
+   single: dimensioni in wxPython; wx.Window.GetMaxSize
+   single: dimensioni in wxPython; wx.Window.GetMinSize
+   single: dimensioni in wxPython; wx.Window.SetMaxSize
+   single: dimensioni in wxPython; wx.Window.SetMinSize
+   single: dimensioni in wxPython; wx.Window.SetSizeHints(Sz)
+   single: dimensioni in wxPython; wx.Window.GetVirtualSize(Tuple)
+   single: dimensioni in wxPython; wx.Window.SetVirtualSize(WH)
+   single: dimensioni in wxPython; wx.Window.SetVirtualSizeHints(Sz)
+   single: dimensioni in wxPython; wx.Window.GetBestSize(Tuple)
+
 Gli strumenti per definire le dimensioni.
 -----------------------------------------
 
@@ -85,21 +99,25 @@ Ecco un rapido riassunto dei metodi "getter" e "setter" più significativi per q
 La cosa importante da capire qui è che potete indicare esattamente le dimensioni di un widget, fornire indicazioni su minimi e/o massimi, o infine non indicarle affatto. Tenendo conto dei vincoli che imponete, l'algoritmo dei sizer cercherà di distribuire lo spazio disponibile nel miglior modo possibile.
 
 .. index:: 
-   single: sizer; Fit
-   single: sizer; Layout
+   single: sizer; wx.Sizer.Fit
+   single: sizer; wx.Window.Fit
+   single: sizer; wx.Sizer.Layout
+   single: sizer; wx.Window.Layout
    single: sizer; wx.EVT_SIZE
    single: sizer; SendSizeEvent
    single: eventi; wx.EVT_SIZE
-   single: eventi; SendSizeEvent
-   single: dimensioni; Fit
-   single: dimensioni; Layout
-   single: dimensioni; SendSizeEvent
-   single: dimensioni; wx.EVT_SIZE
-   single: wx.Sizer; Fit()
-   single: wx.Window; Fit()
-   single: wx.Sizer; Layout()
-   single: wx.Window; Layout()
-   single: wx; EVT_SIZE
+   single: eventi; wx.Window.SendSizeEvent
+   single: dimensioni in wxPython; wx.Sizer.Fit
+   single: dimensioni in wxPython; wx.Window.Fit
+   single: dimensioni in wxPython; wx.Sizer.Layout
+   single: dimensioni in wxPython; wx.Window.Layout
+   single: dimensioni in wxPython; wx.Window.SendSizeEvent
+   single: dimensioni in wxPython; wx.EVT_SIZE
+   single: wx.Sizer; Fit
+   single: wx.Window; Fit
+   single: wx.Sizer; Layout
+   single: wx.Window; Layout
+   single: wx.EVT_SIZE
    single: wx.Window; SendSizeEvent
    
 .. _fit_layout:

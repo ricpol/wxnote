@@ -18,8 +18,8 @@ Gli attori coinvolti.
 ---------------------
 
 .. index::
-   single: wx; Event
-   single: eventi; wx.Event()
+   single: wx.Event
+   single: eventi; wx.Event
    
 Che cosa è un evento.
 ^^^^^^^^^^^^^^^^^^^^^
@@ -69,7 +69,8 @@ Ora, come potete collegare effettivamente il callback all'evento che volete inte
 
 .. index::
    single: eventi; handler
-   single: wx; EvtHandler
+   single: wx.EvtHandler
+   single: eventi; wx.EvtHandler
 
 .. _cosa_e_handler:
 
@@ -84,7 +85,8 @@ E come fate a usare queste capacità di handler? Ancora un attimo di pazienza...
 
 .. index::
    single: eventi; event type
-   single: wx; wxEVT_*
+   single: wx.wxEVT_*
+   single: eventi; wx.wxEVT_*
    
 Che cosa è un event type.
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -110,8 +112,10 @@ Ma per capire come, in pratica, potete riferirvi agli eventi... ehm, dovete pazi
 
 .. index::
    single: eventi; binder
-   single: wx; PyEventBinder()
-   single: wx; EVT_*
+   single: wx.PyEventBinder
+   single: wx.EVT_*
+   single: eventi; wx.PyEventBinder
+   single: eventi; wx.EVT_*
 
 Che cosa è un binder.
 ^^^^^^^^^^^^^^^^^^^^^
@@ -148,9 +152,11 @@ Ma prima, ancora un pizzico di confusione, questa volta però comprensibile e sa
 Detto questo, finalmente siamo pronti per rispondere a tutte le domande!
 
 .. index::
-   single: eventi; Bind()
-   single: wx.EvtHandler; Bind()
-   single: wx.PyEventBinder; Bind()
+   single: eventi; Bind
+   single: wx.EvtHandler; Bind
+   single: wx.PyEventBinder; Bind
+   single: eventi; wx.EvtHandler.Bind
+   single: eventi; wx.PyEventBinder.Bind
 
 .. _che_cosa_e_bind:
 
@@ -183,7 +189,7 @@ Tutto ciò che dobbiamo fare è chiamare il metodo ``Bind`` dell'handler che sce
     e si vedeva chiaramente che era proprio il binder a lavorare. Tuttavia, questo sistema appariva poco "object-oriented", perché sembrava di chiamare direttamente un oggetto, e per di più un oggetto che sembra una costante. In effetti però ``wx.PyEventBinder.__call__`` è ancora lì per retrocompatibilità, e potete ancora vedere questo stile di collegamento nel codice più vecchio (e questa è anche la ragione di questa nota un po' pedante). 
 
 .. index::
-   single: eventi; Bind()
+   single: eventi; Bind
    
 Altri modi di usare ``Bind``.
 -----------------------------

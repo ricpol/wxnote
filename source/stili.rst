@@ -54,7 +54,7 @@ produce un frame "normale" ma senza bordi trascinabili, e::
 elimina anche la possibilità di espansione e riduzione a icona. 
 
 .. index::
-   single: EventsinStyle
+   single: strumenti; EventsinStyle
    
 Conoscere i flag di stile di un widget.
 ---------------------------------------
@@ -81,7 +81,8 @@ Conoscere quali sono questi metodi è ovviamente una questione di sfogliare con 
 
 
 .. index::
-   single: wx.Window; SetWindowStyleFlag()
+   single: wx.Window; SetWindowStyleFlag
+   single: stili; wx.Window.SetWindowStyleFlag
    
 Settare gli stili dopo che il widget è stato creato. 
 ----------------------------------------------------
@@ -96,6 +97,12 @@ In ogni caso, è molto probabile che dobbiate chiamare ``Refresh()`` sul widget,
 
 .. index:: 
    single: stili; extra-style
+   single: stili; wx.Window.SetExtraStyle
+   single: wx.Window; SetExtraStyle
+   single: wx.PreFrame
+   single: stili; wx.PreFrame
+   single: stili; two-step creation
+
 
 Che cosa sono gli extra-style. 
 ------------------------------

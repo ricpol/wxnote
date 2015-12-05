@@ -1,5 +1,15 @@
 .. _periodwidget:
 
+.. index::
+   single: wx.lib.newevent; NewCommandEvent
+   single: wx.Window; GetEventHandler
+   single: wx.PyEvtHandler; ProcessEvent
+   single: wx.Event; SetEventObject
+   single: eventi; wx.lib.newevent.NewCommandEvent
+   single: eventi; wx.Window.GetEventHandler
+   single: eventi; wx.PyEvtHandler.ProcessEvent
+   single: eventi; wx.Event.SetEventObject
+   single: eventi; eventi personalizzati
 
 Un widget per selezionare periodi di tempo.
 ===========================================

@@ -1,7 +1,10 @@
 .. highlight:: python
    :linenothreshold: 5
 
-.. index:: frame, dialoghi, panel
+.. index:: 
+   single: frame
+   single: dialogo
+   single: panel
 
 .. _contenitori:
 
@@ -16,8 +19,10 @@ Cercate sulla demo "frame", "panel" e "dialog" per farvi un'idea.
 E' importante però conoscere bene i tre "fondamentali", perché costituiscono l'intelaiatura di ogni applicazione wxPython.
 
 .. index:: 
-   single: wx; Frame()
+   single: wx.Frame
    single: stili; di un frame
+   single: frame; stili
+   single: frame; wx.Frame
 
 ``wx.Frame``. 
 -------------
@@ -60,10 +65,12 @@ Anche se dentro un frame è possibile mettere qualsiasi widget, in pratica convi
 Ma non è solo un problema di estetica. Il fatto è che un frame manca di alcune funzionalità che probabilmente vi interessano, e di cui invece dispone il panel. Ci arriviamo subito.
 
 .. index::
-   single: wx; Panel()
-   single: wx; TAB_TRASVERSAL
+   single: wx.Panel
+   single: wx.TAB_TRASVERSAL
    single: panel; tab trasversing
-   single: wx.Button; SetDefault()
+   single: wx.Button; SetDefault
+   single: panel; wx.Panel
+   single: panel; wx.TAB_TRASVERSAL
 
 .. _wxpanel: 
 
@@ -123,14 +130,17 @@ Il risultato finale sembra identico, e anzi il codice si è allungato un po'. Ma
 In conclusione, i panel sono un ottimo strumento per organizzare i widget, sia per il layout sia per la logica. Al contrario di quello che ci si potrebbe aspettare, le applicazioni più estese tendono ad avere poche sottoclassi di ``wx.Frame``, piuttosto "leggere", e molte sottoclassi di ``wx.Panel``, ciascuna specializzata a gestire una funzionalità di base e a esporla all'esterno in un'api coerente. I panel sono i veri e propri mattoni da costruzione di un'applicazione wxPython.
 
 .. index::
-   single: wx; Dialog()
-   single: wx.Dialog; ShowModal()
-   single: wx.Window; Destroy()
-   single: validatori; validazione automatica
-   single: dialoghi; con pulsanti predefiniti
-   single: dialoghi; con validazione automatica
-   single: dialoghi; chiusura
+   single: wx.Dialog
+   single: wx.Dialog; ShowModal
+   single: wx.Window; Destroy
+   single: validatore; validazione automatica
+   single: dialogo; con pulsanti predefiniti
+   single: dialogo; con validazione automatica
+   single: dialogo; chiusura
    single: chiusura; di un dialogo
+   single: dialogo; wx.Dialog
+   single: dialogo; wx.Dialog.ShowModal
+   single: dialogo; wx.Window.Destroy
 
 .. _wxdialog:
 

@@ -4,9 +4,12 @@
    single: eventi; loop degli eventi
    single: loop degli eventi
    single: wx.App; MainLoop
-   single: wx; EventLoop (alias per GUIEventLoop)
-   single: wx; GUIEventLoop
-   single: wx; EventLoopBase
+   single: wx.EventLoop (alias per GUIEventLoop)
+   single: wx.GUIEventLoop
+   single: wx.EventLoopBase
+   single: loop degli eventi; wx.EventLoop (alias per GUIEventLoop)
+   single: loop degli eventi; wx.GUIEventLoop
+   single: loop degli eventi; wx.EventLoopBase
 
 Il loop degli eventi.
 =====================
@@ -33,8 +36,14 @@ Per prima cosa dobbiamo chiarire una possibile confusione di termini. Quando :re
    single: wx.GUIEventLoop; Dispatch
    single: wx.GUIEventLoop; ProcessIdle
    single: wx.GUIEventLoop; Run
-   single: wx; EVT_IDLE
-   single: wx; MilliSleep
+   single: wx.EVT_IDLE
+   single: wx.MilliSleep
+   single: loop degli eventi; wx.GUIEventLoop.Pending
+   single: loop degli eventi; wx.GUIEventLoop.Dispatch
+   single: loop degli eventi; wx.GUIEventLoop.ProcessIdle
+   single: loop degli eventi; wx.GUIEventLoop.Run
+   single: loop degli eventi; wx.EVT_IDLE
+   single: eventi; wx.EVT_IDLE
 
 Processare manualmente gli eventi.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -127,6 +136,15 @@ Infine, ancora un dettaglio di cui forse vi sarete già accorti, se avete... pre
    single: wx.GUIEventLoop; IsMain
    single: wx.GUIEventLoop; GetActive
    single: wx.GUIEventLoop; SetActive
+   single: loop degli eventi; wx.GUIEventLoop.Pending
+   single: loop degli eventi; wx.GUIEventLoop.IsRunning
+   single: loop degli eventi; wx.GUIEventLoop.Exit
+   single: loop degli eventi; wx.GUIEventLoop.IsMain
+   single: loop degli eventi; wx.GUIEventLoop.GetActive
+   single: loop degli eventi; wx.GUIEventLoop.SetActive
+   single: loop degli eventi; wx.App.GetMainLoop
+   single: loop degli eventi; wx.App.OnEventLoopEnter
+   single: loop degli eventi; wx.App.OnEventLoopExit
    single: wx.App; GetMainLoop
    single: wx.App; OnEventLoopEnter
    single: wx.App; OnEventLoopExit
@@ -155,11 +173,20 @@ Per quanto riguarda ``GetActive``, ricordiamo infine che si tratta di un metodo 
 .. index:: 
    single: wx.GUIEventLoop; Yield
    single: wx.App; Yield
-   single: wx; Yield (deprecato, usare wx.App.Yield) 
+   single: wx.Yield (deprecato, usare wx.App.Yield) 
    single: wx.App; SafeYield
-   single: wx; SafeYield
+   single: wx.SafeYield
    single: wx.GUIEventLoop; IsYielding
    single: wx.GUIEventLoop; YieldFor
+   single: loop degli eventi; wx.GUIEventLoop.IsYielding
+   single: loop degli eventi; wx.GUIEventLoop.YieldFor
+   single: eventi; wx.GUIEventLoop.Yield
+   single: eventi; wx.App.Yield
+   single: eventi; wx.Yield (deprecato, usare wx.App.Yield) 
+   single: eventi; wx.App.SafeYield
+   single: eventi; wx.SafeYield
+   single: eventi; wx.GUIEventLoop.IsYielding
+   single: eventi; wx.GUIEventLoop.YieldFor
 
 ``Yield`` e i suoi compagni.
 ----------------------------
@@ -225,7 +252,7 @@ Ricordatevi infine che ``YieldFor`` è disponibile solo come metodo di ``wx.GUIE
 
 .. index:: 
    single: wx.GUIEventLoop; Yield
-   single: wx; EventLoopActivator
+   single: wx.EventLoopActivator
    single: wx.GUIEventLoop; Exit
    single: wx.GUIEventLoop; GetActive
    single: wx.GUIEventLoop; SetActive
@@ -233,6 +260,13 @@ Ricordatevi infine che ``YieldFor`` è disponibile solo come metodo di ``wx.GUIE
    single: wx.App; OnEventLoopExit
    single: wx.Dialog; ShowModal
    single: loop degli eventi; stack dei loop
+   single: loop degli eventi; wx.GUIEventLoop.Yield
+   single: loop degli eventi; wx.EventLoopActivator
+   single: loop degli eventi; wx.GUIEventLoop.Exit
+   single: loop degli eventi; wx.GUIEventLoop.GetActive
+   single: loop degli eventi; wx.GUIEventLoop.SetActive
+   single: loop degli eventi; wx.App.OnEventLoopEnter
+   single: loop degli eventi; wx.App.OnEventLoopExit
 
 Loop secondari.
 ---------------
@@ -319,6 +353,7 @@ Infine, un suggerimento: se intendete usare sul serio queste tecniche, probabilm
 .. index:: 
    single: loop degli eventi; personalizzati
    single: wx.GUIEventLoop; Run
+   single: loop degli eventi; wx.GUIEventLoop.Run
 
 Creare loop degli eventi personalizzati.
 ----------------------------------------

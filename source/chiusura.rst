@@ -4,15 +4,16 @@
    :linenothreshold: 7
 
 .. index::
-   single: wx; EVT_CLOSE
-   single: wx.Window; Close()
-   single: wx.Window; Destroy()
-   single: wx; Frame()
-   single: wx; Dialog()
+   single: wx.EVT_CLOSE
+   single: wx.Window; Close
+   single: wx.Window; Destroy
+   single: wx.Frame
+   single: wx.Dialog
    single: chiusura; di un frame
    single: chiusura; di un dialogo
-   single: dialoghi; chiusura
+   single: dialogo; chiusura
    single: frame; chiusura
+   single: eventi; wx.EVT_CLOSE
    
 Chiudere i frame e gli altri widget.
 ====================================
@@ -85,7 +86,9 @@ Come abbiamo detto, ``wx.EVT_CLOSE`` si innesca anche quando voi chiamate ``Clos
 Anche quando agite sul pulsante, il ``self.Close()`` della riga 9 scatena comunque il ``wx.EVT_CLOSE``, e di conseguenza viene eseguito il codice del callback ``on_close``.
 
 .. index::
-   single: wx.Event; Veto()
+   single: wx.Event; Veto
+   single: eventi; wx.Event.Veto
+   single: chiusura; wx.Event.Veto
 
 Chiamare ``Veto()`` se non si vuole chiudere.
 ---------------------------------------------
@@ -145,7 +148,9 @@ Non chiudere un frame e "vietare" l'evento *sono due cose indipendenti*: se viet
 Questo, dite la verità, vi sembra un po' cervellotico... ve l'avevo detto. E non è ancora finita. 
 
 .. index::
-   single: wx.Event; CanVeto()
+   single: wx.Event; CanVeto
+   single: eventi; wx.Event.CanVeto
+   single: chiusura; wx.Event.CanVeto
    
 Ignorare il ``Veto()`` se si vuole chiudere lo stesso.
 ------------------------------------------------------
@@ -230,7 +235,12 @@ Sorprendentemente, la chiamata della riga 14 andrà ancora a segno, anche se ave
 In definitiva, non c'è modo di sapere esattamente *quando* un widget verrà distrutto. Tuttavia, dopo un ragionevole intervallo di tempo, è molto facile capire *se* è stato distrutto. 
 
 .. index::
-   single: wx.Window; DestroyChildren()
+   single: wx.Window; DestroyChildren
+   single: wx.Window; Close
+   single: wx.Window; Destroy
+   single: chiusura; wx.Window.Close
+   single: chiusura; wx.Window.Destroy
+   single: chiusura; wx.Window.DestroyChildren
    
 Distruggere un singolo widget.
 ------------------------------

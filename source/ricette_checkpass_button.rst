@@ -5,6 +5,12 @@ Un pulsante che controlla le credenziali prima di procedere.
 
 Questo pulsante può essere usato al posto di un normale ``wx.Button``, ed è uguale in tutto e per tutto. La sola differenza è che, in risposta a un ``EVT_BUTTON`` (un normale clic), chiede all'utente di inserire una password, e solo in caso positivo passa a eseguire il callback associato.
 
+.. index:: 
+   single: eventi; wx.PostEvent
+   single: wx.PostEvent
+   single: wx.PyCommandEvent
+   single: eventi; wx.PyCommandEvent
+
 La prima versione.
 ------------------
 
@@ -71,6 +77,13 @@ Ecco perché :ref:`abbiamo dovuto diramare<eventi_personalizzati>` un ``wx.EVT_B
 Se questa soluzione vi sembra troppo macchinosa... c'è un aspetto anche peggiore! Il nostro accrocchio funziona come dovrebbe solo fintanto che il codice cliente si limita a intercettare ``wx.EVT_BUTTON``. Ma se per qualche ragione volesse intercettare anche lui ``wx.EVT_LEFT_UP`` (o peggio ancora, ``wx.EVT_LEFT_DOWN``), saremmo di nuovo al problema della "gara degli handler" che abbiamo visto prima. 
 
 E non solo: se vogliamo dirla tutta, il nostro approccio funziona solo perché stiamo parlando un ``wx.Button``, che fortunatamente ha la caratteristica di emettere tre eventi in successione. Ma se volessimo generalizzare il problema con un altro widget, che emette un solo evento per volta, saremmo punto e a capo. 
+
+.. index:: 
+   single: eventi; handler personalizzati
+   single: eventi; wx.PyEvtHandler
+   single: wx.PyEvtHandler
+   single: eventi; wx.Window.PushEventHandler
+   single: wx.Window; PushEventHandler
 
 La seconda versione.
 --------------------

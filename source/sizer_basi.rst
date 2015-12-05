@@ -43,9 +43,10 @@ Lo svantaggio dei sizer è che richiedono parecchie righe di codice in più (bis
 Tuttavia, con un po' di pratica, i vantaggi superano ben presto gli svantaggi. Non a caso i sizer sono diventati praticamente onnipresenti nel mondo wxPython e non solo.
 
 .. index:: 
-   single: sizer; SetSizer
-   single: wx; Sizer()
-   single: wx.Window; SetSizer()
+   single: sizer; wx.Window.SetSizer
+   single: sizer; wx.Sizer
+   single: wx.Sizer
+   single: wx.Window; SetSizer
 
 Che cosa è un sizer.
 --------------------
@@ -64,10 +65,12 @@ Il processo di lavoro è comune a tutti i tipi di sizer:
 * come opzione ulteriore, è possibile :ref:`usare il metodo <fit_layout>` ``Fit`` per dire al sizer di adattare la sua dimensione a quella degli elementi che contiene. 
 
 .. index:: 
-   single: sizer; BoxSizer
-   single: wx; BoxSizer()
-   single: wx; HORIZONTAL
-   single: wx; VERTICAL
+   single: sizer; wx.BoxSizer
+   single: sizer; wx.HORIZONTAL
+   single: sizer; wx.VERTICAL
+   single: wx.BoxSizer
+   single: wx.HORIZONTAL
+   single: wx.VERTICAL
    
 ``wx.BoxSizer``: il modello più semplice. 
 -----------------------------------------
@@ -91,8 +94,8 @@ Una volta che il sizer è stato creato, usate ``Add`` per aggiungere un nuovo el
 .. Note:: Inoltre, ci sono alcuni altri metodi che più raramente possono esservi utili. ``sizer.GetOrientation()`` vi restituisce l'orientamento del sizer. ``AddMany`` permette di inserire più elementi alla volta. ``Prepend`` vi consente di inserire un elemento all'inizio del sizer, invece che alla fine. ``Insert`` inserisce un elemento tra altri due. ``Remove`` rimuove un elemento e lo distrugge, ``Detach`` lo rimuove senza distruggerlo, ``Replace`` lo sostituisce con un altro. Potete consultare la documentazione per scoprire esattamente come funzionano. Non vi consigliamo di fare uso frequente di queste tecniche, tuttavia. 
 
 .. index:: 
-   single: sizer; Add
-   single: wx.Sizer; Add()
+   single: sizer; wx.Sizer.Add
+   single: wx.Sizer; Add
    
 ``Add`` in dettaglio.
 ---------------------
@@ -163,7 +166,8 @@ Il quarto argomento di ``Add`` è anche il più semplice. Se nella bitmask del `
 Non è possibile specificare bordi di differente ampiezza su lati diversi. 
 
 .. index:: 
-   single: wx.Sizer; AddStretchSpacer()
+   single: sizer; wx.Sizer.AddStretchSpacer
+   single: wx.Sizer; AddStretchSpacer
    
 Aggiungere uno spazio vuoto.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -32,7 +32,8 @@ Per capire di più, dobbiamo parlare della propagazione degli eventi.
 .. index::
    single: eventi; propagazione
    single: eventi; command event
-   single: wx; CommandEvent()
+   single: wx.CommandEvent
+   single: eventi; wx.CommandEvent
    
 La propagazione degli eventi.
 -----------------------------
@@ -49,10 +50,13 @@ Dopo aver capito a grandi linee il meccanismo di propagazione, vediamo come funz
 
 .. index::
    single: eventi; processamento
-   single: eventi; Skip()
-   single: wx.EvtHandler; ProcessEvent()
-   single: wx.EvtHandler; SetEvtHandlerEnabled()
-   single: wx.Event; Skip()
+   single: eventi; Skip
+   single: wx.EvtHandler; ProcessEvent
+   single: wx.EvtHandler; SetEvtHandlerEnabled
+   single: wx.Event; Skip
+   single: eventi; wx.Event.Skip
+   single: eventi; wx.EvtHandler.SetEvtHandlerEnabled
+   single: eventi; wx.EvtHandler.ProcessEvent
 
 .. _eventi_processamento:
 
@@ -196,8 +200,9 @@ Come vedete, il ciclo completo è piuttosto complicato, ma nel 99% dei casi si r
     * Se in una di queste stazioni si trova un callback, la propagazione si ferma, a meno che il callback non chiami ``Skip()`` sull'evento. 
 
 .. index::
-   single: wx.Event; Skip()
-   single: eventi; Skip()
+   single: wx.Event; Skip
+   single: eventi; Skip
+   single: eventi; wx.Event.Skip
 
 Come funziona ``Skip()``.
 -------------------------
@@ -296,8 +301,9 @@ Impressionante, vero? Ovviamente questa non è una conseguenza generale che avvi
 Tuttavia, la regola generale resta quella: se siete in dubbio, chiamate ``Skip``.
 
 .. index::
-   single: eventi; Bind()
+   single: eventi; Bind
    single: eventi; propagazione
+   single: eventi; wx.EvtHandler.Bind
 
 .. _tre_stili_di_bind:
 

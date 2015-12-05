@@ -4,10 +4,12 @@
 .. _validatoridue:
 
 .. index::
-   single: validatori; validazione automatica
-   single: validatori; trasferimento dati
-   single: PyValidator; TransferToWindow()
-   single: PyValidator; TransferFromWindow()
+   single: validatore; validazione automatica
+   single: validatore; trasferimento dati
+   single: wx.PyValidator; TransferToWindow
+   single: wx.PyValidator; TransferFromWindow
+   single: validatore; wx.PyValidator.TransferToWindow
+   single: validatore; wx.PyValidator.TransferFromWindow
    
 Validatori: seconda parte.
 ============================

@@ -12,7 +12,8 @@ I menu non sono difficili, almeno per gli aspetti di base. Difficile è organizz
 In questa pagina ci limiteremo alle informazioni tecniche di base, rimandando a un'altra volta gli argomenti più avanzati. 
 
 .. index::
-  single: wx; MenuBar
+  single: wx.MenuBar
+  single: menu; wx.MenuBar
 
 Come creare una barra dei menu.
 -------------------------------
@@ -41,7 +42,8 @@ Creare una barra dei menu è facilissimo, basta istanziare la classe ``wx.MenuBa
 Se provate questo codice, vedrete un normale frame con una barra dei menu pronta, ma ancora vuota. Notate che il nome della barra dei menu (``menubar``) serve solo localmente nell'``__init__`` della classe: per questo motivo non abbiamo bisogno di chiamarla ``self.menubar``. 
 
 .. index::
-  single: wx; Menu
+  single: wx.Menu
+  single: menu; wx.Menu
 
 Come creare i menu.
 -------------------
@@ -73,8 +75,10 @@ Infine, notate che i vari menu compaiono nella barra (da sinistra a destra) nell
 .. _creare_voci_menu:
 
 .. index::
-  single: wx; MenuItem
+  single: wx.MenuItem
   single: wx.Menu; Append
+  single: menu; wx.MenuItem
+  single: menu; wx.Menu.Append
 
 Come creare le voci di menu.
 ----------------------------
@@ -127,6 +131,7 @@ Naturalmente le voci di menu sono ancora inerti: se ci fate clic sopra, non succ
 
 .. index::
   single: wx.Menu; AppendSeparator
+  single: menu; wx.Menu.AppendSeparator
 
 Come creare un separatore.
 --------------------------
@@ -143,6 +148,7 @@ Questo è davvero facile: basta usare ``AppendSeparator`` invece di ``Append``. 
 .. index::
   single: menu; sottomenu
   single: wx.Menu; AppendMenu
+  single: menu; wx.Menu.AppendMenu
 
 Come creare un sotto-menu.
 --------------------------
@@ -187,7 +193,9 @@ Notate anche che non abbiamo conservato in una variabile il riferimento al nodo 
 Questo è ciò che si fa in genere: non ci serve dargli un nome, perché non abbiamo bisogno di collegare questo nodo a un evento. Quando l'utente fa clic qui, ci basta il comportamento di default gestito da wxPython (ovvero, aprire le voci del sotto-menu). Tuttavia, se volessimo far succedere qualcosa di diverso, potremmo collegare anche questo nodo a un evento, come qualsiasi altro elemento. 
 
 .. index::
-  single: wx; EVT_MENU
+  single: wx.EVT_MENU
+  single: menu; wx.EVT_MENU
+  single: eventi; wx.EVT_MENU
 
 Collegare le voci di menu a eventi.
 -----------------------------------

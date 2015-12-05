@@ -14,6 +14,8 @@ Ancora una volta, non si tratta di tecniche difficili da comprendere... ma neppu
 
 .. index::
    single: eventi; filtri
+   single: eventi; wx.App.SetCallFilterEvent
+   single: eventi; wx.App.FilterEvent
    single: wx.App; SetCallFilterEvent
    single: wx.App; FilterEvent
 
@@ -90,7 +92,8 @@ A partire da questa idea, non è difficile scrivere, per esempio, una ``wx.App``
 
 .. index::
    single: eventi; blocchi
-   single: wx; EventBlocker
+   single: wx.EventBlocker
+   single: eventi; wx.EventBlocker
 
 Blocchi.
 --------
@@ -141,8 +144,10 @@ Ancora una volta possiamo domandarci: a che cosa serve questo meccanismo? Ovviam
 
 .. index:: 
    single: eventi; categorie
+   single: eventi; wx.Event.GetEventCategory
+   single: eventi; wx.wxEVT_CATEGORY_*
    single: wx.Event; GetEventCategory
-   single: wx; wxEVT_CATEGORY_*
+   single: wx.wxEVT_CATEGORY_*
 
 Categorie.
 ----------
@@ -174,7 +179,9 @@ Le categorie degli eventi sono usate praticamente solo per filtrare che cosa pro
 
 .. index::
    single: eventi; handler personalizzati
-   single: wx; PyEvtHandler
+   single: eventi; wx.PyEvtHandler
+   single: eventi; wx.Window.PushEventHandler
+   single: wx.PyEvtHandler
    single: wx.Window; PushEventHandler
 
 .. _handler_personalizzati:
@@ -245,10 +252,23 @@ Lo stack degli handler è appunto uno stack: l'ultimo handler inserito è il pri
 Questa caratteristica ci permette di determinare con precisione l'ordine in cui i callback devono intervenire. Può essere importante, in alcuni scenari: esploriamo meglio uno di questi scenari :ref:`in una ricetta separata<ricette_checkpass_button>`.
 
 .. index::
+   single: eventi; handler
+   single: eventi; wx.Window.PopEventHandler
+   single: eventi; wx.EvtHandler.SetNextHandler
+   single: eventi; wx.EvtHandler.SetPreviousHandler
+   single: eventi; wx.EvtHandler.GetNextHandler
+   single: eventi; wx.EvtHandler.GetPreviousHandler
+   single: eventi; wx.EvtHandler.Unlink
+   single: eventi; wx.EvtHandler.IsUnlinked
+   single: eventi; wx.EvtHandler.Unbind
+   single: eventi; wx.EvtHandler.SetEvtHandlerEnabled
    single: wx.Window; PopEventHandler
-   single: wx.EvtHandler; SetNextHandler, SetPreviousHandler
-   single: wx.EvtHandler; GetNextHandler, GetPreviousHandler
-   single: wx.EvtHandler; Unlink, IsUnlinked
+   single: wx.EvtHandler; SetNextHandler
+   single: wx.EvtHandler; SetPreviousHandler
+   single: wx.EvtHandler; GetNextHandler
+   single: wx.EvtHandler; GetPreviousHandler
+   single: wx.EvtHandler; Unlink
+   single: wx.EvtHandler; IsUnlinked
    single: wx.EvtHandler; Unbind
    single: wx.EvtHandler; SetEvtHandlerEnabled
 

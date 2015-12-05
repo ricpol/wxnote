@@ -9,8 +9,8 @@ I sizer: seconda parte.
 Questa pagina riprende il discorso da dove lo avevamo interrotto :ref:`nella pagina introduttiva <sizer_basi>` sui sizer e sul ``wx.BoxSizer`` in particolare. Per avere un quadro completo sui sizer, è utile anche leggere la pagina dedicata :ref:`alle dimensioni dei widget <dimensioni>`. 
 
 .. index:: 
-   single: sizer; GridSizer
-   single: wx; GridSizer()
+   single: sizer; wx.GridSizer
+   single: wx.GridSizer
    
 ``wx.GridSizer``: una griglia rigida.
 -------------------------------------
@@ -51,8 +51,8 @@ Il ``wx.GridSizer`` non è molto usato in pratica. La sua struttura rigida è li
 
 
 .. index:: 
-   single: sizer; FlexGridSizer
-   single: wx; FlexGridSizer()
+   single: sizer; wx.FlexGridSizer
+   single: wx.FlexGridSizer
    
    
 ``wx.FlexGridSizer``: una griglia elastica.
@@ -90,8 +90,8 @@ Il ``FlexGridSizer`` è lo strumento più usato in tutte le situazioni in cui oc
 
 
 .. index:: 
-   single: sizer; GridBagSizer
-   single: wx; GridBagSizer()
+   single: sizer; wx.GridBagSizer
+   single: wx.GridBagSizer
    
    
 ``wx.GridBagSizer``: una griglia ancora più flessibile.
@@ -119,8 +119,8 @@ Usare i ``wx.GridBagSizer`` può essere comodo da un lato, fonte di confusione d
 
 
 .. index:: 
-   single: sizer; StaticBoxSizer
-   single: wx; StaticBoxSizer()
+   single: sizer; wx.StaticBoxSizer
+   single: wx.StaticBoxSizer
    
    
 ``wx.StaticBoxSizer``: un sizer per raggruppamenti logici.
@@ -150,9 +150,11 @@ Per il resto, l'uso di questo sizer è normalissimo::
 
 
 .. index:: 
-   single: sizer; StdDialogButtonSizer
-   single: wx; StdDialogButtonSizer()
-   single: wx.Window; CreateButtonSizer()
+   single: sizer; wx.StdDialogButtonSizer
+   single: sizer; wx.Window.CreateButtonSizer
+   single: wx.StdDialogButtonSizer
+   single: wx.Window; CreateButtonSizer
+   single: stock buttons
    
 .. _createbuttonsizer:
 

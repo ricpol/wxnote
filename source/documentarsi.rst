@@ -57,7 +57,8 @@ Tuttavia la documentazione wxWidgets resta in certi casi l'unica vera risorsa. T
 .. _EventsinStyle:
 
 .. index::
-   single: EventsinStyle
+   single: documentazione; EventsinStyle
+   single: strumenti; EventsinStyle
 
 Events in Style!
 ----------------
@@ -67,7 +68,7 @@ Events in Style!
 E' uno strumento molto comodo per farsi un'idea veloce di due aspetti (eventi e stili, appunto) che di solito nessuno riesce mai a ricordarsi. 
 
 .. index::
-   single: libri
+   single: documentazione; libri
    
 Libri wxPython.
 ---------------
@@ -79,7 +80,7 @@ Ce ne sono due che valgono la pena:
 * `wxPython 2.8 Application Development Cookbook <http://www.packtpub.com/wxpython-2-8-application-development-cookbook/book>`_ di Cody Precord (l'autore dell'IDE Editra, vedi sotto), è un manuale più avanzato, che offre anche esempi di buone pratiche di programmazione. Leggetelo solo se avete già un'idea di base di come funziona wxPython. Altrimenti può disorientare. 
 
 .. index::
-   single: wiki
+   single: documentazione; wiki
    
 Siti wxPython.
 --------------
@@ -93,7 +94,7 @@ Il problema qui è che wxPython è un framework *anziano* e *popolare*, il che s
 Per dovere di cronaca, devo citare almeno il `wiki ufficiale <http://wiki.wxpython.org/>`_, che però è poco sistematico, e talvolta presenta ancora degli esempi superati. Tuttavia, molte pagine sono invece assolutamente ben scritte e aggiornate. 
 
 .. index::
-   single: Editra
+   single: strumenti; Editra
    
 Un buon editor.
 ---------------

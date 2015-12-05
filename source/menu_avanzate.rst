@@ -12,6 +12,7 @@ Nelle :ref:`due<menu_basi>` :ref:`pagine<menu_basi2>` precedenti che abbiamo ded
    single: icone; nei menu
    single: menu; icone
    single: wx.MenuItem; SetBitmap
+   single: menu; wx.MenuItem.SetBitmap
 
 Icone nelle voci di menu.
 -------------------------
@@ -31,8 +32,11 @@ Per quanto riguarda ``wx.Bitmap``, probabilmente dovremo dedicare una pagina sep
 
 .. index::
    single: menu; contestuali, popup
-   single: wx; EVT_CONTEXT_MENU
+   single: wx.EVT_CONTEXT_MENU
    single: wx.Frame; PopupMenu
+   single: menu; wx.EVT_CONTEXT_MENU
+   single: menu; wx.Frame; PopupMenu
+   single: eventi; wx.EVT_CONTEXT_MENU
 
 Menu contestuali e popup.
 -------------------------

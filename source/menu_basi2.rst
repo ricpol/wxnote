@@ -71,8 +71,10 @@ Un tocco di classe: fornite gli acceleratori più comuni nelle diverse piattafor
 Notate che wxPython sul Mac traduce il "Ctrl" automaticamente in "Cmd" quindi non dovete preoccuparvi di questo dettaglio. Con questa agevolazione, di fatto la stragrande maggioranza degli acceleratori sono identici tra le varie piattaforme: potete regolarvi con `questa pagina di Wikipedia <http://en.wikipedia.org/wiki/Table_of_keyboard_shortcuts>`_. Diventa più complesso se volete tener conto delle abitudini nazionali: per esempio, "trova" può diventare "Ctrl+T" in italiano.
 
 .. index::
-  single: wx; AcceleratorTable
-  single: wx; AcceleratorEntry
+  single: wx.AcceleratorTable
+  single: wx.AcceleratorEntry
+  single: menu; wx.AcceleratorTable
+  single: menu; wx.AcceleratorEntry
 
 Creare un acceleratore senza legarlo a una voce di menu.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -166,7 +168,10 @@ Infine, naturalmente, niente ci vieta di associare una voce di menu e (per esemp
 
 .. index::
   single: menu; abilitare e disabilitare
-  single: wx.MenuBar; EnableTop, IsEnabledTop
+  single: wx.MenuBar; EnableTop
+  single: wx.MenuBar; IsEnabledTop
+  single: menu; wx.MenuBar.EnableTop
+  single: menu; wx.MenuBar.IsEnabledTop
 
 Disabilitare i menu.
 --------------------
@@ -239,8 +244,12 @@ Ecco un esempio pratico che mette insieme tutto questo::
 
 .. index::
   single: menu; spuntabili e selezionabili
-  single: wx; ITEM_* (nei menu)
-  single: wx.MenuItem; IsChecked, Check
+  single: wx.ITEM_* (nei menu)
+  single: wx.MenuItem; IsChecked
+  single: wx.MenuItem; Check
+  single: menu; wx.MenuItem.IsChecked
+  single: menu; wx.MenuItem.Check
+  single: menu; wx.ITEM_*
 
 Voci di menu spuntabili o selezionabili.
 ----------------------------------------
@@ -336,7 +345,9 @@ Ecco l'esempio di prima modificato per mostrare anche queste possibilità::
   app.MainLoop()
 
 .. index::
-   single: wx; EVT_MENU_RANGE
+   single: wx.EVT_MENU_RANGE
+   single: menu; wx.EVT_MENU_RANGE
+   single: eventi; wx.EVT_MENU_RANGE
 
 .. _ranged_menu_events:
 

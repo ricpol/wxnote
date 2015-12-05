@@ -1,6 +1,9 @@
 .. _catenaparent:
 
-.. index:: widget parent, widget figli
+.. index:: 
+   single: parent window
+   single: child window
+   single: parent, catena dei
    
 La catena dei "parent".
 =======================
@@ -20,7 +23,8 @@ Forse però il caso più clamoroso è la propagazione degli eventi. Ce ne occupi
 La catena dei rapporti padre-figlio è quindi un concentto importante. In questa pagina cerchiamo di analizzare il problema a fondo.
 
 .. index::
-   single: wx.Window; SetParent()
+   single: wx.Window; SetParent
+   single: parent, catena dei; wx.Window.SetParent
    
 Dichiarare il "parent".
 -----------------------
@@ -60,9 +64,12 @@ Il secondo modo di dichiare il "parent" di un widget è chiamare ``SetParent`` d
 Questo può essere fatto su qualunque widget (posto che naturalmente non potete impostare ``SetParent(None)`` per qualcosa che non sia un frame o un dialogo). Tuttavia è molto raro nella pratica, ed è sempre sorgente di confusione ri-aggiustare la catena dei "parent" a runtime. Un caso in cui può essere giustificato è quando volete agganciare una finestra figlia a un nuovo genitore (o renderla top-level) prima che il suo attuale "parent" venga distrutto. 
 
 .. index::
-   single: wx.Window; GetGrandParent()
-   single: wx.Window; GetTopLevelParent()
-   single: wx.Window; GetChildren()
+   single: wx.Window; GetGrandParent
+   single: wx.Window; GetTopLevelParent
+   single: wx.Window; GetChildren
+   single: parent, catena dei; wx.Window.GetGrandParent
+   single: parent, catena dei; wx.Window.GetTopLevelParent
+   single: parent, catena dei; wx.Window.GetChildren
    
 Orientarsi nell'albero dei "parent". 
 ------------------------------------
@@ -80,10 +87,13 @@ Le catene dei "parent" possono essere lunghe e complicate. wxPython mette a disp
 .. _finestre_toplevel:
 
 .. index::
-   single: top-level, finestre
-   single: wx; GetTopLevelWindows()
-   single: wx.App; GetTopWindow()
-   single: wx.App; SetTopWindow()
+   single: top-level window
+   single: wx.GetTopLevelWindows
+   single: wx.App; GetTopWindow
+   single: wx.App; SetTopWindow
+   single: parent, catena dei; wx.App.GetTopWindow
+   single: parent, catena dei; wx.App.SetTopWindow
+   single: parent, catena dei; wx.GetTopLevelWindows
    
 Le finestre top-level.
 ----------------------
