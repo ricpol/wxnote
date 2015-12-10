@@ -8,6 +8,10 @@ Questi appunti sono stati scritti in una prima grande "infornata" nel novembre-d
 
 In questa pagina trovate una cronologia delle successive aggiunte. 
 
+10 dicembre 2015:
+  - :ref:`una pagina<pubsub>` nuova sul pattern Publisher/Subscriber;
+  - indice ristrutturato.
+  
 29 novembre 2015:
   - :ref:`una pagina<eventitecniche2>` nuova di tecniche inconsuete per gli eventi (tra cui ``Yield``);
   - :ref:`una pagina<eventloop>` dedicata al loop degli eventi e alla sua manipolazione;
