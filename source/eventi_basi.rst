@@ -117,6 +117,8 @@ Ma per capire come, in pratica, potete riferirvi agli eventi... ehm, dovete pazi
    single: eventi; wx.PyEventBinder
    single: eventi; wx.EVT_*
 
+.. _cosa_e_binder:
+
 Che cosa è un binder.
 ^^^^^^^^^^^^^^^^^^^^^
 

@@ -426,9 +426,9 @@ Fortunatamente, quasi mai. Pochissime nozioni tra quelle contenute in questa pag
 
 Altre idee possono tornarvi utili solo se sviluppate cose molto esotiche: certe "applicazioni dentro applicazioni" (un editor visuale, per esempio) potrebbero aver bisogno di event loop gestiti separatamente per consentire all'applicazione "figlia" di funzionare senza intaccare la "madre". Questa è la tecnica, per esempio, che permette a una shell IPython di integrare al suo interno una gui wxPython. 
 
-In teoria, come parte di un'architettura Model-Controller-View, si potrebbe voler "spacchettare" il loop degli eventi per farlo gestire da un Controller esterno a wxPython. Ma è un approccio inutilmente complicato, almeno in linea di principio: per fortuna wxPython offre degli agganci molto più comodi. :ref:`Postare eventi personalizzati<eventi_personalizzati>` nella coda, o perfino :ref:`usare un handler personalizzato<handler_personalizzati>` sono tecniche molto più pratiche e agevoli per stabilire una comunicazione tra la gui e il Model sottostante (senza contare, naturalmente, la possibilità di un sistema di messaggistica estraneo a wxPython, come Publish/Subscriber). 
+In teoria, come parte di un'architettura Model-Controller-View, si potrebbe voler "spacchettare" il loop degli eventi per farlo gestire da un Controller esterno a wxPython. Ma è un approccio inutilmente complicato, almeno in linea di principio: per fortuna wxPython offre degli agganci molto più comodi. :ref:`Postare eventi personalizzati<eventi_personalizzati>` nella coda, o perfino :ref:`usare un handler personalizzato<handler_personalizzati>` sono tecniche molto più pratiche e agevoli per stabilire una comunicazione tra la gui e il Model sottostante (senza contare, naturalmente, la possibilità di un sistema di messaggistica estraneo a wxPython, come :ref:`Publisher/Subscriber<pubsub>`). 
 
-.. todo:: una pagina su mcv, una su pub/sub
+.. todo:: una pagina su mcv
 
 In generale, prima di smontare il loop degli eventi, conviene provare tutte le altre soluzioni: quelle descritte in questa pagina sono tecniche complicate e possono portare a errori difficili da scoprire, comportamenti non cross-compatibili, etc. 
 

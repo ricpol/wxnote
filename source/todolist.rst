@@ -27,8 +27,6 @@ Questi sono argomenti più contenuti, anche se talvolta molto tecnici.
 
 * ``wx.ListCtrl``
 
-* Pattern pub/sub
-
 * Timers
 
 * Threads

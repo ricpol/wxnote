@@ -9,3 +9,4 @@ Appunti wxPython - livello avanzato
    eventi_tecniche2
    eventloop
    integrazione_event_loop
+   pubsub

@@ -61,6 +61,8 @@ In pratica, ``functools.partial`` è un wrapper del nostro callback che lascia f
    single: eventi; Event Manager
    single: wx.lib.evtmgr; eventManager
 
+.. _eventmanager:
+
 Event Manager.
 --------------
 
@@ -71,7 +73,7 @@ Il modulo esporta una classe ``eventManager``, che è un singleton. Il suo utili
     from wx.lib.evtmgr import eventManager
     
     # per registrare un callback all'ascolto di un evento proveniente da widget
-    eventManager.Register(callback, wx.EVT_***, widget)
+    eventManager.Register(callback, wx.EVT_*, widget)
     
     # per de-registrare un callback
     eventManager.DeregisterListener(callback)
@@ -79,15 +81,11 @@ Il modulo esporta una classe ``eventManager``, che è un singleton. Il suo utili
     # per de-registrare tutti i callback in ascolto degli eventi di widget
     eventManager.DeregisterWindow(widget)
     
-Come si può intuire dall'interfaccia, Event Manager utilizza il design pattern noto come Publisher/Subscriber. In particolare, wxPython ha una sua implemetazione di pub/sub, molto ben fatta, di cui parliamo altrove.
+Come si può intuire dall'interfaccia, Event Manager utilizza il design pattern noto come Publisher/Subscriber. In effetti, wxPython ha una sua implemetazione di pub/sub, molto ben fatta, di cui parliamo :ref:`in una pagina separata<pubsub>`.
 
-.. todo:: una pagina su pub/sub
+Event Manager non è molto usato nella pratica perché il normale sistema di collegamento con ``Bind`` è in genere sufficiente: il punto di forza di Event Manager (collegamento molti-a-molti tra sorgenti e ascoltatori) è in genere poco utile nella struttura gerarchica dei gui-framework. 
 
-Event Manager non è molto usato nella pratica, un po' per abitudine al vecchio sistema di collegamento con ``Bind``, e un po' perché il suo maggiore punto di forza (collegamento molti-a-molti tra sorgenti e ascoltatori) è in genere poco utile nella struttura gerarchica dei gui-framework. 
-
-Tuttavia, Event Manager può essere preso in considerazione in tutte le situazioni dove pub/sub andrebbe impiegato. Se vi viene il sospetto che il vostro design funzionerebbe meglio con pub/sub, allora siete a un passo da aver bisogno anche di Event Manager.
-
-Sulla demo si trova un buon esempio di Event Manager in azione. 
+Tuttavia, Event Manager può essere preso in considerazione in molte situazioni dove pub/sub andrebbe impiegato. Se il vostro design funzionerebbe meglio con pub/sub, allora date prima una possibilità anche a Event Manager. Vi rimandiamo quindi alla :ref:`pagina di pub/sub<pubsub>` per un esame più approfondito di Event Manager e di quando conviene usarlo. 
 
 .. _eventi_personalizzati:
 
