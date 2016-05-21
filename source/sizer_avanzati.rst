@@ -175,6 +175,49 @@ restituisce un sizer completo di due pulsanti con Id predefiniti ("ok" e "cancel
 Gli Id predefiniti che è possibile utilizzare sono ``wx.ID_OK``, ``wx.ID_CANCEL``, ``wx.ID_YES``, ``wx.ID_NO``, ``wx.ID_HELP``. 
 
 
+.. index:: 
+   single: sizer; wx.WrapSizer
+   single: wx.WrapSizer
+
+``wx.WrapSizer``: un ``BoxSizer`` che sa quando "andare a capo".
+----------------------------------------------------------------
+
+Concludiamo con quello che è probabilmente il più sconosciuto e meno documentato dei sizer di wxPython. ``wx.WrapSizer`` si comporta in modo quasi identico a ``wx.BoxSizer``, ma quando raggiunge il bordo del contenitore a cui è assegnato (per esempio, il bordo di una finestra) "va a capo" aggiungendo un'altra riga o un'altra colonna, a seconda dell'orientamento. 
+
+Provate questo semplice esempio, per capire come si comporta::
+
+    class TopFrame(wx.Frame):
+        def __init__(self, *a, **k):
+            wx.Frame.__init__(self, *a, **k)
+            p = wx.Panel(self)
+            s = wx.WrapSizer(wx.VERTICAL, 2)
+            for i in range(10):
+                s.Add(wx.Button(p, -1, str(i)), 0, wx.ALL, 5)
+            # s.Add((50, 50))
+            for i in range(10, 20):
+                s.Add(wx.Button(p, -1, str(i)), 0, wx.ALL, 5)
+            p.SetSizer(s)
+
+Se provate a cambiare le dimensioni della finestra, vedrete che i pulsanti si distribuiscono su una o più colonne, a seconda dello spazio che hanno. E' facile immaginare che un ``wx.WrapSizer`` potrebbe tornare comodo, per esempio, per visualizzare un elenco di piccole immagini (thumbnail) o in situazioni analoghe. 
+
+``wx.WrapSizer`` ha poi alcune particolarità che meritano di essere ricordate. Purtroppo bisogna dire che wxPython non implementa in modo completo questo sizer: di conseguenza, alcune delle proprietà che si possono leggere nella documentazione di wxWidgets in realtà non funzionano in wxPython; può darsi che in futuro saranno implementate, ma in ogni caso conviene sempre sperimentare direttamente. 
+
+La prima cosa che salta all'occhio, è che ``wx.WrapSizer`` si può istanziare con due argomenti: il primo è il consueto flag di orientamento (come per ``wx.BoxSizer``, può essere orizzontale o verticale). Il secondo è una serie di flag di stile che possono essere:
+
+- nessun flag settato (valore ``1``);
+- flag ``EXTEND_LAST_ON_EACH_LINE`` (valore ``0``);
+- flag ``REMOVE_LEADING_SPACES`` (valore ``3``);
+- ``WRAPSIZER_DEFAULT_FLAGS`` (entrambi i flag settati, valore ``2``).
+
+Purtroppo però wxPython non esporta queste costanti (per esempio, non esiste ``wx.EXTEND_LAST_ON_EACH_LINE``, come è facile controllare). Di conseguenza, occorre usare direttamente il loro valore numerico, come abbiamo fatto nell'esempio qui sopra. La documentazione di wxWidgets sostiene che il comportamento di default è di avere entrambi i flag settati: in wxPython tuttavia sembra che il valore di default sia al contrario di non avere nessun flag settato, e inoltre i valori numerici delle costanti sembrano differire tra wxPython e wxWidgets (qui sopra abbiamo indicato quelli di wxPython, naturalmente). Quindi conviene sempre dichiarare esplicitamente quali flag si desiderano attivi (di solito è più utile settare il secondo, o entrambi: potete comunque sperimentare le alternative).
+
+``REMOVE_LEADING_SPACES`` serve se introducete degli spazi vuoti nel vostro sizer: in questo caso, il flag impedisce che lo spazio vuoto finisca all'inizio di una riga o di una colonna. Nell'esempio qui sopra, de-commentate la riga ``s.Add((50, 50))`` per introdurre uno spazio a metà dei pulsanti: potrete verificare che effettivamente lo spazio non finirà mai in una posizione anti-estetica. Di solito, quindi, è utile mantenere settato questo flag.
+
+``EXTEND_LAST_ON_EACH_LINE`` serve a estendere l'ultima riga o colonna, fino a occupare tutto lo spazio disponibile. E' un comportamento che talvolta è desiderabile, talvolta no: vi conviene sperimentare, e verificare se fa al caso vostro caso per caso. 
+
+Infine occorre segnalare che la documentazione di wxWidget menziona anche un metodo ``wxWrapSizer::IsSpaceItem``, che si può sovrascrivere per dire al sizer di considerare anche altri elementi specifici come se fossero degli spazi, ai fini del calcolo invocato dal flag ``REMOVE_LEADING_SPACES``. In wxPython però questo metodo non è presente, e quindi dobbiamo accontentarci del comportamento di default, che, come abbiamo visto, considera "spazi" in un sizer solo gli elementi del tipo "Spacer" (ovvero quelli inseriti con ``wx.Sizer.AddSpacer`` o ``wx.Sizer.AddStretchSpacer``).
+
+
 Esempi di utilizzo dei sizer.
 -----------------------------
 

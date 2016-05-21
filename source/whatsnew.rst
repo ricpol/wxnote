@@ -8,6 +8,9 @@ Questi appunti sono stati scritti in una prima grande "infornata" nel novembre-d
 
 In questa pagina trovate una cronologia delle successive aggiunte. 
 
+21 maggio 2016:
+  - aggiunto un paragrago su ``wx.WrapSizer`` alla :ref:`pagina<sizer_avanzati>` sui sizer. 
+  
 10 dicembre 2015:
   - :ref:`una pagina<pubsub>` nuova sul pattern Publisher/Subscriber;
   - indice ristrutturato.
