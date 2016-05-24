@@ -117,6 +117,8 @@ La cosa importante da capire qui è che potete indicare esattamente le dimension
    single: wx.Window; Fit
    single: wx.Sizer; Layout
    single: wx.Window; Layout
+   single: wx.Window; SetAutoLayout
+   single: dimensioni in wxPython; wx.Window.SetAutoLayout
    single: wx.EVT_SIZE
    single: wx.Window; SendSizeEvent
    
@@ -131,9 +133,9 @@ Esistono apparentemente due versioni di ``Fit``, una come metodo di ``wx.Sizer``
 
 ``wx.Window.Fit()`` (senza argomenti) dice alla finestra di calcolare le sue dimensioni, con strategie diverse a seconda dei casi. Se alla finestra è stato assegnato un sizer, chiama direttamente ``wx.Sizer.Fit(window)`` per fare il lavoro. Altrimenti sceglie il "best size" per la finestra. 
 
-Anche ``Layout`` è disponibile sia come metodo dei sizer, sia dei contenitori (e ha effetti analoghi in entrambi i casi). Chiamare ``Layout()`` forza il ricalcolo dell'algoritmo del sizer. Notate che il gestore di default di un evento ``wx.EVT_SIZE`` chiama appunto ``Layout`` per ridisegnare la finestra ogni volta che l'utente la ridimensiona. Quindi ricordatevi che, se catturate un ``wx.EVT_SIZE``, dovreste sempre ricordarvi di chiamare ``Skip`` nel callback per consentire la gestione di default dell'evento. Se non vi orientate in tutto questo, probabilmente non avete ancora letto :ref:`la sezione dedicata agli eventi <eventibasi>`.
+Anche ``Layout`` è disponibile sia come metodo dei sizer, sia dei contenitori (e ha effetti analoghi in entrambi i casi). Chiamare ``Layout()`` forza il ricalcolo dell'algoritmo del sizer (e/o dei :ref:`constraints<constraint>`). Notate che il gestore di default di un evento ``wx.EVT_SIZE`` non chiama ``Layout`` automaticamente per ridisegnare la finestra ogni volta che l'utente la ridimensiona, e in genere questo non è necessario se il vostro layout è disegnato con i sizer. Se invece usate i constraints, o se comunque volete che ``Layout`` sia chiamato ogni volta, potete impostare ``wx.Window.SetAutoLayout(True)`` sul contenitore-parent di grado più alto (per esempio, il panel che contiene i widget che volete ri-disegnare). Ricordatevi anche che, se catturate voi stessi un ``wx.EVT_SIZE``, dovreste sempre ricordarvi di chiamare ``Skip`` nel vostro callback per consentire la gestione di default dell'evento. Se non vi orientate in tutto questo, probabilmente non avete ancora letto :ref:`la sezione dedicata agli eventi <eventibasi>`.
 
-Ci sono due casi tipici in cui forzare il ricalcolo con ``Layout`` è utile:
+Ci sono due casi tipici (constraints a parte) in cui forzare il ricalcolo con ``Layout`` è utile:
 
 * quando date delle dimensioni fisse a un frame, e poi lo riempite con dei widget, li organizzate in un sizer e infine assegnate il sizer al frame, in effetti il frame non riceve alcun ``wx.EVT_SIZE`` dopo il primo dimensionamento, e quindi verrà disegnato male. In questi casi, un ``self.Layout()`` proprio alla fine dell'``__init__`` risolve le cose (ma un'altra soluzione, beninteso, è ricordarsi di impostare le dimensioni del frame *come ultima cosa*, oppure non impostarle affatto);
 
