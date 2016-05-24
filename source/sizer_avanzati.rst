@@ -217,10 +217,75 @@ Purtroppo però wxPython non esporta queste costanti (per esempio, non esiste ``
 
 Infine occorre segnalare che la documentazione di wxWidget menziona anche un metodo ``wxWrapSizer::IsSpaceItem``, che si può sovrascrivere per dire al sizer di considerare anche altri elementi specifici come se fossero degli spazi, ai fini del calcolo invocato dal flag ``REMOVE_LEADING_SPACES``. In wxPython però questo metodo non è presente, e quindi dobbiamo accontentarci del comportamento di default, che, come abbiamo visto, considera "spazi" in un sizer solo gli elementi del tipo "Spacer" (ovvero quelli inseriti con ``wx.Sizer.AddSpacer`` o ``wx.Sizer.AddStretchSpacer``).
 
-
 Esempi di utilizzo dei sizer.
 -----------------------------
 
 Nella :ref:`documentazione <documentarsi>` trovate vari esempi di layout realizzati con i sizer. In particolare, potete cercare "sizer" nella demo. Inoltre, il capitolo 11 del libro "wxPython in action" è dedicato ai sizer, per cui tutti gli esempi della documentazione tratti da quel capitolo sono interessanti. In particolare, ``realworld.py`` mostra un tipico esempio di come i sizer possono essere usati nel "mondo reale". 
 
 
+.. index:: 
+   single: sizer; wx.SizerItem
+   single: wx.SizerItem
+   single: wx.Sizer; Add
+   single: sizer; wx.Sizer.Add
+   single: wx.Window; SendSizeEvent
+   single: sizer; wx.Window.SendSizeEvent
+
+.. _sizeritem:
+
+``wx.SizerItem``, e modificare il layout a runtime.
+---------------------------------------------------
+
+Riprendiamo qui il discorso su ``wx.Sizer.Add`` che avevamo lasciato in sospeso nella :ref:`precedente pagina<sizer_basi>` sui sizer. Finora infatti non abbiamo mai menzionato il fatto che ``wx.Sizer.Add``, oltre ad aggiungere un widget (o uno spazio) a un sizer, restituisce anche un valore di ritorno che occasionalmente può tornarci utile. 
+
+``wx.Sizer.Add`` restituisce una istanza della classe ``wx.SizerItem`` che, come il nome suggerisce, incapsula il concetto di "widget inserito in un sizer". In genere non abbiamo bisogno di questo valore di ritorno, ma volendo possiamo conservarlo assegnandolo a una variabile: qualcosa come::
+
+    s = wx.BoxSizer()
+    # in genere ci basta aggiungere i widget al sizer così:
+    s.Add(widget, 1, wx.EXPAND|wx.ALL, 5)
+    # ma talvolta è utile conservare il wx.SizerItem corrispondente:
+    self.sizer_item = s.Add(widget, 1, wx.EXPAND|wx.ALL, 5)
+    # etc. etc.
+
+Un oggetto ``wx.SizerItem`` ha alcuni metodi che possono tornarci utili per manipolare il layout dopo che è stato disegnato la prima volta: per esempio, 
+
+- ``SetDimension`` assegna posizione e dimensione del widget all'interno del sizer;
+- ``SetBorder`` stabilisce il bordo da attribuire al widget;
+- ``SetFlag`` attribuisce i flag del widget;
+- ``SetProportion`` ridefinisce la dimensione relativa del widget in confronto agli altri.
+
+Ecco un esempio che mostra qualche variazione di layout "al volo"::
+
+    class Test(wx.Frame):
+        def __init__(self, *a, **k):
+            wx.Frame.__init__(self, *a, **k)
+            p = wx.Panel(self)
+            b1 = wx.Button(p, -1, '1')
+            b2 = wx.Button(p, -1, '2')
+            b3 = wx.Button(p, -1, '3')
+            b1.Bind(wx.EVT_BUTTON, self.on_clic_b1)
+            b2.Bind(wx.EVT_BUTTON, self.on_clic_b2)
+            b3.Bind(wx.EVT_BUTTON, self.on_clic_b3)
+            s = wx.BoxSizer(wx.VERTICAL)
+            self.sizer_item_b1 = s.Add(b1, 1, wx.EXPAND|wx.ALL, 5)
+            self.sizer_item_b2 = s.Add(b2, 1, wx.EXPAND|wx.ALL, 5)
+            self.sizer_item_b3 = s.Add(b3, 1, wx.EXPAND|wx.ALL, 5)
+            p.SetSizer(s)
+            self.p = p
+
+        def on_clic_b1(self, evt):
+            self.sizer_item_b1.SetProportion(0)
+            self.p.SendSizeEvent()
+
+        def on_clic_b2(self, evt):
+            self.sizer_item_b2.SetFlag(0)
+            self.p.SendSizeEvent()
+
+        def on_clic_b3(self, evt):
+            self.sizer_item_b3.SetFlag(wx.EXPAND|wx.LEFT|wx.RIGHT)
+            self.sizer_item_b3.SetBorder(25)
+            self.p.SendSizeEvent()
+
+Si noti l'uso di ``wx.Window.SendSizeEvent`` per invocare il ridisegno del layout anche quando la finestra non ha effettivamente cambiato dimensioni. 
+
+In pratica, tuttavia, queste tecniche di manipolazione del layout non sono consigliabili. E' buona norma non modificare l'interfaccia in modo vistoso dopo averla mostrata la prima volta: l'utente ha bisogno di ambientarsi e ricordare la posizione dei widget, farsi una mappa mentale degli aspetti più importanti della vostra gui e dei pattern di utilizzo per lui più consueti. Se voi alterate profondamente il layout a runtime, aggiungendo e togliendo, spostando e modificando i widget, l'utente ne ricaverà solo un senso di disordine e irritazione. Spesso i programmatori inesperti pensano che sia utile, per esempio, far sparire i widget non necessari (o inattivi) in quel momento, e farli riapparire solo quando servono: ma in realtà ci sono sempre modi migliori per organizzare il layout, e wxPython non è certo carente di soluzioni intelligenti (per esempio, si possono organizzare i widget in "pagine" usando un ``wx.Notebook`` o altri analoghi contenitori a schede).

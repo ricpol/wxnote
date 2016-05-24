@@ -168,7 +168,11 @@ Non è possibile specificare bordi di differente ampiezza su lati diversi.
 .. index:: 
    single: sizer; wx.Sizer.AddStretchSpacer
    single: wx.Sizer; AddStretchSpacer
-   
+   single: sizer; wx.Sizer.AddSpacer
+   single: wx.Sizer; AddSpacer
+
+.. _sizer_spazio_vuoto:
+
 Aggiungere uno spazio vuoto.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -179,9 +183,9 @@ Aggiungere uno spazio vuoto.
     sizer.Add((-1, 10))   # uno spazio di 10 pixel in verticale
     sizer.Add(wx.Button(...), 0, wx.ALL, 5)
 
-I due widget saranno così separati da 20 pixel di spazio (contanto anche i bordi). 
+I due widget saranno così separati da 20 pixel di spazio (contando anche i bordi). 
 
-Notate che uno "spazio vuoto" si comporta esattamente come gli altri widget, e quindi può essere inserito con un flag e una proporzione. In particolare, è molto frequente l'idioma ``Add((-1, -1), 1, wx.EXPAND)``, che aggiunge uno spazio indeterminato che si allarga quando ridimensioniamo la finestra. Provate questo "trucco", che mantiene i widget nel centro della finestra::
+Utilizzare ``Add`` in questo modo è in realtà una scorciatoia per il metodo ``AddSpacer``, che accetta gli stessi argomenti. Notate infine che uno "spazio vuoto" si comporta esattamente come gli altri widget, e quindi può essere inserito con un flag e una proporzione. In particolare, è molto frequente l'idioma ``Add((-1, -1), 1, wx.EXPAND)``, che aggiunge uno spazio indeterminato che si allarga quando ridimensioniamo la finestra. Provate questo "trucco", che mantiene i widget nel centro della finestra::
 
     sizer = wx.BoxSizer(wx.VERTICAL)
     sizer.Add((-1, -1), 1, wx.EXPAND)
@@ -189,5 +193,9 @@ Notate che uno "spazio vuoto" si comporta esattamente come gli altri widget, e q
     sizer.Add(wx.Button(...), 0, wx.EXPAND)
     sizer.Add((-1, -1), 1, wx.EXPAND)
     
-L'idioma è abbastanza comune da aver meritato la creazione di un metodo apposito ``sizer.AddStretchSpacer()`` per riassumerlo.
+L'idioma è abbastanza comune da aver meritato la creazione di un metodo apposito ``sizer.AddStretchSpacer`` per riassumerlo.
 
+(E non finisce qui...)
+^^^^^^^^^^^^^^^^^^^^^^
+
+Abbiamo ancora alcune considerazioni da fare su ``Add`` (e i suoi fratelli ``AddSpacer`` e ``AddStretchSpacer``): riprendiamo il discorso nella :ref:`prossima pagina<sizer_avanzati>` che dedichiamo ai sizer. 
