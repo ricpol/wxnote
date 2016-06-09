@@ -8,6 +8,10 @@ Questi appunti sono stati scritti in una prima grande "infornata" nel novembre-d
 
 In questa pagina trovate una cronologia delle successive aggiunte. 
 
+9 giugno 2016:
+  - una :ref:`tour delle funzioni globali<funzioni>` di wxPython, che a sua volta ha provocato piccole modifiche ad alcune altre pagine, tra cui
+  - un nuovo paragrafo sulla :ref:`chiusura dell'applicazione in situazioni di emergenza<chiusuraapp>`.
+
 24 maggio 2016:
   - una nuova :ref:`pagina sui constraints<constraint>`;
   - aggiunto un paragrago su ``wx.WrapSizer`` e uno su ``wx.SizerItem`` alla :ref:`pagina sui sizer<sizer_avanzati>`. 

@@ -11,3 +11,4 @@ Appunti wxPython - livello avanzato
    eventloop
    integrazione_event_loop
    pubsub
+   funzioni

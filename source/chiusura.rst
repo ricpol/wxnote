@@ -90,6 +90,8 @@ Anche quando agite sul pulsante, il ``self.Close()`` della riga 9 scatena comunq
    single: eventi; wx.Event.Veto
    single: chiusura; wx.Event.Veto
 
+.. _eventveto:
+
 Chiamare ``Veto()`` se non si vuole chiudere.
 ---------------------------------------------
 

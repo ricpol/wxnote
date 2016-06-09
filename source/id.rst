@@ -22,10 +22,12 @@ In questa pagina diamo uno sguardo alle cose fondamentali da sapere sugli Id, e 
 .. index::
    single: wx.ID_ANY
    single: wx.NewId
+   single: wx.RegisterId
    single: wx.ID_LOWEST
    single: wx.ID_HIGHEST
    single: id in wxPython; wx.ID_ANY
    single: id in wxPython; wx.NewId
+   single: id in wxPython; wx.RegisterId
    single: id in wxPython; wx.ID_LOWEST
    single: id in wxPython; wx.ID_HIGHEST
 

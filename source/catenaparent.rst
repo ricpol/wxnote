@@ -67,9 +67,11 @@ Questo può essere fatto su qualunque widget (posto che naturalmente non potete 
    single: wx.Window; GetGrandParent
    single: wx.Window; GetTopLevelParent
    single: wx.Window; GetChildren
+   single: wx.GetTopLevelParent
    single: parent, catena dei; wx.Window.GetGrandParent
    single: parent, catena dei; wx.Window.GetTopLevelParent
    single: parent, catena dei; wx.Window.GetChildren
+   single: parent, catena dei; wx.GetTopLevelParent
    
 Orientarsi nell'albero dei "parent". 
 ------------------------------------
@@ -80,7 +82,7 @@ Le catene dei "parent" possono essere lunghe e complicate. wxPython mette a disp
 
 * ``GetGrandParent`` è del tutto analogo, ma restituisce... beh, il nonno. 
 
-* ``GetTopLevelParent`` è molto più utile, salta tutta la gerarchia e punta dritto al progenitore "top level".
+* ``GetTopLevelParent`` (disponibile anche come funzione globale: ``wx.GetTopLevelParent(widget)``) è molto più utile, salta tutta la gerarchia e punta dritto al progenitore "top level".
 
 * ``GetChildren``, chiamato su un genitore, restituisce l'elenco di tutti i suoi figli (solo i figli diretti: ma potete chiamare ricorsivamente ``GetChildren`` per ricostruire tutta la discendenza di un widget, per esempio). 
 

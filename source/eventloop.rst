@@ -37,6 +37,8 @@ Per prima cosa dobbiamo chiarire una possibile confusione di termini. Quando :re
    single: wx.GUIEventLoop; ProcessIdle
    single: wx.GUIEventLoop; Run
    single: wx.EVT_IDLE
+   single: wx.WakeUpIdle
+   single: eventi; wx.WakeUpIdle
    single: wx.MilliSleep
    single: loop degli eventi; wx.GUIEventLoop.Pending
    single: loop degli eventi; wx.GUIEventLoop.Dispatch
@@ -67,7 +69,7 @@ Tuttavia questo è almeno un inizio: abbiamo imparato a creare un event loop, e 
                   loop.Dispatch()
               loop.ProcessIdle()
 
-Ecco che cominciamo a prendere il controllo: abbiamo abbandonato ``Run`` e facciamo tutto noi. Il segreto è chiamare ``Dispatch``, metodo che attende l'arrivo di un evento, e si occupa di accoppiarlo al suo primo handler. Siccome ``Dispatch`` è bloccante (aspetta fin quando non c'è un evento da gestire), in genere conviene accoppiarlo con ``Pending``, che ci dice se ci sono eventi in coda in attesa di essere processati. Quando abbiamo finito di gestire gli eventi in coda chiamiamo ``ProcessIdle``, che emette un ``wx.EVT_IDLE`` per segnalare che il loop è attualmente disoccupato. Emettere di tanto in tanto un ``wx.EVT_IDLE`` è necessario, perché in wxPython ci sono dei gestori di default che intercettano questo evento e ne approfittano per fare operazioni di servizio nei tempi morti. 
+Ecco che cominciamo a prendere il controllo: abbiamo abbandonato ``Run`` e facciamo tutto noi. Il segreto è chiamare ``Dispatch``, metodo che attende l'arrivo di un evento, e si occupa di accoppiarlo al suo primo handler. Siccome ``Dispatch`` è bloccante (aspetta fin quando non c'è un evento da gestire), in genere conviene accoppiarlo con ``Pending``, che ci dice se ci sono eventi in coda in attesa di essere processati. Quando abbiamo finito di gestire gli eventi in coda chiamiamo ``ProcessIdle``, che emette un ``wx.EVT_IDLE`` per segnalare che il loop è attualmente disoccupato (avremmo potuto ottenere lo stesso effetto con la funzione globale ``wx.WakeUpIdle``). Emettere di tanto in tanto un ``wx.EVT_IDLE`` è necessario, perché in wxPython ci sono dei gestori di default che intercettano questo evento e ne approfittano per fare operazioni di servizio nei tempi morti.
 
 Dobbiamo ancora occuparci del meccanismo di chiusura dell'applicazione: qui possiamo inventarci strategie diverse, a seconda delle nostre esigenze specifiche. Ma anche un approccio brutale può bastare::
 
@@ -77,13 +79,13 @@ Dobbiamo ancora occuparci del meccanismo di chiusura dell'applicazione: qui poss
           while True:
               while loop.Pending():
                   loop.Dispatch()
-              if self.GetTopWindow() == None:
+              if self.GetTopWindow() is None:
                   wx.Exit()
               loop.ProcessIdle()
 
 Chiamare ``wx.Exit`` è un modo :ref:`raffinato abbastanza<wxexit>` da permettere l'esecuzione di eventuale codice in ``wx.App.OnExit``, quindi le buone maniere sono salve. Ma a dire il vero, non ha comunque molta importanza. Siccome stiamo facendo tutto "a mano", alla peggio potremmo chiamare direttamente anche ``OnExit`` e/o qualsiasi funzione di cleanup necessaria, prima di chiudere. 
 
-Piuttosto, è il test ``GetTopWindow() == None`` che potrebbe essere fragile in certi corner-case. Abbiamo visto :ref:`mille modi<chiusura>` in cui una finestra potrebbe non chiudersi davvero, e altri :ref:`mille modi<finestre_toplevel>` in cui si possono manipolare le finestre top-level. Tuttavia, se mantenete un minimo di organizzazione nel vostro codice, non dovrebbe essere difficile stabilire quando effettivamente è ora di spegnere le luci e chiudere il locale. 
+Piuttosto, è il test ``GetTopWindow() is None`` che potrebbe essere fragile in certi corner-case. Abbiamo visto :ref:`mille modi<chiusura>` in cui una finestra potrebbe non chiudersi davvero, e altri :ref:`mille modi<finestre_toplevel>` in cui si possono manipolare le finestre top-level. Tuttavia, se mantenete un minimo di organizzazione nel vostro codice, non dovrebbe essere difficile stabilire quando effettivamente è ora di spegnere le luci e chiudere il locale. 
 
 Infine, ancora una raffinatezza: abbiamo organizzato le nostre chiamate nell'ordine giusto, in modo che ``wx.Exit`` possa intervenire solo quando non ci sono più eventi da processare: non si sa mai.
 
@@ -176,12 +178,14 @@ Per quanto riguarda ``GetActive``, ricordiamo infine che si tratta di un metodo 
    single: wx.Yield (deprecato, usare wx.App.Yield) 
    single: wx.App; SafeYield
    single: wx.SafeYield
+   single: wx.YeldIfNeeded
    single: wx.GUIEventLoop; IsYielding
    single: wx.GUIEventLoop; YieldFor
    single: loop degli eventi; wx.GUIEventLoop.IsYielding
    single: loop degli eventi; wx.GUIEventLoop.YieldFor
    single: eventi; wx.GUIEventLoop.Yield
    single: eventi; wx.App.Yield
+   single: eventi; wx.YeldIfNeeded
    single: eventi; wx.Yield (deprecato, usare wx.App.Yield) 
    single: eventi; wx.App.SafeYield
    single: eventi; wx.SafeYield
@@ -228,7 +232,7 @@ Se riuscite a segmentare adeguatamente l'operazione bloccante, ``Yield`` potrebb
 
 .. todo:: una pagina sui thread
 
-Usando ``Yield``, occorre ricordare che è vietato chiamarlo ricorsivamente: per questo, nel nostro esempio, abbiamo dovuto disabilitare il pulsante, mentre l'operazione è in corso. Provate a eliminare questa precauzione, e cliccare due volte in successione sul pulsante: otterrete un ``PyAssertionError``. C'è anche un altro modo per evitare questo problema: chiamare ``Yield`` con il parametro ``onlyIfNeeded=True`` (è ``False`` per default). Provate a togliere le righe di codice che dis/abilitano il pulsante, e sostituire la chiamata con ``wx.GetApp().Yield(True)``. Non otterrete più nessun errore, ma naturalmente questo non vuole ancora dire che siete a posto: nel nostro caso, chiamare ricorsivamente l'operazione bloccante genera un sovraccarico sufficiente per bloccare comunque la gui, e ``Yield`` non può farci nulla. 
+Usando ``Yield``, occorre ricordare che è vietato chiamarlo ricorsivamente: per questo, nel nostro esempio, abbiamo dovuto disabilitare il pulsante, mentre l'operazione è in corso. Provate a eliminare questa precauzione, e cliccare due volte in successione sul pulsante: otterrete un ``PyAssertionError``. C'è anche un altro modo per evitare questo problema: chiamare ``Yield`` con il parametro ``onlyIfNeeded=True`` (è ``False`` per default. Notate anche che ``Yeld(True)`` è disponibile anche sotto forma della funzione globale ``wx.YeldIfNeeded()``). Provate a togliere le righe di codice che dis/abilitano il pulsante, e sostituire la chiamata con ``wx.GetApp().Yield(True)``. Non otterrete più nessun errore, ma naturalmente questo non vuole ancora dire che siete a posto: nel nostro caso, chiamare ricorsivamente l'operazione bloccante genera un sovraccarico sufficiente per bloccare comunque la gui, e ``Yield`` non può farci nulla. 
 
 Questo ci insegna la lezione più importante: ``Yield`` può consentire di sbloccare la gui mentre un'operazione altrimenti bloccante viene processata in background: ma non è detto che l'utente farà buon uso di questa possibilità. E' importante capire quali sono le attività che l'utente non può svolgere finché dura l'operazione lunga, e disabilitare menu e pulsanti per evitare inconsistenze. 
 

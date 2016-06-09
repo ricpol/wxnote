@@ -39,6 +39,8 @@ Una volta era considerato essenziale fornire le scorciatoie da tastiera, se non 
 
 .. index::
   single: menu; acceleratori
+  single: menu; wx.StripMenuCodes
+  single: wx.StripMenuCodes
 
 Come creare un acceleratore.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -55,6 +57,11 @@ A dire il vero gli acceleratori sono definiti a livello globale nella vostra app
 E' perfettamente possibile usare insieme acceleratori e scorciatoie::
 
   item1 = menu.Append(-1, '&Salva\tCtrl+s')
+
+Occasionalmente potrebbe servirvi la funzione globale ``wx.StripMenuCodes`` per ottenere la voce di menu "depurata" dai vari simboli extra::
+
+  >>> wx.StripMenuCodes('&Salva\tCtrl+s')
+  u'Salva'
 
 Ricordatevi che gli acceleratori sono globali in tutta la vostra applicazione, e quindi devono essere unici: non potete definire lo stesso acceleratore per due azioni diverse, anche se si trovano in menu differenti. 
 

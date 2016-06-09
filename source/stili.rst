@@ -102,6 +102,7 @@ In ogni caso, è molto probabile che dobbiate chiamare ``Refresh()`` sul widget,
    single: wx.PreFrame
    single: stili; wx.PreFrame
    single: stili; two-step creation
+   single: two-step creation
 
 
 Che cosa sono gli extra-style. 

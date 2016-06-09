@@ -183,8 +183,10 @@ Ma questo è appunto l'argomento del prossimo paragrafo.
 
 .. index::
    single: wx.Exit
+   single: wx.SafeShowMessage
    single: wx.App; ExitMainLoop
    single: chiusura; wx.Exit
+   single: chiusura; wx.SafeShowMessage
    single: chiusura; wx.App.ExitMainLoop
 
 Altri modi di terminare la ``wx.App``.
@@ -197,3 +199,26 @@ Il primo è chiamare ``wx.GetApp().Exit()`` (oppure la scorciatoia equivalente `
 Il secondo è chiamare ``wx.GetApp().ExitMainLoop()``. Questo si comporta come ``Exit()``, ma è un po' più gentile, perché aspetta che il ciclo corrente del ``MainLoop`` sia terminato prima di uscire. Da un lato, questo significa la garanzia che gli eventi ancora pendenti saranno gestiti. Dall'altro, vuole anche dire che non c'è garanzia che il programma sarà terminato proprio immediatamente. 
 
 
+.. index::
+   single: wx.SafeShowMessage
+   single: chiusura; wx.SafeShowMessage
+   single: eventi; wx.EVT_QUERY_END_SESSION
+   single: wx.EVT_QUERY_END_SESSION
+   single: chiusura; wx.EVT_QUERY_END_SESSION
+   single: wx.Event; Veto
+   single: eventi; wx.Event.Veto
+   single: chiusura; wx.Event.Veto
+   single: wx.Event; CanVeto
+   single: eventi; wx.Event.CanVeto
+   single: chiusura; wx.Event.CanVeto
+
+Situazioni di emergenza.
+------------------------
+
+In genere ``wx.Exit`` o ``wx.App.ExitMainLoop`` si usano in situazioni di emergenza, quando intercettate un errore "di sistema" (un database o un'altra risorsa mancante, per esempio) e dovete staccare la spina in fretta, prima che l'utente abbia il tempo di compromettere l'integrità dei dati, o peggiorare comunque la situazione. 
+
+Talvolta però il sistema diventa instabile per ragioni indipendenti dalla vostra applicazione. Per esempio l'utente potrebbe per errore spegnere il computer prima di aver chiuso il vostro programma. Potreste comunque essere in grado di salvare la situazione: wxPython emette un evento ``wx.EVT_QUERY_END_SESSION`` quando per qualche ragione la sessione del sistema operativo è in procinto di terminare. Se :ref:`lo intercettate<eventibasi>`, nel callback relativo potete gestire una chiusura di emergenza della ``wx.App``. Potreste anche :ref:`provare a vietare<eventveto>` l'evento chiamado ``wx.Event.Veto``, in certe condizioni (provate prima con ``wx.Event.CanVeto`` per verificare se è possibile). 
+
+In ogni caso, non è strettamente necessario prevedere ``wx.EVT_QUERY_END_SESSION``. Se non lo intercettate, il gestore di default chiama comunque ``wx.Window.Close`` su tutte le :ref:`finestre top-level<finestre_toplevel>`. Questo a sua volta, :ref:`come sappiamo<chiusura>`, in condizioni normali vi permette di intercettare il conseguente ``wx.EVT_CLOSE`` per gestire le vostre operazioni di chiusura. Se non intercettate neppure quello, la ``wx.App`` dovrebbe comunque avere il tempo di chiudersi senza problemi, e quindi tutte le operazioni di chiusura "normale" che avete previsto in ``wx.App.OnExit`` dovrebbero svolgersi regolarmente.
+
+Infine, se vi trovate a dover gestire una chiusura di emergenza, può farvi comodo usare la funzione ``wx.SafeShowMessage()`` per mostrare un ultimo messaggio all'utente in modo "sicuro" prima di spegnere la luce. In Windows, questa funzione mostra il messaggio usando il dialogo nativo (senza quindi chiamare ``wx.MessageBox``, che potrebbe fallire); sulle altre piattaforme, scrive semplicemente il messaggio nello standard output. Potete usare ``wx.SafeShowMessage`` anche in assenza di una ``wx.App`` funzionante, e quindi addirittura prima che la ``wx.App`` sia stata correttamente avviata. 

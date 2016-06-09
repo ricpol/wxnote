@@ -127,6 +127,8 @@ Svantaggi: ``Yield`` e compagni godono in generale di cattiva fama tra i program
    single: wx.IdleEvent; RequestMore
    single: eventi; wx.EVT_IDLE
    single: eventi; wx.IdleEvent.RequestMore
+   single: wx.WakeUpIdle
+   single: eventi; wx.WakeUpIdle
 
 Soluzione 2: catturare ``wx.EVT_IDLE``.
 ---------------------------------------
@@ -144,7 +146,7 @@ Ma possiamo approfittarne anche noi. Basta intercettare l'evento, e far compiere
           self.game.make_step()
           evt.RequestMore()
 
-La chiamata finale a ``wx.IdleEvent.RequestMore`` è una finezza necessaria. Lo scenario che vogliamo evitare è questo: la gui non ha niente da fare, e quindi emette un ``wx.EVT_IDLE``; noi lo intercettiamo, ed eseguiamo uno "step" del loop ospite. Finito lo step, può succedere che l'utente continui a non fare assolutamente nulla; ma ormai wxPyhton ha già emesso il suo ``wx.EVT_IDLE``, e dal suo punto di vista non è ancora cambiato niente... quindi tutto si blocca senza emettere più segnali, fino a quando l'utente riprende in mano il mouse! Per evitare questo intoppo, ``RequestMore`` segnala semplicemente la necessità di emettere un nuovo ``wx.EVT_IDLE``. Se nel frattempo l'utente è rimasto inattivo, l'evento sarà di nuovo intercettato da noi. Se invece l'utente ha prodotto qualche segnale, allora prenderà la precedenza, e verrà processato. 
+La chiamata finale a ``wx.IdleEvent.RequestMore`` è una finezza necessaria. Lo scenario che vogliamo evitare è questo: la gui non ha niente da fare, e quindi emette un ``wx.EVT_IDLE``; noi lo intercettiamo, ed eseguiamo uno "step" del loop ospite. Finito lo step, può succedere che l'utente continui a non fare assolutamente nulla; ma ormai wxPyhton ha già emesso il suo ``wx.EVT_IDLE``, e dal suo punto di vista non è ancora cambiato niente... quindi tutto si blocca senza emettere più segnali, fino a quando l'utente riprende in mano il mouse! Per evitare questo intoppo, ``RequestMore`` segnala semplicemente la necessità di emettere un nuovo ``wx.EVT_IDLE`` (anche la funzione globale ``wx.WakeUpIdle`` ha un effetto simile). Se nel frattempo l'utente è rimasto inattivo, l'evento sarà di nuovo intercettato da noi. Se invece l'utente ha prodotto qualche segnale, allora prenderà la precedenza, e verrà processato. 
 
 Vantaggi: questo sistema è davvero molto performante (rispetto a un timer, per esempio). E' probabilmente il sistema migliore da tentare come prima cosa, se non ci sono ragioni particolari in contrario. 
 
