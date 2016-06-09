@@ -146,10 +146,10 @@ In questo esempio, che riassume tutto quello che abbiamo detto fin qui, troviamo
       def on_a_button(self, evt): print "evento a"
       def on_b_button(self, evt): print "evento b"
 
-
-  app = wx.App(False)
-  MyFrame(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      MyFrame(None).Show()
+      app.MainLoop()
  
 Certamente possiamo usare una ``wx.AcceleratorTable`` anche per creare acceleratori legati alle voci di menu, all'occorrenza:: 
 
@@ -244,10 +244,10 @@ Ecco un esempio pratico che mette insieme tutto questo::
           is_enabled = self.menubar.IsEnabledTop(self.menu_B_position)
           self.menubar.EnableTop(self.menu_B_position, not is_enabled)
         
-
-  app = wx.App(False)
-  MyFrame(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      MyFrame(None).Show()
+      app.MainLoop()
 
 .. index::
   single: menu; spuntabili e selezionabili
@@ -295,10 +295,10 @@ Ecco un esempio per chiarire le cose dette fin qui::
           menubar.Append(menu, 'Menu')
           self.SetMenuBar(menubar)
 
-
-  app = wx.App(False)
-  MyFrame(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      MyFrame(None).Show()
+      app.MainLoop()
 
 Naturalmente potete collegare queste voci di menu "speciali" agli eventi come fareste di solito. Il ``wx.CommandEvent`` propagato da una voce di menu porta con sé un metodo ``IsChecked`` che potete interrogare per sapere se l'utente ha appena spuntato la voce su cui ha fatto clic (questo in teoria funziona anche con le voci "radio", ma in pratica non serve a niente: se l'utente fa clic su una voce "radio", questo vuol già dire che l'ha selezionata).
 
@@ -346,10 +346,10 @@ Ecco l'esempio di prima modificato per mostrare anche queste possibilità::
           # Qui avremmo potuto anche usare self.spunta_due.IsChecked()
           print "adesso spunta_due e' spuntato:", evt.IsChecked()
 
-
-  app = wx.App(False)
-  MyFrame(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      MyFrame(None).Show()
+      app.MainLoop()
 
 .. index::
    single: wx.EVT_MENU_RANGE

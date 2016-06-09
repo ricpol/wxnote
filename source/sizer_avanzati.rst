@@ -45,9 +45,10 @@ Il ``wx.GridSizer`` non è molto usato in pratica. La sua struttura rigida è li
         
         def on_clic(self, evt): print evt.GetEventObject().GetName(), 
 
-    app = wx.App(False)
-    TopFrame(None).Show()
-    app.MainLoop()
+    if __name__ == '__main__':
+        app = wx.App(False)
+        TopFrame(None).Show()
+        app.MainLoop()
 
 
 .. index:: 
@@ -84,9 +85,10 @@ Il ``FlexGridSizer`` è lo strumento più usato in tutte le situazioni in cui oc
             boxsizer.Add(sizer, 1, wx.EXPAND|wx.ALL, 5) # un bordo di cornice
             p.SetSizer(boxsizer)
 
-    app = wx.App(False)
-    TopFrame(None).Show()
-    app.MainLoop()
+    if __name__ == '__main__':
+        app = wx.App(False)
+        TopFrame(None).Show()
+        app.MainLoop()
 
 
 .. index:: 

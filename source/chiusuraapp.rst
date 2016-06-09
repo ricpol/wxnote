@@ -111,9 +111,10 @@ Con questa opzione, il ``MainLoop`` non termina quando l'ultima finesta muore. A
                 wx.Frame(None, title='SECONDA GENERAZIONE!!').Show()
                 # dopo questa volta pero' basta...
                 self.SetExitOnFrameDelete(True)
-                            
-    app = MyApp(False)
-    app.MainLoop()
+    
+    if __name__ == '__main__':      
+        app = MyApp(False)
+        app.MainLoop()
 
 La procedura è chiara: all'inizio (riga 3) settiamo il flag a ``False``, e quindi creiamo e mostriamo il primo frame top-level. Tuttavia (riga 4) chiediamo anche alla ``wx.App`` di eseguire a ripetizione il metodo ``create_new_toplevel`` nei momenti liberi del ``MainLoop``. Questo metodo controlla se non sono più rimaste vive finestre top level (riga 9), e in questo caso crea e mostra una "seconda generazione" di finestre. Contestualmente (riga 12) riportiamo il flag a ``True``, in modo che alla prossima chiusura il ``MainLoop`` questa volta termini davvero. 
 
@@ -137,9 +138,10 @@ Ecco un altro possibile approccio::
         def create_new_toplevel(self):
             MyFrame(None, title='SECONDA GENERAZIONE!!').Show()
             self.SetExitOnFrameDelete(True)
-        
-    app = MyApp(False)
-    app.MainLoop()
+    
+    if __name__ == '__main__':
+        app = MyApp(False)
+        app.MainLoop()
 
 Qui invece è l'ultima finestra top-level che, al momento della sua chiusura (riga 7) utilizza ``wx.CallLater`` per chiedere alla ``wx.App`` di creare una "seconda generazione" di frame immediatamente dopo la sua morte. 
 
@@ -171,9 +173,10 @@ In altri termini ``wx.CallAfter``, usato così, potrebbe essere un'altra strada 
         
         def create_new_toplevel(self):
             MyFrame(None, title='SECONDA GENERAZIONE!!').Show()
-        
-    app = MyApp(False)
-    app.MainLoop()
+    
+    if __name__ == '__main__':
+        app = MyApp(False)
+        app.MainLoop()
 
 Naturalmente questo lascia aperto il problema di capire come terminare, a un certo punto, la ``wx.App``. Ma non è un problema enorme. Si potrebbe aggiungere un test nel callback ``on_close``, in modo da chiamare ``wx.CallAfter`` una volta sola. Oppure si potrebbe chiamare ``wx.Exit()``... 
 

@@ -292,9 +292,10 @@ Queste note non sono un tutorial su wxPython e suppongono che siate in grado di 
         def on_button2(self, evt):
             print 'evento', evt.__class__.__name__
             print 'oggetto', evt.GetEventObject().GetName()
-        
-    app = wx.App(False)
-    TopFrame(None).Show()
-    app.MainLoop()
+    
+    if __name__ == '__main__':
+        app = wx.App(False)
+        TopFrame(None).Show()
+        app.MainLoop()
     
     

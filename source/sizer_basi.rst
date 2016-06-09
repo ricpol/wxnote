@@ -120,10 +120,10 @@ In altri termini, se un sizer contiene tre widget, con proporzione 0, 1, e 2 ris
             sizer.Add(wx.Button(p), 2)
             p.SetSizer(sizer)
             
-
-    app = wx.App(False)
-    TopFrame(None).Show()
-    app.MainLoop()
+    if __name__ == '__main__':
+        app = wx.App(False)
+        TopFrame(None).Show()
+        app.MainLoop()
 
 Notate che tutte le volte che ridimensionate la finestra cambiano anche le dimensioni dei pulsanti, ma il secondo e il terzo occuperanno sempre lo spazio restante in proporzione 2:1, mentre le dimensioni del primo pulsante non cambieranno mai. Notate anche che i pulsanti si contendono soltanto lo spazio nella direzione verticale (ossia la direzione del sizer), mentre in orizzontale ciascuno mantiene sempre lo stesso "best size". 
 

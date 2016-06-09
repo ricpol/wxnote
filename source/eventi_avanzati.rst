@@ -271,10 +271,11 @@ Ecco qualche riga di codice che illustra l'esempio del "clic su un pulsante"::
         def on_clic(self, event): 
             print 'clic'
             event.Skip()
-            
-    app = wx.App(False)
-    TestEventFrame(None).Show()
-    app.MainLoop()
+    
+    if __name__ == '__main__':
+        app = wx.App(False)
+        TestEventFrame(None).Show()
+        app.MainLoop()
 
 Come si vede, abbiamo creato una gerarchia di sotto-classi di ``wx.Button`` per testare anche la ricerca degli handler nelle sovra-classi. 
 
@@ -350,10 +351,10 @@ Ecco un esempio pratico::
         def on_clic(self, event): 
             print 'qui facciamo il vero lavoro...'
 
-
-    app = wx.App(False)
-    TopFrame(None).Show()
-    app.MainLoop()
+    if __name__ == '__main__':
+        app = wx.App(False)
+        TopFrame(None).Show()
+        app.MainLoop()
 
 Abbiamo definito un pulsante personalizzato ``ColoredButton`` che cambia colore ogni volta che facciamo clic. Questo comportamento è codificato dal callback ``change_color``, che è collegato direttamente all'handler del pulsante stesso (riga 6: utilizziamo il primo stile). Notate che ``change_color`` chiama ``Skip``, permettendo all'evento di propagarsi per essere intercettato anche in seguito. 
 
@@ -374,10 +375,10 @@ Naturalmente, all'interno del callback potete chiamare ``event.GetEventObject()`
         def on_clic(self, event): 
             print 'premuto', event.GetEventObject().GetLabel()
 
-
-    app = wx.App(False)
-    TopFrame(None).Show()
-    app.MainLoop()
+    if __name__ == '__main__':
+        app = wx.App(False)
+        TopFrame(None).Show()
+        app.MainLoop()
 
 Ricapitolando: lo stile (1) e lo stile (3) dicono entrambi all'handler di gestire ogni evento di quel tipo, non importa da dove è partito. Lo stile (2) dice all'handler di gestire solo gli eventi di quel tipo che sono partiti da un posto specifico. Lo stile (1) e lo stile (3) sono in effetti identici nella semantica: lo stile (3) è semplicemente lo stile (1) applicato a un contenitore. 
 
@@ -443,9 +444,9 @@ Questo esempio riassume quello che abbiamo detto fin qui sulla propagazione degl
           print 'clic dalla wx.App'
           evt.Skip()
 
-
-  app = MyApp(False)
-  Test(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = MyApp(False)
+      Test(None).Show()
+      app.MainLoop()
 
 Questo esempio copre i casi comuni e alcuni scenari più avanzati. Tuttavia, non è ancora completo: quando verrà il momento di parlare degli :ref:`handler personalizzati<handler_personalizzati>`, ne scriveremo :ref:`una versione più ampia<esempio_finale_propagazione_aggiornato>`.

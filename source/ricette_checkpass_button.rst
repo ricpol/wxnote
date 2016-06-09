@@ -58,9 +58,10 @@ Questo esempio minimo riproduce il problema che incontriamo nel nostro caso::
           print 'qualche operazione con permessi privilegiati'
           evt.Skip()
 
-  app = wx.App(False)
-  Test(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      Test(None).Show()
+      app.MainLoop()
 
 Se adesso fate girare questo esempio, vi accorgete che l'ordine dei callback è tragicamente invertito: prima viene eseguita l'operazione critica, e poi si chiede la password all'utente!
 

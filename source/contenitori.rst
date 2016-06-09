@@ -44,11 +44,12 @@ Tutto lo spazio che resta, ovviamente, deve essere riempito con altri widget "fi
             wx.Frame.__init__(self, *a, **k)
             a_text = wx.TextCtrl(self, pos=(10, 10))
             a_button = wx.Button(self, -1, 'Hello Word', pos=(10, 50))
-            
-    app = wx.App(False)
-    frame = MyFrame(None)
-    frame.Show()
-    app.MainLoop()  
+    
+    if __name__ == '__main__':
+        app = wx.App(False)
+        frame = MyFrame(None)
+        frame.Show()
+        app.MainLoop()  
     
 Alla riga 1, definisco una sottoclasse personalizzata di ``wx.Frame``. Alla riga 2, sovrascrivo l'``__init__`` per definire al suo interno i diversi widget "figli" che il frame dovrà contenere. Alla riga 3, mi ricordo di richiamare l'``__init__`` della classe-madre: questo è sempre necessario al momento di sovrascrivere l'``__init__``, e non solo dei frame, ma di qualsiasi widget. Infatti, nell'``__init__`` avvengono sempre importanti inizializzazioni sul lato C++ del framework, e quindi è importante limitarsi ad estenderlo, senza sostituirlo del tutto. 
 
@@ -93,11 +94,12 @@ Nel caso più semplice, per usare un panel dentro un frame basta creare un'insta
             panel = wx.Panel(self)
             a_text = wx.TextCtrl(panel, pos=(10, 10))
             a_button = wx.Button(panel, -1, 'Hello Word', pos=(10, 50))
-            
-    app = wx.App(False)
-    frame = MyFrame(None)
-    frame.Show()
-    app.MainLoop()  
+    
+    if __name__ == '__main__':      
+        app = wx.App(False)
+        frame = MyFrame(None)
+        frame.Show()
+        app.MainLoop()  
 
 Notate, alla riga 4, che il il panel è figlio del frame (``self``), e gli altri widget sono invece figli del panel. Curiosamente non abbiamo bisogno di specificare una posizione per il panel all'interno del frame. Infatti, quando un contenitore ha un solo figlio, questo occupa naturalmente tutto lo spazio libero. 
 
@@ -117,11 +119,12 @@ Il modo normale per implementare questi "cluster" riutilizzabili di widget consi
         def __init__(self, *a, **k):
             wx.Frame.__init__(self, *a, **k)
             panel = MyPanel(self)
-            
-    app = wx.App(False)
-    frame = MyFrame(None)
-    frame.Show()
-    app.MainLoop()   
+    
+    if __name__ == '__main__':
+        app = wx.App(False)
+        frame = MyFrame(None)
+        frame.Show()
+        app.MainLoop()   
 
 Si noti che adesso i due widget sono figli di ``self`` (ma ``self`` è il panel, beninteso), e si noti anche l'istanziazione di ``MyPanel`` dentro il frame, alla riga 10. 
 
@@ -231,10 +234,10 @@ Ecco un esempio minimo di un dialogo che chiede di inserire nome e cognome::
             # print data
             dlg.Destroy()
             
-                            
-    app = wx.App(False)
-    MyTopFrame(None, size=(150, 150)).Show()
-    app.MainLoop()
+    if __name__ == '__main__':                        
+        app = wx.App(False)
+        MyTopFrame(None, size=(150, 150)).Show()
+        app.MainLoop()
 
 Le righe significative sono le 4-5, dove definiamo le caselle di testo in cui andranno inseriti i dati; le 15-16, dove inseriamo i pulsanti con gli id predefiniti; 24-26, dove definiamo l'interfaccia ``GetValue`` che raccoglie di dati e li presenta in una struttura conveniente.
 

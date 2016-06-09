@@ -159,9 +159,10 @@ Una situazione tipica dove pub/sub si può usare con successo in una gui, è qua
         def on_clic(self, evt):
             Test(self).Show()
 
-    app = wx.App(False)
-    Test(None).Show()
-    app.MainLoop()
+    if __name__ == '__main__':
+        app = wx.App(False)
+        Test(None).Show()
+        app.MainLoop()
 
 Per mantenere più compatto il codice, qui le finestre da sincronizzare sono in realtà istanze diverse dalla stessa classe ``Test``: ma potete naturalmente sperimentare per conto vostro esempi più elaborati. 
 
@@ -283,9 +284,10 @@ Event Manager non offre comunque tutta la libertà di pub/sub. In effetti, non �
         def on_clic(self, evt):
             Test(self).Show()
 
-    app = wx.App(False)
-    Test(None).Show()
-    app.MainLoop()
+    if __name__ == '__main__':
+        app = wx.App(False)
+        Test(None).Show()
+        app.MainLoop()
 
 E' interessante confrontare il modo in cui comunichiamo il valore da assegnare allo slider: con pub/sub, il valore è il contenuto del messaggio. Con Event Manager, d'altra parte, trasferiamo pur sempre degli eventi wxPython, e quindi recuperiamo il valore che ci interessa direttamente dall'evento. 
 
@@ -332,9 +334,10 @@ Tuttavia, in una tipica applicazione gui, questo scenario non è così frequente
             s1.Add(s, 1, wx.EXPAND|wx.ALL, 5)
             p.SetSizer(s1)
 
-    app = wx.App(False)
-    Test(None).Show()
-    app.MainLoop()
+    if __name__ == '__main__':
+        app = wx.App(False)
+        Test(None).Show()
+        app.MainLoop()
 
 In conclusione...
 -----------------

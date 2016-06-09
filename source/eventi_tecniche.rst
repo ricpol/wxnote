@@ -292,9 +292,10 @@ Per testare la differenza tra i due metodi, ecco una versione leggermente modifi
             print 'mod. periodo:', evt.mod_period, 'mod. anno:', evt.mod_year
             print evt.GetEventObject().GetValue()
 
-    app = wx.App(False)
-    MyFrame(None).Show()
-    app.MainLoop()
+    if __name__ == '__main__':
+        app = wx.App(False)
+        MyFrame(None).Show()
+        app.MainLoop()
 
 
 Intercettare l'evento personalizzato.

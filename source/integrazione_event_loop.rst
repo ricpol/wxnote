@@ -345,9 +345,10 @@ Fatte queste precisazioni, il nostro "motore di gioco" potrebbe in effetti esser
       def update_gui(self, msg):
           self.text.SetValue(msg)
   
-  app = wx.App(False)
-  Test(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      Test(None).Show()
+      app.MainLoop()
 
 E' un tentativo molto rozzo, perché abbiamo cercato di modificare il meno possibile l'esempio originario, ma può bastare a rendere l'idea. Abbiamo spostato il main loop del gioco dentro una classe "controller" per comodità. Abbiamo usato ``time.sleep`` dentro il main loop per simulare una certa complessità, e soprattutto per lasciarvi il tempo di vedere i successivi aggiornamenti della casella di testo. 
 

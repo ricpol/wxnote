@@ -57,10 +57,10 @@ La chiamata a ``FilterEvent`` avviene immediatamente all'inizio della propagazio
           print 'filter!', evt.__class__.__name__
           return -1
 
-
-  app = myApp(False)
-  Test(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = myApp(False)
+      Test(None).Show()
+      app.MainLoop()
 
 Prima di far girare questo codice, prendetevi un momento per indovinare come funzionerà. Abbiamo sottoclassato ``wx.App`` per chiamare ``SetCallFilterEvent(True)`` nel suo ``OnInit``: in questo modo ci assicuriamo che il filtro degli eventi sia sempre attivo fin dall'inizio. Quindi, abbiamo implementato il suo metodo ``FilterEvent``. Restituiamo comunque ``-1`` in modo che tutti gli eventi verranno processati come al solito, ma prima facciamo qualcosa di speciale (per adesso ci limitiamo a scrivere nello standard output). 
 
@@ -127,10 +127,10 @@ Ecco un esempio pratico::
           else: 
               del self.block
 
-
-  app = wx.App(False)
-  Test(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      Test(None).Show()
+      app.MainLoop()
 
 Il primo pulsante in alto attiva e disattiva un blocco che agisce sul secondo pulsante. Il blocco è totale: come vedete, il pulsante smette di rispondere a tutti gli eventi (anche il mouseover, per esempio). Se modificate il blocco scrivendo::
 
@@ -221,9 +221,10 @@ Questo è un handler che gestisce un ``wx.EVT_BUTTON`` nel modo che ormai vi è 
           handler = MyEvtHandler()
           b.PushEventHandler(handler)
 
-  app = wx.App(False)
-  Test(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      Test(None).Show()
+      app.MainLoop()
 
 Tutto qui. ``PushEventHandler`` "spinge" il nostro handler personalizzato in cima allo stack degli handler del pulsante. Il pulsante acquisisce il nostro handler, e quindi acquisisce la sua caratteristica risposta all'evento ``wx.EVT_BUTTON``. 
 
@@ -377,9 +378,9 @@ Riprendiamo infine l'esempio riassuntivo che :ref:`avevamo fatto<esempio_finale_
           print 'clic dalla wx.App'
           evt.Skip()
 
-
-  app = MyApp(False)
-  Test(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':        
+      app = MyApp(False)
+      Test(None).Show()
+      app.MainLoop()
 
 Abbiamo finito di parlare degli eventi in wxPython? Naturalmente no! Come abbiamo accennato sopra, parliamo di eventi anche nella pagina dedicata ai thread. Ma soprattutto, ci restano ancora molte cose da scoprire sugli event loop... Ma sarà l'argomento di una :ref:`pagina separata<eventloop>`!

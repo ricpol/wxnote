@@ -35,9 +35,10 @@ Creare una barra dei menu è facilissimo, basta istanziare la classe ``wx.MenuBa
           # e infine:
           self.SetMenuBar(menubar)
 
-  app = wx.App(False)
-  MyFrame(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      MyFrame(None).Show()
+      app.MainLoop()
 
 Se provate questo codice, vedrete un normale frame con una barra dei menu pronta, ma ancora vuota. Notate che il nome della barra dei menu (``menubar``) serve solo localmente nell'``__init__`` della classe: per questo motivo non abbiamo bisogno di chiamarla ``self.menubar``. 
 
@@ -120,10 +121,10 @@ Il metodo ``Append`` restituisce un oggetto che rappresenta la voce di menu appe
           # adesso non dobbiamo scordarci di collegare le voci di menu
           # item1, item2, etc., a degli eventi! 
 
-
-  app = wx.App(False)
-  MyFrame(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      MyFrame(None).Show()
+      app.MainLoop()
 
 Se provate questo esempio, osserverete che i nostri menu si sono popolati con qualche voce. Ancora una volta, ``item1``, ``item2`` etc. sono nomi che ci servono solo localmente, quindi non è il caso di farli precedere da un ``self``. 
 

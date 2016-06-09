@@ -138,10 +138,10 @@ Ecco un esempio pratico::
                 self.Destroy()
             msg.Destroy()
                                     
-                                    
-    app = wx.App(False)
-    MyTopFrame(None).Show()
-    app.MainLoop()
+    if __name__ == '__main__':                                
+        app = wx.App(False)
+        MyTopFrame(None).Show()
+        app.MainLoop()
 
 In questo esempio, il frame principale crea e poi cerca di chiudere (alla riga 15) un frame figlio. Il frame figlio però può decidere se chiudersi davvero, o rifiutare. Notate che, se decidiamo di non chiuderlo, chiamiamo ``Veto()`` (alla riga 29) in modo che ``Close()`` restituisca ``False``, e quindi il codice chiamante sappia come comportarsi (alle righe 15-18). 
 
@@ -227,10 +227,11 @@ Provate questo codice, per esempio::
             
         def on_autopsy(self, evt):
             self.child.GetId()
-        
-    app = wx.App(False)
-    MyTopFrame(None, size=(150, 150)).Show()
-    app.MainLoop()
+    
+    if __name__ == '__main__':
+        app = wx.App(False)
+        MyTopFrame(None, size=(150, 150)).Show()
+        app.MainLoop()
 
 Sorprendentemente, la chiamata della riga 14 andrà ancora a segno, anche se avete appena distrutto il frame. Se invece, dopo aver distrutto il frame, premete il pulsante "verifica", la chiamata della riga 17 solleverà il tanto sospirato ``PyDeadObjectError``. 
 
@@ -296,9 +297,10 @@ Ecco un esempio di ``Panel`` "schizzinoso" che potrebbe opporsi alla sua distruz
             if ret:
                 pass # etc. etc.
 
-    app = wx.App(False)
-    TopFrame(None).Show()
-    app.MainLoop()
+    if __name__ == '__main__':
+        app = wx.App(False)
+        TopFrame(None).Show()
+        app.MainLoop()
 
 Come si vede, se il ``Panel`` si chiude davvero, resta un buco. Alla riga 38, bisognerà fare qualcosa: riempire il buco, riaggustare il layout, etc. 
 

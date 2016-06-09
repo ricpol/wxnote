@@ -39,9 +39,10 @@ Ecco un'idea di come potrebbero andare tipicamente le cose::
             top_frame.Show()  
             # esco da OnInit segnalando che tutto e' a posto        
             return True
-            
-    app = MyApp(False)   # istanzio la mia app personalizzata
-    app.MainLoop()       # e invoco il MainLoop per avviarla
+    
+    if __name__ == '__main__':
+        app = MyApp(False)   # istanzio la mia app personalizzata
+        app.MainLoop()       # e invoco il MainLoop per avviarla
     
 Questo modo di procedere presenta numerosi vantaggi. Per esempio, se una connessione al database viene aperta in ``OnInit``, "appartiene" alla ``wx.App``, e quindi è disponibile globalmente per tutti gli elementi presenti e futuri dell'applicazione. Da qualunque posto, per ottenere un riferimento al database basterà questo::
 

@@ -117,10 +117,10 @@ Questo esempio chiarisce tutto quello che abbiamo detto fin qui::
       def my_callback_2(self, evt): print 'hai scelto la due'
       def my_callback_3(self, evt): print 'hai scelto la tre'
 
-
-  app = wx.App(False)
-  MyFrame(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      MyFrame(None).Show()
+      app.MainLoop()
 
 In questo caso il menu popup appare in risposta a un clic in un punto qualsiasi del panel (abbiamo dovuto usare ``wx.EVT_LEFT_UP`` perché naturalmente un panel non dispone di eventi specifici come ``wx.EVT_BUTTON``). 
 
@@ -162,10 +162,10 @@ Ecco invece l'esempio di prima modificato per mostrare come la stessa voce può 
       def my_callback_2(self, evt): print 'hai scelto la due'
       def my_callback_3(self, evt): print 'la voce che sta in entrambi i menu'
 
-
-  app = wx.App(False)
-  MyFrame(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      MyFrame(None).Show()
+      app.MainLoop()
 
 
 Un "autentico" menu contestuale.
@@ -218,10 +218,10 @@ Nell'esempio che segue, vogliamo che una casella di testo abbia un menu contestu
               self.PopupMenu(menu)
           menu.Destroy()
 
-
-  app = wx.App(False)
-  MyFrame(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      MyFrame(None).Show()
+      app.MainLoop()
 
 .. index::
    single: menu; tecniche di manipolazione

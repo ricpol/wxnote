@@ -109,10 +109,10 @@ Una volta scritto, il validatore si applica al widget che intendete validare, al
             if ret == False:
                 wx.MessageBox('Non valido')
             
-            
-    app = wx.App(False)
-    MyTopFrame(None, size=(200, 200)).Show()
-    app.MainLoop()
+    if __name__ == '__main__':        
+        app = wx.App(False)
+        MyTopFrame(None, size=(200, 200)).Show()
+        app.MainLoop()
 
 Come si vede (righe 4 e 5) due caselle di testo sono legate al nostro validatore. Se preferite, potete testare anche l'altro validatore. Cambiate la riga 4 con qualcosa come::
 

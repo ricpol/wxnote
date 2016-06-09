@@ -193,10 +193,10 @@ Chiaramente potete usare questi pulsanti predefiniti (ossia questi Id predefinit
             else:
                 print 'abbiamo i sorbetti al limone...'
             
-                            
-    app = wx.App(False)
-    MyTopFrame(None, size=(150, 150)).Show()
-    app.MainLoop()
+    if __name__ == '__main__':                        
+        app = wx.App(False)
+        MyTopFrame(None, size=(150, 150)).Show()
+        app.MainLoop()
 
 Notate che non abbiamo bisogno di collegare esplicitamente i nostri due pulsanti a qualche evento. Basta assegnare loro i corretti Id "predefiniti" (righe 6 e 7), e wxPython sa già cosa fare: chiude il dialogo e restituisce l'Id del pulsante premuto. 
 

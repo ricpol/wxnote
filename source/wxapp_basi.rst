@@ -91,13 +91,29 @@ In sostanza, una volta entrati dentro wxPython, tutto deve essere pilotato da "d
 
 Anche se :ref:`ci sarebbe molto altro<eventloop>` da dire sul main loop, per iniziare non è poi molto quello che occorre sapere: il più delle volte, basta ricordarsi di creare la ``wx.App`` e quindi invocare il suo ``MainLoop``. Tutto il resto può essere pilotato direttamente dalla finestra principale della vostra gui.
 
-Quindi, per "ingranare" la nostra applicazione, bastano di solito le tre righe magiche::
+Per completare il quadro, abbiamo detto: si esce dal ``MainLoop`` quando l'ultimo elemento della gui viene distrutto. Dovremmo specificare meglio: quando l'ultima finestra "top level" viene chiusa e distrutta. Ma per questo bisogna prima spiegare meglio il concetto di "top level frame", e, più in generale, della catena dei "parent". Dedichiamo a questo argomento :ref:`una pagina separata <catenaparent>`. 
+
+
+L'entry-point di un programma wxPython.
+---------------------------------------
+
+In conclusione, per "ingranare" la nostra applicazione, bastano di solito le tre righe magiche::
 
     app = wx.App(False)
     MainFrame(None).Show() # dove MainFrame e' il frame principale dell'applicazione
     app.MainLoop()
 
-Ci sono però ancora parecchie cose da sapere sulla ``wx.App``: ma sono :ref:`argomenti più avanzati <wxapp_avanzata>` che per il momento non vi servono. 
+Il modulo Python che contiene queste righe è quindi l'entry-point del nostro programma wxPython: quello che l'utente invocherà dalla shell o sui cui farà doppio clic per far partire il programma, insomma. 
 
-Per completare il quadro, abbiamo detto: si esce dal ``MainLoop`` quando l'ultimo elemento della gui viene distrutto. Dovremmo specificare meglio: quando l'ultima finestra "top level" viene chiusa e distrutta. Ma per questo bisogna prima spiegare meglio il concetto di "top level frame", e, più in generale, della catena dei "parent". Dedichiamo a questo argomento :ref:`una pagina separata <catenaparent>`. 
+E' opportuno ricordare qui che è buona pratica in Python non lasciare mai delle istruzioni "top-level" che comporterebbero dei side effect qualora il modulo dovesse venire importato. Di conseguenza, ricordatevi sempre di inserire il bootstrap della vostra applicazione nel consueto blocco ``if __name__ == '__main__'``:: 
 
+    if __name__ == '__main__':
+        app = wx.App(False)
+        MainFrame(None).Show()
+        app.MainLoop()
+
+Potreste chiedervi se questo è davvero necessario: dopo tutto, il modulo entry-point del programma non ha mai bisogno, per definizione, di essere importato... giusto? In realtà ci sono alcuni scenari in cui questo potrebbe accadere: per esempio, una suite di test automatizzati potrebbe dover importare anche questo modulo. In ogni caso, come per tutte le buone pratiche: è sempre meglio seguirle. 
+
+.. todo:: una pagina sui test
+
+Ci sono ancora parecchie cose da sapere sulla ``wx.App``: ma sono :ref:`argomenti più avanzati <wxapp_avanzata>` che per il momento non vi servono. 

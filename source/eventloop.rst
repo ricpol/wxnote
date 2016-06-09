@@ -221,10 +221,11 @@ Un esempio chiarirà meglio::
   
       def clic_b2(self, evt): 
           print 'clic'
-  
-  app = wx.App(False)
-  Test(None).Show()
-  app.MainLoop()
+
+  if __name__ == '__main__':
+      app = wx.App(False)
+      Test(None).Show()
+      app.MainLoop()
 
 L'efficacia di ``Yield`` dipende da quanto spesso riuscite a chiamarlo, ovvero da quanto riuscite a "spezzettare" la vostra operazione bloccante. Nel nostro esempio, potete sperimentare con diverse durate di ``long_op`` per vedere fino a quando la gui risponde in modo accettabile. 
 
@@ -292,9 +293,10 @@ Facciamo una prova veloce::
       def clic_b1(self, evt): TestDialog(self).ShowModal()
       def clic_b2(self, evt): print wx.GUIEventLoop.GetActive()
   
-  app = wx.App(False)
-  TestDialog(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      TestDialog(None).Show()
+      app.MainLoop()
 
 Ogni volta che cliccate sul primo pulsante, aprite un nuovo dialogo modale "annidato". Cliccando sul secondo pulsante, noterete che il loop attivo è di volta in volta diverso (confrontate gli indirizzi di memoria per vederlo).
 
@@ -329,10 +331,10 @@ Se però lo ritenete opportuno, potete creare e distruggere anche i loop annidat
           print 'loop attivo:', wx.GUIEventLoop.GetActive()
           TestDialog(self).Show()
     
-
-  app = wx.App(False)
-  Test(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = wx.App(False)
+      Test(None).Show()
+      app.MainLoop()
 
 Notate prima di tutto che abbiamo rinunciato a ``ShowModal`` per mostrare il dialogo (altrimenti wxPython avrebbe semplicemente aperto un altro loop dentro il nostro). Se volete disattivare il resto dell'interfaccia, dovete farlo a mano. L'uso di ``wx.EventLoopActivator`` è mostrato nel nostro ``TestDialog``: all'inizio apriamo un nuovo loop, e quando il dialogo viene chiuso, distruggiamo anche l'istanza dell'attivatore, ripristinando il loop precedente. Notate però che ``wx.EventLoopActivator``, al momento della sua distruzione, non chiama ``Exit`` sul loop, quindi dobbiamo pensarci noi stessi (simmetricamente, chiamare ``Exit`` sul loop non basta a "disattivarlo"! Occorre distruggere il ``wx.EventLoopActivator`` che lo ha attivato).
 
@@ -345,10 +347,10 @@ E' importante uscire dal loop con ``Exit``? Lo è abbastanza: come abbiamo già 
       def OnEventLoopExit(self):
           print 'esco dal loop', wx.GUIEventLoop.GetActive()
   
-  
-  app = MyApp(False)
-  Test(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = MyApp(False)
+      Test(None).Show()
+      app.MainLoop()
 
 Adesso notate che la "partita doppia" dei messaggi provenienti da ``MyApp`` e da ``TestDialog`` coincide. Ma se togliete la chiamata a ``self.loop.Exit()``, vedrete che ``MyApp.OnEventLoopExit`` non viene più eseguito quando chiudete il dialogo. Naturalmente, potrebbe essere quello che volete in certe occasioni: l'importante è capire che ri-attivare un loop non comporta automaticamente uscire dal loop precedente. 
 
@@ -414,10 +416,10 @@ Il metodo che vi serve sovrascrivere è ``Run``, all'interno del quale wxPython 
       def stop_app(self):
           self.loop.time_to_quit = True
   
-  
-  app = MyApp(False)
-  MyFrame(None).Show()
-  app.MainLoop()
+  if __name__ == '__main__':
+      app = MyApp(False)
+      MyFrame(None).Show()
+      app.MainLoop()
 
 In questo esempio abbiamo predisposto le cose nel ``wx.App.MainLoop`` per avere un solo loop per tutta la vita dell'applicazione (chiamiamo ``wx.Exit()`` subito dopo che il loop ha smesso di funzionare). Ma naturalmente potete organizzare le cose in modo da attivare più loop il successione, a seconda delle vostre esigenze. 
 
