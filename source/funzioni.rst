@@ -27,6 +27,9 @@ Bisogna tener presente che wxPython è in circolazione da prima che Pyhton svilu
 
 La regola di corrispondenza tra funzioni e static method è banale: in pratica, basta sostituire l'underscore con il punto. Per esempio, al posto di chiamare la funzione ``wx.DateTime_Now()``, dovreste usare il metodo ``wx.DateTime.Now()`` (che, essendo appunto uno static method, può essere usato senza bisogno che la classe ``wx.DateTime`` sia precedentemente istanziata).
 
+L'unica eccezione a questa regola è ``wx.Thread_IsMain``, che può essere usata solo come funzione globale perché la classe wxWidgets ``wxThread`` in wxPython non è stata tradotta (e quindi non esiste neppure il metodo ``wx.Thread.IsMain``). 
+
+
 Altre funzioni in via di dismissione.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -207,9 +210,9 @@ Alcune funzioni gestiscono processi esterni:
 
 * ``Execute``, ``GetProcessId``, ``Kill``, ``LaunchDefaultApplication``, ``LaunchDefaultBrowser``, ``Shell``, ``SysErrorCode``, ``SysErrorMsg``
 
-Una sola funzione globale ha a che fare direttamente con i thread:
+Due funzioni globali hanno a che fare direttamente con i thread:
 
-* ``WakeUpMainThread``
+* ``Thread_IsMain``, ``WakeUpMainThread``
 
 Così come wxPython non adotta il supporto per i thread di wxWidgets, preferendo affidarsi alla libreria standard di Python, anche ``wxMutex`` di wxWidgets è assente in wxPython. Queste due funzioni globali sono ancora in giro per retro-compatibilità:
 
