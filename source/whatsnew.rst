@@ -8,6 +8,12 @@ Questi appunti sono stati scritti in una prima grande "infornata" nel novembre-d
 
 In questa pagina trovate una cronologia delle successive aggiunte. 
 
+7 luglio 2016:
+  - due pagine sul :ref:`logging<logging>`;
+  - due pagine sulla :ref:`gestione delle eccezioni<eccezioni>`;
+  - una pagina di considerazioni avanzate sulla :ref:`chiusura dei widget<chiusura_avanzata>`;
+  - un paragrafo sul :ref:`reindirizzamento dello standard output<reindirizzare_stdout>` aggiunto alla pagina sulla ``wx.App``. 
+  
 9 giugno 2016:
   - una precisazione da tempo dovuta su ``if __name__ == '__main__'`` nella :ref:`pagina<wxapp_basi>` sulla ``wx.App``, e di conseguenza
   - la clausola ``if __name__ == '__main__'`` è stata aggiunta ovunque, per non suggerire involontariamente cattive abitudini; 

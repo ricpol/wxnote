@@ -11,6 +11,8 @@
    single: wx.Dialog
    single: chiusura; di un frame
    single: chiusura; di un dialogo
+   single: chiusura; wx.Window.Close
+   single: chiusura; wx.Window.Destroy
    single: dialogo; chiusura
    single: frame; chiusura
    single: eventi; wx.EVT_CLOSE
@@ -47,7 +49,7 @@ Dunque, se voi non fate nulla, la parola passa al gestore di default, che si com
 Questo è quello che succede se voi non fate nulla. Ma chiaramente, come qualsiasi altro evento, anche ``wx.EVT_CLOSE`` può essere catturato e gestito in un callback. 
 
 In questo caso, diciamo subito la cosa più importante. Se decidete di raccogliere ``wx.EVT_CLOSE`` e gestire da soli il processo di chisura, allora dovete esplicitamente chiamare ``Destroy()`` *anche per i frame*, perché wxPython non farà più nulla al posto vostro. 
-   
+
 Potete anche decidere di *non* chiudere la finestra, dopo tutto. Questo, per esempio, è un procedimento tipico (anche se, dal punto dell'usabilità, è una pessima pratica che vi sconsiglio)::
 
     class MyFrame(wx.Frame):
@@ -59,10 +61,12 @@ Potete anche decidere di *non* chiudere la finestra, dopo tutto. Questo, per ese
             msg = wx.MessageDialog(self, 'Sei proprio sicuro?', 'Uscita', 
                                    wx.ICON_QUESTION|wx.YES_NO)
             if msg.ShowModal() == wx.ID_YES:
-                self.Destroy()
+                self.Destroy() # oppure, volendo: evt.Skip()
             msg.Destroy()
 
 Alla riga 10, chiamiamo esplicitamente ``self.Destroy()`` solo se l'utente ha risposto affermativamente. In caso contrario, chiamiamo comunque ``Destroy()`` almeno sul ``MessageDialog`` che abbiamo creato, perché altrimenti resterebbe in vita.
+
+Invece di chiamare ``self.Destroy()``, avremmo naturalmente anche potuto chiamare ``evt.Skip()``, lasciando al gestore predefinito dell'evento il compito di distruggere la finestra. 
 
 Come abbiamo detto, ``wx.EVT_CLOSE`` si innesca anche quando voi chiamate ``Close()``. Per vederlo, possiamo aggiungere un semplice pulsante che chiama ``Close`` nel suo callback::
 
@@ -84,6 +88,7 @@ Come abbiamo detto, ``wx.EVT_CLOSE`` si innesca anche quando voi chiamate ``Clos
             msg.Destroy()
 
 Anche quando agite sul pulsante, il ``self.Close()`` della riga 9 scatena comunque il ``wx.EVT_CLOSE``, e di conseguenza viene eseguito il codice del callback ``on_close``.
+
 
 .. index::
    single: wx.Event; Veto
@@ -188,6 +193,11 @@ Questo, come vedete, può essere un bel problema per il codice che gestisce la c
 
 .. _chiusura_forzata:
 
+.. index::
+   single: chiusura; wx.PyDeadObjectError
+   single: eccezioni; wx.PyDeadObjectError
+   single: wx; PyDeadObjectError
+
 Essere sicuri che una finestra si chiuda davvero.
 -------------------------------------------------
 
@@ -199,13 +209,15 @@ In definitiva, l'unico modo per essere certi che una finestra si chiuda davvero 
 
 Questo lascia aperto il problema: come faccio a sapere se una finestra è stata davvero distrutta?
 
-Ebbene, dopo che avete chiamato ``Close()`` (magari con l'aggiunta di ``force=True``), l'unico modo di sapere se la finestra è stata davvero distrutta, è... chiamarla, ovviamente! Sul "lato Python" di wxPython, il riferimento all'oggetto resterà ancora nel namespace corrente. Ma sul "lato C++" di wxWidgets, quando una finestra è distrutta, semplicemente smetterà di funzionare. Quindi una chiamata successiva a un metodo qualsiasi dovrebbe sollevare un'eccezione ``PyDeadObjectError``, che voi opportunamente intrappolerete in un ``try/except``. Per andare sul sicuro, scegliete un metodo che ogni widget deve avere per forza, per esempio ``GetId``. Qualcosa come::
+Ebbene, dopo che avete chiamato ``Close()`` (magari con l'aggiunta di ``force=True``), l'unico modo di sapere se la finestra è stata davvero distrutta, è... chiamarla, ovviamente! Sul "lato Python" di wxPython, il riferimento all'oggetto resterà ancora nel namespace corrente. Ma sul "lato C++" di wxWidgets, quando una finestra è distrutta, semplicemente smetterà di funzionare. Quindi una chiamata successiva a un metodo qualsiasi dovrebbe sollevare un'eccezione ``wx.PyDeadObjectError``, che voi opportunamente intrappolerete in un ``try/except``. Per andare sul sicuro, scegliete un metodo che ogni widget deve avere per forza, per esempio ``GetId``. Qualcosa come::
                                         
     try:
         my_widget.GetId()
-    except PyDeadObjectError:
+    except wx.PyDeadObjectError:
         # siamo sicuri che e' davvero morto
-                                        
+                                  
+.. todo:: una pagina su SWIG e l'oop Python/C++.
+      
 Ma ci sarebbe ancora un problema (ve lo aspettavate, dite la verità). Quando chiamate ``Close`` o addirittura ``Destroy``, questo impegna wxPython a distruggere la finestra... *appena possibile*, ma non necessariamente subito. Di sicuro la distruzione avverrà entro il prossimo ciclo del ``MainLoop``, ma se chiamate ``GetId`` su un frame *immediatamente dopo* averlo distrutto, la chiamata per il momento andrà ancora a segno. 
 
 Provate questo codice, per esempio::
@@ -233,9 +245,11 @@ Provate questo codice, per esempio::
         MyTopFrame(None, size=(150, 150)).Show()
         app.MainLoop()
 
-Sorprendentemente, la chiamata della riga 14 andrà ancora a segno, anche se avete appena distrutto il frame. Se invece, dopo aver distrutto il frame, premete il pulsante "verifica", la chiamata della riga 17 solleverà il tanto sospirato ``PyDeadObjectError``. 
+Sorprendentemente, la chiamata della riga 14 andrà ancora a segno, anche se avete appena distrutto il frame. Se invece, dopo aver distrutto il frame, premete il pulsante "verifica", la chiamata della riga 17 solleverà il tanto sospirato ``wx.PyDeadObjectError``. 
 
-In definitiva, non c'è modo di sapere esattamente *quando* un widget verrà distrutto. Tuttavia, dopo un ragionevole intervallo di tempo, è molto facile capire *se* è stato distrutto. 
+Sull'eccezione ``wx.PyDeadObjectError`` resta ancora qualcosa da dire. Fin qui ne abbiamo parlato dal punto di vista della sua desiderabilità (quando cioè lo usiamo come strumento per testare se un widget è stato distrutto). :ref:`Nelle pagine dedicate alle eccezioni<eccezioni2>` ne parliamo invece dal punto di vista opposto.
+
+Come abbiamo appena visto, la distruzione di un widget non può essere "istantanea": questo talvolta porta a delle complicazioni ulteriori, di cui parliamo in :ref:`una pagina separata<chiusura_avanzata>`. Per il momento, ci limitiamo a concludere che non c'è modo di sapere esattamente *quando* un widget verrà distrutto: tuttavia, dopo un ragionevole intervallo di tempo, è molto facile capire *se* è stato distrutto. 
 
 .. index::
    single: wx.Window; DestroyChildren
@@ -305,4 +319,3 @@ Ecco un esempio di ``Panel`` "schizzinoso" che potrebbe opporsi alla sua distruz
 Come si vede, se il ``Panel`` si chiude davvero, resta un buco. Alla riga 38, bisognerà fare qualcosa: riempire il buco, riaggustare il layout, etc. 
 
 Per finire, una menzione per ``DestroyChildren``: quest'arma di distruzione di massa, usata su un widget qualsiasi, lascia in vita lui ma distrugge automaticamente tutti i suoi "figli". Naturalmente, la distruzione di ciascun figlio comporta a catena la morte dei figli del figlio, e così via fino alla totale estinzione dell'albero dei discendenti. Può tornare comodo, per esempio, per svuotare un ``wx.Panel`` senza però distruggerlo, e quindi ripopolarlo daccapo. 
-
