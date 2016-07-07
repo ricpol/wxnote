@@ -358,7 +358,7 @@ Di conseguenza, un log target personalizzato è l'unica strada per intercettare 
 
 Anche così, ci sono almeno due limitazioni fastidiose:
 
-- non c'è modo di distinguere tra ``wx.LogError`` e ``wx.LogFatalError`` (entrambi usano lo stesso livello di log ``wx.LOG_Error``, purtroppo). Questo però non è grave: ``wx.LogError`` non è usato internamente da wxPython, e di sicuro non lo userete nemmeno voi (perché tutte le vostre scritture avverranno tramite il ``logging`` di Python, chiaramente!). Quindi, se il vostro log target intercetta un log di livello ``wx.LOG_Error``, sicuramente deve trattarsi di un grave ``wx.LogSysError`` proveniente da wxPython;
+- non c'è modo di distinguere tra ``wx.LogError`` e ``wx.LogSysError`` (entrambi usano lo stesso livello di log ``wx.LOG_Error``, purtroppo). Questo però non è grave: ``wx.LogError`` non è usato internamente da wxPython, e di sicuro non lo userete nemmeno voi (perché tutte le vostre scritture avverranno tramite il ``logging`` di Python, chiaramente!). Quindi, se il vostro log target intercetta un log di livello ``wx.LOG_Error``, sicuramente deve trattarsi di un grave ``wx.LogSysError`` proveniente da wxPython;
 
 - purtroppo, ``wx.LogFatalError`` continua ad essere un caso a parte: lo abbiamo incluso nel nostro esempio qui sopra, ma in realtà il comportamento di default non può essere cambiato (provate). Questo vuol dire che wxPython continuerà a mostrare un messaggio all'utente e chiudere l'applicazione, che vi piaccia o no. Anche questo non è così grave: se wxPython si imbatte in un problema tale da richiedere ``wx.LogFatalError``, allora vuol dire che chiudere l'applicazione è comunque la cosa migliore. 
 
