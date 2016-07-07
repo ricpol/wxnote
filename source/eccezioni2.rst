@@ -48,7 +48,7 @@ Ma non è finita. Se il costruttore di ``wx.Bitmap`` non usa gli assert, d'altra
 
 Quando istanziamo la ``wx.Mask``, il costruttore C++ emette un assert che viene tradotto in un ``wx.PyAssertionError``, che volendo possiamo intercettare. 
 
-D'altra parte, se invece usiamo la nostra ``wx.Bitmap`` malformata per creare un ``wx.BitmapButton``, l'operazione fallisce silenziosamente, senza che nessun assert venga emesso, e ci viene mostrato un normale pulsante senza nessuna immagine:
+D'altra parte, se invece usiamo la nostra ``wx.Bitmap`` malformata per creare un ``wx.BitmapButton``, l'operazione fallisce silenziosamente, senza che nessun assert venga emesso, e ci viene mostrato un normale pulsante senza nessuna immagine::
 
     bmp = wx.Bitmap('non_esiste.bmp', type=wx.BITMAP_TYPE_BMP)
     button = wx.BitmapButton(self, bitmap=bmp)
@@ -218,6 +218,6 @@ Per finire, riprendiamo qui anche il discorso sul :ref:`logging in wxPython<logg
 
 - Siete invece liberi di usare ``try/except`` a piacere, per le eccezioni Python che provengono dal vostro codice: anzi, è il normale approccio "Easier to Ask for Forgiveness Than Permission" di Python. Attenzione però: le eccezioni Python vanno catturate quanto prima, perché in wxPython non possono propagarsi al di fuori del segmento di codice Python da cui sono originate. Un'eccezione Python non catturata è, ancora una volta, un baco: in wxPython però l'applicazione non termina come al solito, e questo è un problema grave. Il meglio che potete fare è catturarle nell'"hook acchiappa-tutto" e debuggare, debuggare quanto prima. 
 
-- Siccome le eccezioni Python non gestite (vostre, o i ``xw.Py*Error`` generati da wxPython) non terminano immediatamente il programma, potrebbero avere effetti nascosti molto gravi. Il meglio che potete fare è sovrascrivere ``sys.excepthook`` con un vostro "hook acchiappa-tutto": quando catturate in questo modo un'eccezione non gestita, dovreste senz'altro scriverla nel log. Potete eventualmente mostrare un messaggio all'utente, e chiudere voi stessi l'applicazione. 
+- Siccome le eccezioni Python non gestite (vostre, o i ``wx.Py*Error`` generati da wxPython) non terminano immediatamente il programma, potrebbero avere effetti nascosti molto gravi. Il meglio che potete fare è sovrascrivere ``sys.excepthook`` con un vostro "hook acchiappa-tutto": quando catturate in questo modo un'eccezione non gestita, dovreste senz'altro scriverla nel log. Potete eventualmente mostrare un messaggio all'utente, e chiudere voi stessi l'applicazione. 
 
 - Tutte queste raccomandazioni (log target personalizzati, ``sys.excepthook`` sovrascritti, etc.) valgono solo quando il vostro programma è in produzione. In fase di sviluppo, naturalmente, volete invece che gli errori saltino fuori nel modo più appariscente possibile. Una buona strategia potrebbe essere scrivere due versioni separate della vostra ``wx.App`` (o almeno, due versioni del suo ``wx.App.OnInit`` e ``wx.App.OnExit``), da usare in ambiente di sviluppo e in produzione. 
