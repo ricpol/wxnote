@@ -1,39 +1,6 @@
 TODO list.
 ==========
 
-Argomenti che vorrei trattare in futuro.
-----------------------------------------
+Questi vecchi appunti, che negli anni si sono guadagnati un piccolo seguito di lettori, erano concepiti per Python 2 e wxPython "Classic", e sono quindi ormai obsoleti: ho deciso pertanto di ritirarli. 
 
-Grandi temi.
-^^^^^^^^^^^^
-
-Questi sono temi impegnativi: varie pagine, complesse. 
-
-* DISEGNARE. I ``wx.DC``, e tutti gli strumenti per il disegno.
-
-* Pattern MCV
-
-* Unit test
-
-
-Argomenti più specifici.
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-Questi sono argomenti più contenuti, anche se talvolta molto tecnici. 
-
-* La creazione di widget personalizzati, a partire da ``PyControl``. 
-
-* Le immagini. 
-
-* ``wx.ListCtrl``
-
-* Timers
-
-* Threads
-
-
-Rimandi ai "todo" nelle pagine già scritte.
--------------------------------------------
-
-.. todolist::
-
+Ma niente paura! Nel frattempo li ho aggiornati, migliorati, ampliati a dismisura... fino a ricavarne un libro, niente meno:  `Capire wxPython <https://leanpub.com/capirewxpython>`_, la risorsa definitiva per chi vuole fare sul serio con wxPython e le applicazioni GUI desktop.

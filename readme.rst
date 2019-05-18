@@ -1,21 +1,8 @@
 APPUNTI wxPYTHON
 ================
 
-(c) Riccardo Polignieri - 2012
+copyright 2012-2019 Riccardo Polignieri
 
-Se non proprio un manuale completo, una collezione di appunti sistematici e organizzati per gradi. 
+Questi vecchi appunti, che negli anni si sono guadagnati un piccolo seguito di lettori, erano concepiti per Python 2 e wxPython "Classic", e sono quindi ormai obsoleti: ho deciso pertanto di ritirarli. 
 
-Probabilmente il materiale più completo e aggiornato su wxPython disponibile in italiano. 
-
-I contributi sono benvenuti! Leggete la TODO list, o fatevi venire in mente qualcosa che potreste scrivere voi stessi. Sarete debitamente citati, e il mondo degli sviluppatori wxPython vi sarà eternamente grato (almeno quelli italiani).
-
-Sono benvenute anche le correzioni e i suggerimenti, e perfino le richieste per nuovi argomenti da trattare. Se siete pratici di GitHub, aprite un ticket. Altrimenti, basterà un'email. 
-
-
-NOTES ON wxPYTHON
-=================
-
-Not really a complete manual - a step-by-step organized collection of notes.
-
-Even so, probably the most complete and updated material available in Italian on wxPython.
-
+Ma niente paura! Nel frattempo li ho aggiornati, migliorati, ampliati a dismisura... fino a ricavarne un libro, niente meno:  `Capire wxPython <https://leanpub.com/capirewxpython>`_, la risorsa definitiva per chi vuole fare sul serio con wxPython e le applicazioni GUI desktop.

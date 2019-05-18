@@ -1,25 +1,6 @@
-.. _periodwidget:
-
-.. index::
-   single: wx.lib.newevent; NewCommandEvent
-   single: wx.Window; GetEventHandler
-   single: wx.PyEvtHandler; ProcessEvent
-   single: wx.Event; SetEventObject
-   single: eventi; wx.lib.newevent.NewCommandEvent
-   single: eventi; wx.Window.GetEventHandler
-   single: eventi; wx.PyEvtHandler.ProcessEvent
-   single: eventi; wx.Event.SetEventObject
-   single: eventi; eventi personalizzati
-
 Un widget per selezionare periodi di tempo.
 ===========================================
 
-Ho usato questo widget (che avevo scritto in origine per un progetto "vero") per esemplificare la scrittura di :ref:`eventi personalizzati <eventi_personalizzati>`. 
+Questi vecchi appunti, che negli anni si sono guadagnati un piccolo seguito di lettori, erano concepiti per Python 2 e wxPython "Classic", e sono quindi ormai obsoleti: ho deciso pertanto di ritirarli. 
 
-Il suo funzionamento è semplice: permette di selezionare un periodo (per esempio un trimestre), e restituisce gli estremi del periodo come ``datetime.date``.  
-
-.. literalinclude:: /_static/snippets/recipes/period_widget.py
-   :lines: 5-
-   :linenos:
-   
-   
+Ma niente paura! Nel frattempo li ho aggiornati, migliorati, ampliati a dismisura... fino a ricavarne un libro, niente meno:  `Capire wxPython <https://leanpub.com/capirewxpython>`_, la risorsa definitiva per chi vuole fare sul serio con wxPython e le applicazioni GUI desktop.
